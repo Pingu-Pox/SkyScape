@@ -1,5 +1,7 @@
 # SkyScape
-Source scripts for the Skyrim mod "SkyScape"
+Runescape in Skyrim
+
+This mod is an attempt to fully recreate Runescape in The Elder Scrolls V: Skyrim. This mod recreates the skills, quests, and the overall feel of Runescape, as a first person experience using the creation engine. The aim of the project is to recreate the best parts of all the different Runescape products, not just RS3, OSRS, Deadman, and Darkscape(rip). 
 
 To read these scripts cleanly, you need to download the custom papyrus language definition I made to use with my mods. 
 It is a work in progress and can be downloaded from the link below:
