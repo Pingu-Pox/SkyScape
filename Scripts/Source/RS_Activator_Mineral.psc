@@ -70,6 +70,117 @@ Event OnHit(ObjectReference akAggressor, Form akSource, Projectile akProjectile,
 	Endif
 EndEvent
 
+;Rolls for Gem
+Function RollForGem()
+	Float GemMod
+	If Game.GetPlayer().IsEquipped(RS_Item_Armor_Amulet_Glory04)
+		GemMod = 0.50
+	ElseIf Game.GetPlayer().IsEquipped(RS_Item_Armor_Amulet_Glory03)
+		GemMod = 0.60
+	ElseIf Game.GetPlayer().IsEquipped(RS_Item_Armor_Amulet_Glory02)
+		GemMod = 0.75
+	ElseIf Game.GetPlayer().IsEquipped(RS_Item_Armor_Amulet_Glory01)
+		GemMod = 0.95
+	Else
+		GemMod = 1.00
+	EndIf
+	Int Prob = (GemMod*282) as Int;test to see if this works as planned
+	Int BaseRollGem01 = Utility.RandomInt(1,Prob)
+	If BaseRollGem01 == 1
+		GiveGem()
+		Int BaseRollGem02 = Utility.RandomInt(1,Prob)
+		If BaseRollGem02 == 1
+			GiveGem()
+			Int BaseRollGem03 = Utility.RandomInt(1,Prob)
+			If BaseRollGem03 == 1
+				GiveGem()
+				Int BaseRollGem04 = Utility.RandomInt(1,Prob)
+				If BaseRollGem04 == 1
+					GiveGem()
+				EndIf
+			EndIf
+		EndIf
+	EndIf
+EndFunction
+
+;Child function called by RollForGem() - selects gem to give
+Function GiveGem()
+	Int WhatGem = Utility.RandomInt(1,100)
+	If WhatGem == 1 && WhatGem < 51
+		Game.GetPlayer().AddItem(RS_Item_Gem_UncutSapphire, 1)
+		If (Game.GetPlayer().IsEquipped(RS_Item_Armor_Ring_Wealth04)||Game.GetPlayer().IsEquipped(RS_Item_Armor_Ring_Wealth03)||\
+		Game.GetPlayer().IsEquipped(RS_Item_Armor_Ring_Wealth02)||Game.GetPlayer().IsEquipped(RS_Item_Armor_Ring_Wealth01)||\
+		Game.GetPlayer().IsEquipped(RS_Item_Armor_Ring_Wealth00))
+			Int WhatGem02 = Utility.RandomInt(1,100)
+			If WhatGem02 == 1 && WhatGem02 < 51
+				Game.GetPlayer().AddItem(RS_Item_Gem_UncutSapphire, 1)
+			ElseIf WhatGem02 == 51 && WhatGem02 < 81
+				Game.GetPlayer().AddItem(RS_Item_Gem_UncutEmerald, 1)
+			ElseIf WhatGem02 == 81 && WhatGem02 < 96
+				Game.GetPlayer().AddItem(RS_Item_Gem_UncutRuby, 1)
+			ElseIf WhatGem02 == 96 && WhatGem02 <= 100
+				Game.GetPlayer().AddItem(RS_Item_Gem_UncutDiamond, 1)
+			Else
+				Debug.MessageBox("Mining Error 010101")
+			EndIf
+		EndIf
+	ElseIf WhatGem == 51 && WhatGem < 81
+		Game.GetPlayer().AddItem(RS_Item_Gem_UncutEmerald, 1)
+		If (Game.GetPlayer().IsEquipped(RS_Item_Armor_Ring_Wealth04)||Game.GetPlayer().IsEquipped(RS_Item_Armor_Ring_Wealth03)||\
+		Game.GetPlayer().IsEquipped(RS_Item_Armor_Ring_Wealth02)||Game.GetPlayer().IsEquipped(RS_Item_Armor_Ring_Wealth01)||\
+		Game.GetPlayer().IsEquipped(RS_Item_Armor_Ring_Wealth00))
+			Int WhatGem02 = Utility.RandomInt(1,100)
+			If WhatGem02 == 1 && WhatGem02 < 51
+				Game.GetPlayer().AddItem(RS_Item_Gem_UncutSapphire, 1)
+			ElseIf WhatGem02 == 51 && WhatGem02 < 81
+				Game.GetPlayer().AddItem(RS_Item_Gem_UncutEmerald, 1)
+			ElseIf WhatGem02 == 81 && WhatGem02 < 96
+				Game.GetPlayer().AddItem(RS_Item_Gem_UncutRuby, 1)
+			ElseIf WhatGem02 == 96 && WhatGem02 <= 100
+				Game.GetPlayer().AddItem(RS_Item_Gem_UncutDiamond, 1)
+			Else
+				Debug.MessageBox("Mining Error 010101")
+			EndIf
+		EndIf
+	ElseIf WhatGem == 81 && WhatGem < 96
+		Game.GetPlayer().AddItem(RS_Item_Gem_UncutRuby, 1)
+		If (Game.GetPlayer().IsEquipped(RS_Item_Armor_Ring_Wealth04)||Game.GetPlayer().IsEquipped(RS_Item_Armor_Ring_Wealth03)||\
+		Game.GetPlayer().IsEquipped(RS_Item_Armor_Ring_Wealth02)||Game.GetPlayer().IsEquipped(RS_Item_Armor_Ring_Wealth01)||\
+		Game.GetPlayer().IsEquipped(RS_Item_Armor_Ring_Wealth00))
+			Int WhatGem02 = Utility.RandomInt(1,100)
+			If WhatGem02 == 1 && WhatGem02 < 51
+				Game.GetPlayer().AddItem(RS_Item_Gem_UncutSapphire, 1)
+			ElseIf WhatGem02 == 51 && WhatGem02 < 81
+				Game.GetPlayer().AddItem(RS_Item_Gem_UncutEmerald, 1)
+			ElseIf WhatGem02 == 81 && WhatGem02 < 96
+				Game.GetPlayer().AddItem(RS_Item_Gem_UncutRuby, 1)
+			ElseIf WhatGem02 == 96 && WhatGem02 <= 100
+				Game.GetPlayer().AddItem(RS_Item_Gem_UncutDiamond, 1)
+			Else
+				Debug.MessageBox("Mining Error 010101")
+			EndIf
+		EndIf
+	ElseIf WhatGem == 96 && WhatGem < 100
+		Game.GetPlayer().AddItem(RS_Item_Gem_UncutDiamond, 1)
+		If (Game.GetPlayer().IsEquipped(RS_Item_Armor_Ring_Wealth04)||Game.GetPlayer().IsEquipped(RS_Item_Armor_Ring_Wealth03)||\
+		Game.GetPlayer().IsEquipped(RS_Item_Armor_Ring_Wealth02)||Game.GetPlayer().IsEquipped(RS_Item_Armor_Ring_Wealth01)||\
+		Game.GetPlayer().IsEquipped(RS_Item_Armor_Ring_Wealth00))
+			Int WhatGem02 = Utility.RandomInt(1,100)
+			If WhatGem02 == 1 && WhatGem02 < 51
+				Game.GetPlayer().AddItem(RS_Item_Gem_UncutSapphire, 1)
+			ElseIf WhatGem02 == 51 && WhatGem02 < 81
+				Game.GetPlayer().AddItem(RS_Item_Gem_UncutEmerald, 1)
+			ElseIf WhatGem02 == 81 && WhatGem02 < 96
+				Game.GetPlayer().AddItem(RS_Item_Gem_UncutRuby, 1)
+			ElseIf WhatGem02 == 96 && WhatGem02 <= 100
+				Game.GetPlayer().AddItem(RS_Item_Gem_UncutDiamond, 1)
+			Else
+				Debug.MessageBox("Mining Error 010101")
+			EndIf
+		EndIf
+	EndIf
+EndFunction
+
 ;Checks what the player is wearing, applies bonuses
 Float Function CheckForXPBonuses(Float oreXP)
 	Float XPBonus = 0
