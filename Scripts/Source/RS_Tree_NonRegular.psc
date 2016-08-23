@@ -18,6 +18,8 @@ Sound Property RS_SM_TreeChop Auto
 Sound Property RS_SM_TreeTimber Auto
 Activator Property RS_Activator_TreeStump Auto
 
+LeveledItem Property RS_lil_BirdsNestMASTER Auto
+
 Weapon Property RS_Item_Weapon_Hatchet_SacredClay Auto
 Weapon Property RS_Item_Weapon_Hatchet_VolatileClay Auto
 
@@ -35,6 +37,7 @@ EndEvent
 Event OnHit(ObjectReference akAggressor, Form akSource, Projectile akProjectile, bool abPowerAttack, bool abSneakAttack, bool abBashAttack, bool abHitBlocked)
 	If akAggressor == Game.GetPlayer() && RS_FormList_Hatchets.HasForm(akSource)
 		RS_SM_TreeChop.Play(self)
+		RollForBirdsNest()
 		if ((rsFrameworkMenu.GetWoodcuttingLVL()).GetValue()) < reqLVL
 			Debug.Notification("You lack the required woodcutting level of '" + reqLVL + "'")
 		else
@@ -46,6 +49,19 @@ Event OnHit(ObjectReference akAggressor, Form akSource, Projectile akProjectile,
 		endif
 	Endif
 EndEvent
+
+;This function will roll for a bird's nest
+Function RollForBirdsNest()
+	If Game.GetPlayer().IsEquipped(RS_Item_Armor_Amulet_LuckyRabbitFoot)
+		If Utility.RandomInt(1,188) == 1
+			Game.GetPlayer().AddItem(RS_lil_BirdsNestMASTER, 1);Make sure to handle the lower level probabilities inside of a master LIL
+		EndIf
+	Else
+		If Utility.RandomInt(1,282) == 1
+			Game.GetPlayer().AddItem(RS_lil_BirdsNestMASTER, 1);Make sure to handle the lower level probabilities inside of a master LIL
+		EndIf
+	EndIf
+EndFunction
 
 ;Checks what the player is wearing, applies bonuses
 Float Function CheckForXPBonuses(Float woodXP)
