@@ -43,6 +43,8 @@ Event OnEquipped(actor akActor)
 		akActor.UnEquipItem(leftHand, true, true)
 		if RS_Check_StatLock.GetValue() != 0
 			;debug.trace("We were locked out!!")
+			Weapon rightHand = akActor.GetEquippedWeapon() 
+			akActor.UnEquipItem(rightHand, true, true)
 			debug.messagebox("Equip error 001")
 		else
 			if global1.GetValue() < req1 ; just add || and then another arguement to expand it out.
