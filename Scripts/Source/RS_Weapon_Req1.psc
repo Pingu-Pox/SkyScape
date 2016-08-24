@@ -1,4 +1,4 @@
-ScriptName rsEquipItem_1Req extends ObjectReference
+ScriptName RS_Weapon_Req1 extends ObjectReference
 {Handles equip requirements, also applies stats to player on equip. skillName property in the form of "an attack" or "a herblore" etc}
 ;Test vigourously
 GlobalVariable Property RS_Check_StatLock Auto Hidden
@@ -43,7 +43,7 @@ Event OnEquipped(actor akActor)
 		akActor.UnEquipItem(leftHand, true, true)
 		if RS_Check_StatLock.GetValue() != 0
 			;debug.trace("We were locked out!!")
-			debug.notification("try equipping stuff slower -- see if you can get this to show up by equipping/unequipping like crazy")
+			debug.messagebox("Equip error 001")
 		else
 			if global1.GetValue() < req1 ; just add || and then another arguement to expand it out.
 				bCrashLock = true
@@ -51,7 +51,7 @@ Event OnEquipped(actor akActor)
 				;Weapon selfForm = self as Weapon
 				Weapon rightHand = akActor.GetEquippedWeapon() 
 				akActor.UnEquipItem(rightHand, true, true)
-				;debug.trace("You lack the required skill level(s) to equip this item.")
+				debug.notification("You lack the required skill level(s) to equip this item.")
 			else
 				bCrashLock = false
 				;debug.trace("We are getting stats applied!!!")
@@ -68,7 +68,7 @@ Event OnUnEquipped(actor akActor)
 	else
 		;debug.trace("Event OnUnEquipped fired!!")
 		if RS_Check_StatLock.GetValue() != 0
-			debug.notification("try equipping stuff slower -- see if you can get this to show up by equipping/unequipping like crazy")
+			debug.messagebox("Equip error 002")
 		else
 			;Utility.Wait(2.0)
 			ApplyStats(false)
