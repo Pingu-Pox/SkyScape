@@ -1,9 +1,11 @@
-ScriptName RS_Weapon_Req1 extends ObjectReference
+ScriptName RS_Weapon_Req2 extends ObjectReference
 {Handles equip requirements, also applies stats to player on equip. skillName property in the form of "an attack" or "a herblore" etc}
 ;Test vigourously
 GlobalVariable Property RS_Check_StatLock Auto Hidden
 GlobalVariable Property global1 Auto
+GlobalVariable Property global2 Auto
 Int Property req1 Auto
+Int Property req2 Auto
 
 GlobalVariable Property RS_GV_pStat_AttBonus_Stab Auto Hidden
 GlobalVariable Property RS_GV_pStat_AttBonus_Slash Auto Hidden
@@ -17,6 +19,8 @@ GlobalVariable Property RS_GV_pStat_DefBonus_Magic Auto Hidden
 GlobalVariable Property RS_GV_pStat_DefBonus_Range Auto Hidden
 GlobalVariable Property RS_GV_pStat_Bonus_Strength Auto Hidden
 GlobalVariable Property RS_GV_pStat_Bonus_Prayer Auto Hidden
+
+Quest Property reqQuest Auto
 
 Int Property statStabA Auto
 Int Property statSlashA Auto
@@ -47,18 +51,40 @@ Event OnEquipped(actor akActor)
 			akActor.UnEquipItem(rightHand, true, true)
 			debug.messagebox("Equip error 001")
 		else
-			if global1.GetValue() < req1 ; just add || and then another arguement to expand it out.
-				bCrashLock = true
-				;debug.trace("We didn't meet the level requirements!!")
-				;Weapon selfForm = self as Weapon
-				Weapon rightHand = akActor.GetEquippedWeapon() 
-				akActor.UnEquipItem(rightHand, true, true)
-				debug.notification("You lack the required skill level(s) to equip this item.")
+			if reqQuest == none
+				if global1.GetValue() < req1; just add || and then another arguement to expand it out.
+					bCrashLock = true
+					;debug.trace("We didn't meet the level requirements!!")
+					;Weapon selfForm = self as Weapon
+					Weapon rightHand = akActor.GetEquippedWeapon() 
+					akActor.UnEquipItem(rightHand, true, true)
+					debug.notification("You lack the required skill level(s) to equip this item.")
+				else
+					bCrashLock = false
+					;debug.trace("We are getting stats applied!!!")
+					;Utility.Wait(2.0)
+					ApplyStats(true)
+				endif
 			else
-				bCrashLock = false
-				;debug.trace("We are getting stats applied!!!")
-				;Utility.Wait(2.0)
-				ApplyStats(true)
+				if reqQuest.IsCompleted() == false
+					Weapon rightHand = akActor.GetEquippedWeapon() 
+					akActor.UnEquipItem(rightHand, true, true)
+					Debug.Notification("You need to complete the quest, " + reqQuest.GetName() + ", before you can equip this item.")
+				else
+					if global1.GetValue() < req1; just add || and then another arguement to expand it out.
+						bCrashLock = true
+						;debug.trace("We didn't meet the level requirements!!")
+						;Weapon selfForm = self as Weapon
+						Weapon rightHand = akActor.GetEquippedWeapon() 
+						akActor.UnEquipItem(rightHand, true, true)
+						debug.notification("You lack the required skill level(s) to equip this item.")
+					else
+						bCrashLock = false
+						;debug.trace("We are getting stats applied!!!")
+						;Utility.Wait(2.0)
+						ApplyStats(true)
+					endif
+				endif
 			endif
 		endif
 	endif
