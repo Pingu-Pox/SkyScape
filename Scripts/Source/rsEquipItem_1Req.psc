@@ -33,12 +33,14 @@ Int Property statRangeD Auto
 Int Property statStrengthO Auto
 Int Property statPrayerO Auto
 
-Weapon Property selfForm Auto
+;Weapon Property selfForm Auto
 bool bCrashLock = false
 
 Event OnEquipped(actor akActor)
 	;debug.trace("Event OnEquipped fired!!")
 	if akActor == Game.GetPlayer()
+		Weapon leftHand = akActor.GetEquippedWeapon(true) 
+		akActor.UnEquipItem(leftHand, true, true)
 		if RS_Check_StatLock.GetValue() != 0
 			;debug.trace("We were locked out!!")
 			debug.notification("try equipping stuff slower -- see if you can get this to show up by equipping/unequipping like crazy")
@@ -47,7 +49,8 @@ Event OnEquipped(actor akActor)
 				bCrashLock = true
 				;debug.trace("We didn't meet the level requirements!!")
 				;Weapon selfForm = self as Weapon
-				akActor.UnEquipItem(selfForm,True,True)
+				Weapon rightHand = akActor.GetEquippedWeapon() 
+				akActor.UnEquipItem(rightHand, true, true)
 				;debug.trace("You lack the required skill level(s) to equip this item.")
 			else
 				bCrashLock = false
