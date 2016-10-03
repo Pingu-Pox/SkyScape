@@ -44,6 +44,21 @@ Event OnHit(ObjectReference akAggressor, Form akSource, Projectile akProjectile,
 			addCount = 2
 		endif
 		rsFrameworkMenu.HarvestItemOnce(RS_GV_Skill_WCcounter, self, RS_Activator_TreeStump, 1, RS_Item_Logs_Logs, akSourceWeapon, NPCHumanWoodChop, RS_SM_TreeTimber, self, respawnInterval, addCount, true, "woodcutting", finalGainedXP, self)
+	ElseIf akAggressor != Game.GetPlayer()
+		RS_SM_TreeChop.Play(self)
+		int NPCdepleted = Utility.RandomInt(1,15)
+		if NPCdepleted != 1
+			;do nothing
+		else
+			RS_SM_TreeTimber.Play(self)
+			ObjectReference harvestedRef = self.PlaceAtMe(RS_Activator_TreeStump, 1, False, True)
+			self.Disable()
+			harvestedRef.Enable()
+			int respawnInterval = Utility.RandomInt(30,60)
+			Utility.Wait(respawnInterval)
+			harvestedRef.Delete()
+			self.Enable()
+		Endif
 	Endif
 EndEvent
 
