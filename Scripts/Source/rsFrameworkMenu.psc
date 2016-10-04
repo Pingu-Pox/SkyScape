@@ -19930,6 +19930,44 @@ EndFunction
 
 ;>
 ;< Misc. functions - can be used on their own
+
+;This function needs to get put into the new API, it sorts int arrays into ascending values (i.e. {1,5,17,19,20,25})
+int[] Function SortArray(int[] array)
+  bool sorting = true
+  int index = 0
+  int temp = 0
+  while(sorting)
+	  if (index >= array.Length - 1)
+	  	index = 0
+	  else
+	  	if (IsSorted(array) == true)
+	  		sorting = false
+	  	elseif (array[index] <= array[index + 1])
+	  		index = index + 1
+	  	elseif (array[index] > array[index + 1])
+	  		temp = array[index]
+	   		array[index] = array[index + 1]
+	  		array[index + 1] = temp
+	  		index = index + 1
+	  	endif
+	  endif
+  endwhile
+endfunction
+
+;Checks if the SortArray function has successfully sorted the passed-in array -USED BY SORTARRAY FUNCTION-
+Bool Function IsSorted(int[] array)
+	bool sorted = true
+	int index = 0
+	while ((index < array.Length - 1) && (sorted == true))
+		if (array[index] <= array[index + 1])
+			index = index + 1
+		else
+			sorted = false
+		endif
+	EndWhile
+	return sorted
+EndFunction
+
 ;Used to update Prayers the player has based on level. Rewrite this one someday, it doesn't remove weaker prayers when the stronger version is learned, and it just looks ugly AF
 Function SpellCheck_Prayers() Global
 	int level = (GetPrayerLVL()).GetValue() as int
