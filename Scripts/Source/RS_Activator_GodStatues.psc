@@ -2,6 +2,7 @@ ScriptName RS_Activator_GodStatues Extends ObjectReference
 {This script handles the God Statues minigame}
 
 Event OnActivate(ObjectReference akActionRef)
+	;Add the previous code here, optionally just putting them in arrays from the beginning.
 	int p1 = 5
 	int p2 = 2
 	int p3 = 3
