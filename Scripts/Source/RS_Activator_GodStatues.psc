@@ -16,6 +16,8 @@ Event OnActivate(ObjectReference akActionRef)
 	array[4] = p5
 	
 	SortArrayInt(array)
+	Debug.MessageBox("The lowest scaffold is " + array[0] + " high.")
+	Debug.MessageBox("The highest scaffold is " + array[array.length - 1] + " high.")
 EndEvent
 
 ;This function needs to get put into the new API, it sorts int arrays into ascending values (i.e. {1,5,17,19,20,25})
