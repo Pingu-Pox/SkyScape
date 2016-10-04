@@ -19932,7 +19932,7 @@ EndFunction
 ;< Misc. functions - can be used on their own
 
 ;This function needs to get put into the new API, it sorts int arrays into ascending values (i.e. {1,5,17,19,20,25})
-int[] Function SortArray(int[] array)
+Function SortArray(int[] array) Global
   bool sorting = true
   int index = 0
   int temp = 0
@@ -19955,7 +19955,7 @@ int[] Function SortArray(int[] array)
 endfunction
 
 ;Checks if the SortArray function has successfully sorted the passed-in array -USED BY SORTARRAY FUNCTION-
-Bool Function IsSorted(int[] array)
+Bool Function IsSorted(int[] array) Global
 	bool sorted = true
 	int index = 0
 	while ((index < array.Length - 1) && (sorted == true))
