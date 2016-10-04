@@ -1,13 +1,99 @@
 ScriptName RS_Activator_GodStatues Extends ObjectReference
-{This script handles the God Statues minigame}
+{This script is what starts the minigame, and sets it up. Hand off to other script for player input}
+
+Globalvariable Property ScaffoldAnswer1 Auto
+Globalvariable Property ScaffoldAnswer2 Auto
+Globalvariable Property ScaffoldAnswer3 Auto
+Globalvariable Property ScaffoldAnswer4 Auto
+Globalvariable Property ScaffoldAnswer5 Auto
 
 Event OnActivate(ObjectReference akActionRef)
-	;Add the previous code here, optionally just putting them in arrays from the beginning.
-	int p1 = 5
-	int p2 = 2
-	int p3 = 3
-	int p4 = 2
-	int p5 = 4
+	;Evaluate how long it has been since the first GodStatue was done, and if this particular one has been completed within the limit
+
+	;Roll min, then max, if max is less than or equal to min, take the min and add one = max
+	int min = Utility.RandomInt(2,4)
+	int max = Utility.RandomInt(3,5)
+	if max <= min
+		max = min + 1
+	endif
+
+	;Take range, and pick a section, roll within possible totals
+	int total = 0
+	if min == 2
+		;Debug.MessageBox("Our min was 2!")
+		if max ==  3
+			total = Utility.RandomInt(10,15)
+		elseif max == 4
+			total = Utility.RandomInt(10,20)
+		elseif max == 5
+			total = Utility.RandomInt(10,25)
+		endif
+	elseif min == 3
+		;Debug.MessageBox("Our min was 3!")
+		if max == 4
+			total = Utility.RandomInt(15,20)
+		elseif max == 5
+			total = Utility.RandomInt(15,25)
+		endif
+	elseif min == 4
+		;Debug.MessageBox("Our min was 4!")
+		if max == 5
+			total = Utility.RandomInt(20,25)
+		endif
+	endif
+	;Debug.MessageBox("Our total was " + total)
+	int pillar
+	int p1 = min
+	int p2 = min
+	int p3 = min
+	int p4 = min
+	int p5 = min
+	total = total - (min*5)
+	while(total != 0)
+		pillar = Utility.RandomInt(1,5)
+		if pillar == 1
+			if p1 != max
+				p1 = p1 + 1
+				total = total - 1
+			else
+				;reroll
+			endif
+		elseif pillar == 2
+			if p2 != max
+				p2 = p2 + 1
+				total = total - 1
+			else
+				;reroll
+			endif
+		elseif pillar == 3
+			if p3 != max
+				p3 = p3 + 1
+				total = total - 1
+			else
+				;reroll
+			endif
+		elseif pillar == 4
+			if p4 != max
+				p4 = p4 + 1
+				total = total - 1
+			else
+				;reroll
+			endif
+		elseif pillar == 5
+			if p5 != max
+				p5 = p5 + 1
+				total = total - 1
+			else
+				;reroll
+			endif	
+		endif
+	endwhile
+	
+	ScaffoldAnswer1.SetValue(p1)
+	ScaffoldAnswer2.SetValue(p2)
+	ScaffoldAnswer3.SetValue(p3)
+	ScaffoldAnswer4.SetValue(p4)
+	ScaffoldAnswer5.SetValue(p5)
 	
 	int[] array = new int[5]
 	array[0] = p1
@@ -16,43 +102,9 @@ Event OnActivate(ObjectReference akActionRef)
 	array[3] = p4
 	array[4] = p5
 	
-	SortArrayInt(array)
+	rsFrameworkMenu.SortArray(array)
 	Debug.MessageBox("The lowest scaffold is " + array[0] + " high.")
 	Debug.MessageBox("The highest scaffold is " + array[array.length - 1] + " high.")
+	Debug.MessageBox("The total amount of scaffolding is " + total + ".")
+	Debug.MessageBox("Pillar #1 is =" + p1 + " high. Pillar #2 is =" + p2 + " high. Pillar #3 is =" + p3 + " high. Pillar #4 is =" + p4 + " high. Pillar #5 is =" + p5 + " high.")
 EndEvent
-
-;This function needs to get put into the new API, it sorts int arrays into ascending values (i.e. {1,5,17,19,20,25})
-int[] Function SortArrayInt(int[] array)
-  bool sorting = true
-  int index = 0
-  int temp = 0
-  while(sorting)
-	  if (index >= array.Length - 1)
-	  	index = 0
-	  else
-	  	if (IsSortedInt(array) == true)
-	  		sorting = false
-	  	elseif (array[index] <= array[index + 1])
-	  		index = index + 1
-	  	elseif (array[index] > array[index + 1])
-	  		temp = array[index]
-	   		array[index] = array[index + 1]
-	  		array[index + 1] = temp
-	  		index = index + 1
-	  	endif
-	  endif
-  endwhile
-endfunction
-
-Bool Function IsSortedInt(int[] array)
-	bool sorted = true
-	int index = 0
-	while ((index < array.Length - 1) && (sorted == true))
-		if (array[index] <= array[index + 1])
-			index = index + 1
-		else
-			sorted = false
-		endif
-	EndWhile
-	return sorted
-EndFunction
