@@ -1,3 +1,23 @@
+ScriptName RS_Activator_GodStatues Extends ObjectReference
+{This script handles the God Statues minigame}
+
+Event OnActivate(ObjectReference akActionRef)
+	int p1 = 5
+	int p2 = 2
+	int p3 = 3
+	int p4 = 2
+	int p5 = 4
+	
+	int[] array = new int[5]
+	array[0] = p1
+	array[1] = p2
+	array[2] = p3
+	array[3] = p4
+	array[4] = p5
+	
+	SortArrayInt(array)
+EndEvent
+
 ;This function needs to get put into the new API, it sorts int arrays into ascending values (i.e. {1,5,17,19,20,25})
 int[] Function SortArrayInt(int[] array)
   bool sorting = true
@@ -7,7 +27,7 @@ int[] Function SortArrayInt(int[] array)
 	  if (index >= array.Length - 1)
 	  	index = 0
 	  else
-	  	if (array[0] <= array[1] && array[1] <= array[2] && array[2] <= array[3] && array[3] <= array[4] && array[4] <= array[5])
+	  	if (IsSortedInt(array) == true)
 	  		sorting = false
 	  	elseif (array[index] <= array[index + 1])
 	  		index = index + 1
@@ -20,3 +40,16 @@ int[] Function SortArrayInt(int[] array)
 	  endif
   endwhile
 endfunction
+
+Bool Function IsSortedInt(int[] array)
+	bool sorted = true
+	int index = 0
+	while ((index < array.Length - 1) && (sorted == true))
+		if (array[index] <= array[index + 1])
+			index = index + 1
+		else
+			sorted = false
+		endif
+	EndWhile
+	return sorted
+EndFunction
