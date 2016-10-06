@@ -193,44 +193,41 @@ Event OnActivate(ObjectReference akActionRef)
 		
 		if (status1 == answer1)
 			gradedScaffold01 = true
+			if (status2 == answer2)
+				gradedScaffold02 = true
+				if (status3 == answer3)
+					gradedScaffold03 = true
+					if (status4 == answer4)
+						gradedScaffold04 = true
+						if (status5 == answer5)
+							gradedScaffold05 = true
+						elseif (status5 < answer5)
+							Debug.Notification("Stack #5 is too short.")
+						else
+							Debug.Notification("Stack #5 is too tall.")
+						endif	
+					elseif (status4 < answer4)
+						Debug.Notification("Stack #4 is too short.")
+					else
+						Debug.Notification("Stack #4 is too tall.")
+					endif
+				elseif (status3 < answer3)
+					Debug.Notification("Stack #3 is too short.")
+				else
+					Debug.Notification("Stack #3 is too tall.")
+				endif
+			elseif (status2 < answer2)
+				Debug.Notification("Stack #2 is too short.")
+			else
+				Debug.Notification("Stack #2 is too tall.")
+			endif
 		elseif (status1 < answer1)
-			Debug.Notification("Stack #1 is too short. Is " + status1 + " Supposed to be " + answer1)
+			Debug.Notification("Stack #1 is too short.")
 		else
-			Debug.Notification("Stack #1 is too tall. Is " + status1 + " Supposed to be " + answer1)
+			Debug.Notification("Stack #1 is too tall.")
 		endif
 		
-		if (status2 == answer2)
-			gradedScaffold02 = true
-		elseif (status2 < answer2)
-			Debug.Notification("Stack #2 is too short.")
-		else
-			Debug.Notification("Stack #2 is too tall.")
-		endif
-		
-		if (status3 == answer3)
-			gradedScaffold03 = true
-		elseif (status3 < answer3)
-			Debug.Notification("Stack #3 is too short.")
-		else
-			Debug.Notification("Stack #3 is too tall.")
-		endif
-		
-		if (status4 == answer4)
-			gradedScaffold04 = true
-		elseif (status4 < answer4)
-			Debug.Notification("Stack #4 is too short.")
-		else
-			Debug.Notification("Stack #4 is too tall.")
-		endif
-		
-		if (status5 == answer5)
-			gradedScaffold05 = true
-		elseif (status5 < answer5)
-			Debug.Notification("Stack #5 is too short.")
-		else
-			Debug.Notification("Stack #5 is too tall.")
-		endif	
-		
+		;Completed!
 		if (gradedScaffold01 == true && gradedScaffold02 == true && gradedScaffold03 == true && gradedScaffold04 == true && gradedScaffold05 == true)
 			Debug.MessageBox("You did it!")
 			Self.Disable()
