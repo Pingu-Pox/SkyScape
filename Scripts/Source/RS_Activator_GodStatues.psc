@@ -49,6 +49,14 @@ Event OnActivate(ObjectReference akActionRef)
 	int minigameStatus = minigameStatusGlobal.GetValue() as int
 	If minigameStatus == 0;if you are not doing this region's god statue... and would like to start
 		;Evaluate how long it has been since the first GodStatue was done, and if this particular one has been completed within the limit
+		;getgametime and see if x-hours has passed since the last time god statues was done
+		/---psuedo
+		float gametime = Game.GetGameHours()
+		if gametime - lasttime.GetValue() >= required interval time between god statues
+			do minigame
+		else
+			can't do minigame for another (gametime - lasttime) then take that and subtract it from the required time, hours
+		---/
 		minigameStatusGlobal.SetValue(1)
 		Game.FadeOutGame(True, true, 0.0, 2.0)
 		Game.GetPlayer().MoveTo(startmarker)
@@ -266,6 +274,8 @@ Event OnActivate(ObjectReference akActionRef)
 			stack5_3.Disable()
 			stack5_4.Disable()
 			stack5_5.Disable()
+			
+			;update last time done global with current gametime
 			
 			Game.FadeOutGame(False, true, 0.0, 2.0)
 		endif
