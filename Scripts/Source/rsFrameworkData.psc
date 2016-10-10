@@ -68,6 +68,7 @@ Globalvariable Property RS_GV_WoodcuttingXP Auto
 Globalvariable Property RS_GV_PrayerEndCheck Auto
 Globalvariable Property RS_Check_Dungeoneering_PurchaseRapidRenewal Auto
 Globalvariable Property RS_GV_RandomEvents Auto
+Globalvariable Property RS_Check_ModStartTime Auto
 ;>
 ;< Quest Properties
 Quest Property RS_Quest_WhileGuthixSleeps Auto
