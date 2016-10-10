@@ -287,34 +287,34 @@ int Function rsMakeCount(Message makeCount) Global
 EndFunction
 
 ;--FUNCTION--This gets the currentgametime, then subtracts the passed in global time marker, and gets the difference in hours
-float Function rsGetElapsedHours(GlobalVariable prevTime) Global
+float Function GetElapsedHours(GlobalVariable prevTime) Global
 	float skyscapeHours = (Utility.GetCurrentRealTime()) / 3600; Take current game-seconds, make it game-hours
 	return (skyscapeHours - (prevTime.GetValue()))
 EndFunction
 
 ;--FUNCTION--This gets the currentgametime, then subtracts the passed in global time marker, and gets the difference in hours
-float Function rsGetElapsedMinutes(GlobalVariable prevTime) Global
+float Function GetElapsedMinutes(GlobalVariable prevTime) Global
 	float skyscapeMinutes = (Utility.GetCurrentRealTime()) / 60; Take current game-seconds, make it game-hours
 	return (skyscapeMinutes - (prevTime.GetValue()))
 EndFunction
 
 ;--FUNCTION--This gets the currentgametime, then subtracts the passed in global time marker, and gets the difference in hours
-float Function rsGetElapsedSeconds(GlobalVariable prevTime) Global
+float Function GetElapsedSeconds(GlobalVariable prevTime) Global
 	float skyscapeSeconds = (Utility.GetCurrentRealTime()); Take current game-seconds, make it game-hours
 	return (skyscapeSeconds - (prevTime.GetValue()))
 EndFunction
 
-Function rsTimeStampHours(GlobalVariable globalValue)
+Function TimeStampHours(GlobalVariable globalValue) Global
 	float skyscapeHours = (Utility.GetCurrentRealTime()) / 3600
 	globalValue.SetValue(skyscapeHours)
 EndFunction
 
-Function rsTimeStampMinutes(GlobalVariable globalValue)
+Function TimeStampMinutes(GlobalVariable globalValue) Global
 	float skyscapeMinutes = (Utility.GetCurrentRealTime()) / 60
 	globalValue.SetValue(skyscapeMinutes)
 EndFunction
 
-Function rsTimeStampSeconds(GlobalVariable globalValue)
+Function TimeStampSeconds(GlobalVariable globalValue) Global
 	float skyscapeSeconds = (Utility.GetCurrentRealTime())
 	globalValue.SetValue(skyscapeSeconds)
 EndFunction
@@ -21024,15 +21024,32 @@ FormList Function GetFormList_WeaponVolatileClay() Global
 	return GetFrameworkData().RS_FormList_WeaponVolatileClay
 EndFunction
 ;>
+;< Get Variables
+Float Function GetVariable_HoursToHour() Global
+	return GetFrameworkData().HoursToHour
+EndFunction
 
+Float Function GetVariable_HoursToDay() Global
+	return GetFrameworkData().HoursToDay
+EndFunction
+
+Float Function GetVariable_HoursToWeek() Global
+	return GetFrameworkData().HoursToWeek
+EndFunction
+
+Float Function GetVariable_HoursToMonth() Global
+	return GetFrameworkData().HoursToMonth
+EndFunction
+
+;>
 ;< Get Weapon Properties
 Weapon Function GetWeapon_Special_InfernoAdze() Global
 	return GetFrameworkData().RS_Item_Weapon_Special_InfernoAdze
 EndFunction
 ;>
+;>
 ;< Notes:
 ;The original goal of this script is to provide the necessary functions to other scripts that use a repeated element that appears in each script.
 ;At this time, I have not tested it, so it is not ready to be put into action, and I am not sure if everything that is here will be here when it gets put in use.
 ;To add additional requirements for level up unlocks, refer to agility level 53
-;>>
-
+;>
