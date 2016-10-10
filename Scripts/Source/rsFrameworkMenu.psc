@@ -230,6 +230,7 @@ Function HarvestItemOnce(GlobalVariable skillCounter, ObjectReference objRef, Ac
 	EndIf	
 EndFunction
 
+;--ACTION--Cluster-Item harvesting script (like oak trees and LRC mineral deposits), optional xp gain, has random events -- come back to this part and add multi-add item statements  
 Function HarvestItemCluster(GlobalVariable skillCounter, ObjectReference objRef, Activator depletedActivator, int reqLVL, MiscObject newItem, Weapon equippedTool, Sound harvestSound, Sound depleteSound,  ObjectReference soundSource, Float respawnInterval, int addCount, bool xpGain = false, string skillName = "", float gainedXP = 0.0, ObjectReference spawnLocation) Global
 	if (((GetGlobalCheck_RandomEvents()).GetValue()) == 1)
 		RollRandomEvent(skillName, spawnLocation)
@@ -283,6 +284,39 @@ int Function rsMakeCount(Message makeCount) Global
 	Else;exit
 		return 0
 	EndIf
+EndFunction
+
+;--FUNCTION--This gets the currentgametime, then subtracts the passed in global time marker, and gets the difference in hours
+float Function rsGetElapsedHours(GlobalVariable prevTime) Global
+	float skyscapeHours = (Utility.GetCurrentRealTime()) / 3600; Take current game-seconds, make it game-hours
+	return (skyscapeHours - (prevTime.GetValue()))
+EndFunction
+
+;--FUNCTION--This gets the currentgametime, then subtracts the passed in global time marker, and gets the difference in hours
+float Function rsGetElapsedMinutes(GlobalVariable prevTime) Global
+	float skyscapeMinutes = (Utility.GetCurrentRealTime()) / 60; Take current game-seconds, make it game-hours
+	return (skyscapeMinutes - (prevTime.GetValue()))
+EndFunction
+
+;--FUNCTION--This gets the currentgametime, then subtracts the passed in global time marker, and gets the difference in hours
+float Function rsGetElapsedSeconds(GlobalVariable prevTime) Global
+	float skyscapeSeconds = (Utility.GetCurrentRealTime()); Take current game-seconds, make it game-hours
+	return (skyscapeSeconds - (prevTime.GetValue()))
+EndFunction
+
+Function rsTimeStampHours(GlobalVariable globalValue)
+	float skyscapeHours = (Utility.GetCurrentRealTime()) / 3600
+	globalValue.SetValue(skyscapeHours)
+EndFunction
+
+Function rsTimeStampMinutes(GlobalVariable globalValue)
+	float skyscapeMinutes = (Utility.GetCurrentRealTime()) / 60
+	globalValue.SetValue(skyscapeMinutes)
+EndFunction
+
+Function rsTimeStampSeconds(GlobalVariable globalValue)
+	float skyscapeSeconds = (Utility.GetCurrentRealTime())
+	globalValue.SetValue(skyscapeSeconds)
 EndFunction
 
 ;>
