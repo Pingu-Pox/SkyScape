@@ -2,7 +2,6 @@ ScriptName rsFrameworkData Extends Quest
 {Contains all the properties for rsFramework scripts}
 
 ;< Variable Properties
-Bool Property bIsItHalloween Auto; True = Halloween, False = Not Halloween
 Float Property hoursToHour Auto; How many hours in realtime = an hour in Runescape
 Float Property hoursToDay Auto; How many hours in realtime = a day in Runescape
 Float Property hoursToWeek Auto; How many hours in realtime = a week in Runescape
@@ -75,6 +74,7 @@ Globalvariable Property RS_GV_WoodcuttingXP Auto
 Globalvariable Property RS_GV_PrayerEndCheck Auto
 Globalvariable Property RS_Check_Dungeoneering_PurchaseRapidRenewal Auto
 Globalvariable Property RS_GV_RandomEvents Auto
+Globalvariable Property RS_Check_IsItHalloween Auto; 1 = false, 0 = True
 ;>
 ;< Quest Properties
 Quest Property RS_Quest_WhileGuthixSleeps Auto
