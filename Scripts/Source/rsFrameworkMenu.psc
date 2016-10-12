@@ -21332,7 +21332,11 @@ EndFunction
 
 ;Checks if it is Halloween
 Bool Function IsItHalloween() Global
-	return GetFrameworkData().bIsItHalloween
+	if (GetFrameworkData().RS_Check_IsItHalloween).GetValue() == 1
+		return false
+	else
+		return true
+	endif
 EndFunction
 
 ;Gets property from rsFrameworkData
