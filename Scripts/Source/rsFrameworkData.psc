@@ -2,6 +2,7 @@ ScriptName rsFrameworkData Extends Quest
 {Contains all the properties for rsFramework scripts}
 
 ;< Variable Properties
+Bool Property bIsItHalloween Auto; True = Halloween, False = Not Halloween
 Float Property hoursToHour Auto; How many hours in realtime = an hour in Runescape
 Float Property hoursToDay Auto; How many hours in realtime = a day in Runescape
 Float Property hoursToWeek Auto; How many hours in realtime = a week in Runescape
@@ -185,4 +186,7 @@ ActorBase Property RS_Monster_TreeSpirit_re_159 Auto
 ;>
 ;< Weapon Properties
 Weapon Property RS_Item_Weapon_Special_InfernoAdze Auto
+;>
+;< Config Properties
+Int Property lampXPMod Auto; Modifier on lamp xp rates, 1 is normal, 2 is double, etc.
 ;>
