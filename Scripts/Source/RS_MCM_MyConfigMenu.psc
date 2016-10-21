@@ -425,6 +425,7 @@ event OnPageReset(string a_page)
 		EndIf
 		
 		UpdateAgressions()
+		UpdateDnDtimers()
 		RegisterForKey(59)
 		
 		SetCursorFillMode(LEFT_TO_RIGHT)
@@ -719,8 +720,94 @@ event OnPageReset(string a_page)
 		WoodcuttingXP_T = AddTextOption("Current XP: " + cWoodcuttingXP + " Target XP: " + tWoodcuttingXP, aVal)
 		;=================================================================================================================================================================================================
 	
-	ElseIf (a_page == "Settings")
-	
+	ElseIf (a_page == "Distractions and Diversions")
+		SetCursorFillMode(LEFT_TO_RIGHT)
+		
+		;=================================================================================================================================================================================================
+		SetCursorPosition(0)
+		AddHeaderOption("2-Hour Distractions and Diversions")
+		
+		SetCursorPosition(1)
+		AddHeaderOption("Time Remaining:")
+		;=================================================================================================================================================================================================
+		SetCursorPosition(2)
+		AddTextOption("Big Chinchompa")
+		
+		SetCursorPosition(3)
+		AddTextOption(DisplayDnDtimer("big chinchompa"))
+		;=================================================================================================================================================================================================
+		SetCursorPosition(4)
+		AddTextOption("Bork")
+		
+		SetCursorPosition(5)
+		AddTextOption(DisplayDnDtimer("bork"))
+		;=================================================================================================================================================================================================
+		SetCursorPosition(6)
+		AddTextOption("Demon Flashmobs")
+		
+		SetCursorPosition(7)
+		AddTextOption(DisplayDnDtimer("demon flashmobs"))
+		;=================================================================================================================================================================================================
+		SetCursorPosition(8)
+		AddTextOption("Evil Tree")
+		
+		SetCursorPosition(9)
+		AddTextOption(DisplayDnDtimer("evil tree"))
+		;=================================================================================================================================================================================================
+		SetCursorPosition(10)
+		AddTextOption("Fish Flingers")
+		
+		SetCursorPosition(11)
+		AddTextOption(DisplayDnDtimer("fish flingers"))
+		;=================================================================================================================================================================================================
+		SetCursorPosition(12)
+		AddTextOption("Goblin Raids")
+		
+		SetCursorPosition(13)
+		AddTextOption(DisplayDnDtimer("goblin raids"))
+		;=================================================================================================================================================================================================
+		SetCursorPosition(14)
+		AddTextOption("Guthixian Caches")
+		
+		SetCursorPosition(15)
+		AddTextOption(DisplayDnDtimer("guthixian caches"))
+		;=================================================================================================================================================================================================
+		SetCursorPosition(16)
+		AddTextOption("Phoenix Lair")
+		
+		SetCursorPosition(17)
+		AddTextOption(DisplayDnDtimer("phoenix lair"))
+		;=================================================================================================================================================================================================
+		SetCursorPosition(18)
+		AddTextOption("Rune Goldberg Machine")
+		
+		SetCursorPosition(19)
+		AddTextOption(DisplayDnDtimer("rune goldberg machine"))
+		;=================================================================================================================================================================================================
+		SetCursorPosition(20)
+		AddTextOption("Shooting Star")
+		
+		SetCursorPosition(21)
+		AddTextOption(DisplayDnDtimer("shooting star"))
+		;=================================================================================================================================================================================================
+		SetCursorPosition(22)
+		AddTextOption("Sinkholes")
+		
+		SetCursorPosition(23)
+		AddTextOption(DisplayDnDtimer("sinkholes"))
+		;=================================================================================================================================================================================================
+		SetCursorPosition(24)
+		AddTextOption("The Pit")
+		
+		SetCursorPosition(25)
+		AddTextOption(DisplayDnDtimer("the pit"))
+		;=================================================================================================================================================================================================
+		SetCursorPosition(26)
+		AddTextOption("Wilderness Warbands")
+		
+		SetCursorPosition(27)
+		AddTextOption(DisplayDnDtimer("Wilderness Warbands"))
+		
 	ElseIf (a_page == "Teleport")
 		Float gvSkyrimHealth = RS_GV_SkyrimHealth.GetValue()
 		Float gvSkyrimMagicka = RS_GV_SkyrimMagicka.GetValue()
@@ -741,7 +828,9 @@ event OnPageReset(string a_page)
 		Float gvRuneSkyCarryWeight = RS_GV_RuneSkyCarryWeight.GetValue()
 				
 		If (RS_Check_ModStatus.GetValue()) == 0;start mod
-			rscc.Reset()
+			if (rscc.Reset())
+				Debug.Trace("rscc cell reset!")
+			endif
 			Game.GetPlayer().RestoreActorValue("health", 9999)
 			Game.GetPlayer().RestoreActorValue("magicka", 9999)
 			Game.GetPlayer().RestoreActorValue("stamina", 9999)
@@ -784,7 +873,9 @@ event OnPageReset(string a_page)
 			Game.GetPlayer().EquipItem(RS_Item_Armor_StartShoes, False, True)
 			
 		ElseIf (RS_Check_ModStatus.GetValue()) == 1;exit mod
-			rscc.Reset()
+			if (rscc.Reset())
+				Debug.Trace("rscc cell reset!")
+			endif
 			Game.GetPlayer().RestoreActorValue("health", 9999)
 			Game.GetPlayer().RestoreActorValue("magicka", 9999)			
 			Game.GetPlayer().RestoreActorValue("stamina", 9999)
@@ -823,7 +914,9 @@ event OnPageReset(string a_page)
 			Game.GetPlayer().MoveTo(SkyrimLocation)
 			
 		ElseIf (RS_Check_ModStatus.GetValue()) == 2;continue mod
-			rscc.Reset()
+			if (rscc.Reset())
+				Debug.Trace("rscc cell reset!")
+			endif
 			Game.GetPlayer().RestoreActorValue("health", 9999)
 			Game.GetPlayer().RestoreActorValue("magicka", 9999)
 			Game.GetPlayer().RestoreActorValue("stamina", 9999)
@@ -6200,6 +6293,53 @@ Function DungeoneeringInit()
 	Else
 		tDungeoneeringXP = 0
 	EndIf
+EndFunction
+
+Function UpdateDnDtimers()
+	float skyscapeHours = (Utility.GetCurrentRealTime()) / 3600
+	int timeRemain_BigChinchompa = skyscapeHours - RS_TimeStamp_BigChinchompa.GetValue()
+	int timeRemain_Bork = skyscapeHours - RS_TimeStamp_Bork.GetValue()
+	int timeRemain_DemonFlashmobs = skyscapeHours - RS_TimeStamp_DemonFlashmobs.GetValue()
+	int timeRemain_EvilTree = skyscapeHours - RS_TimeStamp_EvilTree.GetValue()
+	int timeRemain_FishFlingers = skyscapeHours - RS_TimeStamp_FishFlingers.GetValue()
+	int timeRemain_GoblinRaids = skyscapeHours - RS_TimeStamp_GoblinRaids.GetValue()
+	int timeRemain_GuthixianCaches = skyscapeHours - RS_TimeStamp_GuthixianCaches.GetValue()
+	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
+	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
+	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
+	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
+	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
+	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
+	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
+	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
+	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
+	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
+	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
+	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
+	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
+	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
+	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
+	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
+	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
+	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
+	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
+	if timeSinceLast < intervalGodStatues
+		time remaining = intervalGodStatues - timeSinceLast
+	else
+		RS_TimeStamp_GodStatues_All.SetValue(0)
+		return "00:00"
+	endif
+EndFunction
+
+string Function DisplayDnDtimer(string dNdName)
+	if dNdName == "god statues";god statues
+		return godStatueString 00:00
+	elseif dNdName == "tears of guthix"
+	
+	endif
+	;tears of guthix
+	;sinkholes
+	;etc
 EndFunction
 
 Function UpdateAgressions()
