@@ -188,5 +188,5 @@ ActorBase Property RS_Monster_TreeSpirit_re_159 Auto
 Weapon Property RS_Item_Weapon_Special_InfernoAdze Auto
 ;>
 ;< Config Properties
-Int Property lampXPMod Auto; Modifier on lamp xp rates, 1 is normal, 2 is double, etc.
+Globalvariable Property RS_Check_LampMod Auto; Modifier on lamp xp rates, 1 is normal, 2 is double, etc.
 ;>
