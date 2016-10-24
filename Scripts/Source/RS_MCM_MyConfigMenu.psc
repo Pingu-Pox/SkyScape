@@ -6297,41 +6297,151 @@ EndFunction
 
 Function UpdateDnDtimers()
 	float skyscapeHours = (Utility.GetCurrentRealTime()) / 3600
-	int timeRemain_BigChinchompa = skyscapeHours - RS_TimeStamp_BigChinchompa.GetValue()
-	int timeRemain_Bork = skyscapeHours - RS_TimeStamp_Bork.GetValue()
-	int timeRemain_DemonFlashmobs = skyscapeHours - RS_TimeStamp_DemonFlashmobs.GetValue()
-	int timeRemain_EvilTree = skyscapeHours - RS_TimeStamp_EvilTree.GetValue()
-	int timeRemain_FishFlingers = skyscapeHours - RS_TimeStamp_FishFlingers.GetValue()
-	int timeRemain_GoblinRaids = skyscapeHours - RS_TimeStamp_GoblinRaids.GetValue()
-	int timeRemain_GuthixianCaches = skyscapeHours - RS_TimeStamp_GuthixianCaches.GetValue()
-	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
-	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
-	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
-	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
-	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
-	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
-	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
-	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
-	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
-	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
-	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
-	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
-	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
-	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
-	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
-	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
-	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
-	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
-	int timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
-	if timeSinceLast < intervalGodStatues
-		time remaining = intervalGodStatues - timeSinceLast
+	float timeRemain_BigChinchompa = RS_Config_DnD_DailyInterval.GetValue() - (skyscapeHours - RS_TimeStamp_BigChinchompa.GetValue())
+	float timeRemain_Bork = RS_Config_DnD_DailyInterval.GetValue() - (skyscapeHours - RS_TimeStamp_Bork.GetValue())
+	float timeRemain_DemonFlashmobs = RS_Config_DnD_DailyInterval.GetValue() - (skyscapeHours - RS_TimeStamp_DemonFlashmobs.GetValue())
+	float timeRemain_EvilTree = RS_Config_DnD_DailyInterval.GetValue() - (skyscapeHours - RS_TimeStamp_EvilTree.GetValue())
+	float timeRemain_FishFlingers = RS_Config_DnD_DailyInterval.GetValue() - (skyscapeHours - RS_TimeStamp_FishFlingers.GetValue())
+	float timeRemain_GoblinRaids = RS_Config_DnD_DailyInterval.GetValue() - (skyscapeHours - RS_TimeStamp_GoblinRaids.GetValue())
+	float timeRemain_GuthixianCaches = RS_Config_DnD_DailyInterval.GetValue() - (skyscapeHours - RS_TimeStamp_GuthixianCaches.GetValue())
+	float timeRemain_PhoenixLair = RS_Config_DnD_DailyInterval.GetValue() - (skyscapeHours - RS_TimeStamp_PhoenixLair.GetValue())
+	float timeRemain_RuneGoldbergMachine = RS_Config_DnD_DailyInterval.GetValue() - (skyscapeHours - RS_TimeStamp_RuneGoldbergMachine.GetValue())
+	float timeRemain_ShootingStar = RS_Config_DnD_DailyInterval.GetValue() - (skyscapeHours - RS_TimeStamp_ShootingStar.GetValue())
+	float timeRemain_Sinkholes = RS_Config_DnD_DailyInterval.GetValue() - (skyscapeHours - RS_TimeStamp_Sinkholes.GetValue())
+	float timeRemain_ThePit = RS_Config_DnD_DailyInterval.GetValue() - (skyscapeHours - RS_TimeStamp_ThePit.GetValue())
+	float timeRemain_WildernessWarbands = RS_Config_DnD_DailyInterval.GetValue() - (skyscapeHours - RS_TimeStamp_WildernessWarbands.GetValue())
+	float timeRemain_Agoroth = RS_Config_DnD_WeeklyInterval.GetValue() - (skyscapeHours - RS_TimeStamp_Agoroth.GetValue())
+	float timeRemain_Circus = RS_Config_DnD_WeeklyInterval.GetValue() - (skyscapeHours - RS_TimeStamp_Circus.GetValue())
+	float timeRemain_Familiarisation = RS_Config_DnD_WeeklyInterval.GetValue() - (skyscapeHours - RS_TimeStamp_Familiarisation.GetValue())
+	float timeRemain_MemoryOfNomad = RS_Config_DnD_WeeklyInterval.GetValue() - (skyscapeHours - RS_TimeStamp_MemoryOfNomad.GetValue())
+	float timeRemain_PenguinHideAndSeek = RS_Config_DnD_WeeklyInterval.GetValue() - (skyscapeHours - RS_TimeStamp_PenguinHideAndSeek.GetValue())
+	float timeRemain_RushOfBlood = RS_Config_DnD_WeeklyInterval.GetValue() - (skyscapeHours - RS_TimeStamp_RushOfBlood.GetValue())
+	float timeRemain_SkeletalHorror = RS_Config_DnD_WeeklyInterval.GetValue() - (skyscapeHours - RS_TimeStamp_SkeletalHorror.GetValue())
+	float timeRemain_TearsOfGuthix = RS_Config_DnD_WeeklyInterval.GetValue() - (skyscapeHours - RS_TimeStamp_TearsOfGuthix.GetValue())
+	float timeRemain_GiantOyster = RS_Config_DnD_MonthlyInterval.GetValue() - (skyscapeHours - RS_TimeStamp_GiantOyster.GetValue())
+	float timeRemain_GodStatues = RS_Config_DnD_WeeklyInterval.GetValue() - (skyscapeHours - RS_TimeStamp_GodStatues.GetValue())
+	float timeRemain_TrollInvasion = RS_Config_DnD_WeeklyInterval.GetValue() - (skyscapeHours - RS_TimeStamp_TrollInvasion.GetValue())
+	
+	int timeRemain_BigChinchompa_h = Math.Floor(timeRemain_BigChinchompa)
+	int timeRemain_Bork_h = Math.Floor(timeRemain_Bork)
+	int timeRemain_DemonFlashmobs_h = Math.Floor(timeRemain_DemonFlashmobs)
+	int timeRemain_EvilTree_h = Math.Floor(timeRemain_EvilTree)
+	int timeRemain_FishFlingers_h = Math.Floor(timeRemain_FishFlingers)
+	int timeRemain_GoblinRaids_h = Math.Floor(timeRemain_GoblinRaids)
+	int timeRemain_GuthixianCaches_h = Math.Floor(timeRemain_GuthixianCaches)
+	int timeRemain_PhoenixLair_h = Math.Floor(timeRemain_PhoenixLair)
+	int timeRemain_RuneGoldbergMachine_h = Math.Floor(timeRemain_RuneGoldbergMachine)
+	int timeRemain_ShootingStar_h = Math.Floor(timeRemain_ShootingStar)
+	int timeRemain_Sinkholes_h = Math.Floor(timeRemain_Sinkholes)
+	int timeRemain_ThePit_h = Math.Floor(timeRemain_ThePit)
+	int timeRemain_WildernessWarbands_h = Math.Floor(timeRemain_WildernessWarbands)
+	int timeRemain_Agoroth_h = Math.Floor(timeRemain_Agoroth)
+	int timeRemain_Circus_h = Math.Floor(timeRemain_Circus)
+	int timeRemain_Familiarisation_h = Math.Floor(timeRemain_Familiarisation)
+	int timeRemain_MemoryOfNomad_h = Math.Floor(timeRemain_MemoryOfNomad)
+	int timeRemain_PenguinHideAndSeek_h = Math.Floor(timeRemain_PenguinHideAndSeek)
+	int timeRemain_RushOfBlood_h = Math.Floor(timeRemain_RushOfBlood)
+	int timeRemain_SkeletalHorror_h = Math.Floor(timeRemain_SkeletalHorror)
+	int timeRemain_TearsOfGuthix_h = Math.Floor(timeRemain_TearsOfGuthix)
+	int timeRemain_GiantOyster_h = Math.Floor(timeRemain_GiantOyster)
+	int timeRemain_GodStatues_h = Math.Floor(timeRemain_GodStatues)
+	int timeRemain_TrollInvasion_h = Math.Floor(timeRemain_TrollInvasion)
+	
+	int timeRemain_BigChinchompa_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
+	int timeRemain_Bork_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
+	int timeRemain_DemonFlashmobs_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
+	int timeRemain_EvilTree_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
+	int timeRemain_FishFlingers_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
+	int timeRemain_GoblinRaids_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
+	int timeRemain_GuthixianCaches_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
+	int timeRemain_PhoenixLair_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
+	int timeRemain_RuneGoldbergMachine_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
+	int timeRemain_ShootingStar_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
+	int timeRemain_Sinkholes_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
+	int timeRemain_ThePit_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
+	int timeRemain_WildernessWarbands_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
+	int timeRemain_Agoroth_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
+	int timeRemain_Circus_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
+	int timeRemain_Familiarisation_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
+	int timeRemain_MemoryOfNomad_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
+	int timeRemain_PenguinHideAndSeek_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
+	int timeRemain_RushOfBlood_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
+	int timeRemain_SkeletalHorror_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
+	int timeRemain_TearsOfGuthix_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
+	int timeRemain_GiantOyster_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
+	int timeRemain_GodStatues_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
+	int timeRemain_TrollInvasion_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
+
+	if timeRemain_BigChinchompa < 0
+		stringTimeRemain_BigChinchompa = "00:00"
 	else
-		RS_TimeStamp_GodStatues_All.SetValue(0)
-		return "00:00"
+		string zeroHour = ""
+		string zeroMinute = ""
+		if timeRemain_BigChinchompa_h < 10
+			zeroHour = "0"
+		endif
+		if timeRemain_BigChinchompa_m < 10
+			zeroMinute = "0"
+		endif
+		stringTimeRemain_BigChinchompa = zeroHour + "" + timeRemain_BigChinchompa_h + ":" + zeroMinute + "" + timeRemain_BigChinchompa_m
 	endif
+	
+	
+	stringTimeRemain_Bork = 
+	stringTimeRemain_DemonFlashmobs = 
+	stringTimeRemain_EvilTree = 
+	stringTimeRemain_FishFlingers = 
+	stringTimeRemain_GoblinRaids = 
+	stringTimeRemain_GuthixianCaches = 
+	stringTimeRemain_PhoenixLair = 
+	stringTimeRemain_RuneGoldbergMachine = 
+	stringTimeRemain_ShootingStar = 
+	stringTimeRemain_Sinkholes = 
+	stringTimeRemain_ThePit = 
+	stringTimeRemain_WildernessWarbands = 
+	stringTimeRemain_Agoroth = 
+	stringTimeRemain_Circus = 
+	stringTimeRemain_Familiarisation = 
+	stringTimeRemain_MemoryOfNomad = 
+	stringTimeRemain_PenguinHideAndSeek = 
+	stringTimeRemain_RushOfBlood = 
+	stringTimeRemain_SkeletalHorror = 
+	stringTimeRemain_TearsOfGuthix = 
+	stringTimeRemain_GiantOyster = 
+	stringTimeRemain_GodStatues = 
+	stringTimeRemain_TrollInvasion = 
 EndFunction
 
+;delete
 string Function DisplayDnDtimer(string dNdName)
+
+	float skyscapeHours = (Utility.GetCurrentRealTime()) / 3600
+	float timeRemain_BigChinchompa = skyscapeHours - RS_TimeStamp_BigChinchompa.GetValue()
+	float timeRemain_Bork = skyscapeHours - RS_TimeStamp_Bork.GetValue()
+	float timeRemain_DemonFlashmobs = skyscapeHours - RS_TimeStamp_DemonFlashmobs.GetValue()
+	float timeRemain_EvilTree = skyscapeHours - RS_TimeStamp_EvilTree.GetValue()
+	float timeRemain_FishFlingers = skyscapeHours - RS_TimeStamp_FishFlingers.GetValue()
+	float timeRemain_GoblinRaids = skyscapeHours - RS_TimeStamp_GoblinRaids.GetValue()
+	float timeRemain_GuthixianCaches = skyscapeHours - RS_TimeStamp_GuthixianCaches.GetValue()
+	float timeRemain_PhoenixLair = skyscapeHours - RS_TimeStamp_PhoenixLair.GetValue()
+	float timeRemain_RuneGoldbergMachine = skyscapeHours - RS_TimeStamp_RuneGoldbergMachine.GetValue()
+	float timeRemain_ShootingStar = skyscapeHours - RS_TimeStamp_ShootingStar.GetValue()
+	float timeRemain_Sinkholes = skyscapeHours - RS_TimeStamp_Sinkholes.GetValue()
+	float timeRemain_ThePit = skyscapeHours - RS_TimeStamp_ThePit.GetValue()
+	float timeRemain_WildernessWarbands = skyscapeHours - RS_TimeStamp_WildernessWarbands.GetValue()
+	float timeRemain_Agoroth = skyscapeHours - RS_TimeStamp_Agoroth.GetValue()
+	float timeRemain_Circus = skyscapeHours - RS_TimeStamp_Circus.GetValue()
+	float timeRemain_Familiarisation = skyscapeHours - RS_TimeStamp_Familiarisation.GetValue()
+	float timeRemain_MemoryOfNomad = skyscapeHours - RS_TimeStamp_MemoryOfNomad.GetValue()
+	float timeRemain_PenguinHideAndSeek = skyscapeHours - RS_TimeStamp_PenguinHideAndSeek.GetValue()
+	float timeRemain_RushOfBlood = skyscapeHours - RS_TimeStamp_RushOfBlood.GetValue()
+	float timeRemain_SkeletalHorror = skyscapeHours - RS_TimeStamp_SkeletalHorror.GetValue()
+	float timeRemain_TearsOfGuthix = skyscapeHours - RS_TimeStamp_TearsOfGuthix.GetValue()
+	float timeRemain_GiantOyster = skyscapeHours - RS_TimeStamp_GiantOyster.GetValue()
+	float timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
+	float timeRemain_TrollInvasion = skyscapeHours - RS_TimeStamp_TrollInvasion.GetValue()
+	
+	
 	if dNdName == "god statues";god statues
 		return godStatueString 00:00
 	elseif dNdName == "tears of guthix"
@@ -6340,6 +6450,17 @@ string Function DisplayDnDtimer(string dNdName)
 	;tears of guthix
 	;sinkholes
 	;etc
+	
+	
+	
+	; x = 2.75 - 0.50
+	;x = 2.25 hours
+	if timeSinceLast < intervalGodStatues
+		time remaining = intervalGodStatues - timeSinceLast
+	else
+		RS_TimeStamp_GodStatues_All.SetValue(0)
+		return "00:00"
+	endif
 EndFunction
 
 Function UpdateAgressions()
