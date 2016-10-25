@@ -1,12 +1,29 @@
 ScriptName RS_MCM_MyConfigMenu extends SKI_ConfigBase
-{}
-; Property
+{MCM Menu for SkyScape - Needs to be redone cleaner}
 
+;< Disclaimer
+; To read this script cleanly, you need to download the custom papyrus language definition I made to use with my mods. It is a work in progress and can be downloaded from the link below:
+; http://www.mediafire.com/download/f70f669c16gd443/ssPapyrus_1.0
+; This can only be used in Notepad++, and I recommend monokai as the theme to use. I apologize for any inconveniences this may cause.
+;
+; FRAMEWORK SCRIPTS:
+; rsFrameworkMenu = Framework Functions
+; rsFrameworkData = Properties required by the functions (Menus, GlobalVariables, etc.)
+; rsFrameworkTest = Events For Testing
+;
+;>
+
+;< Properties
+;< Armor Properties
 Armor Property RS_Item_Armor_StartClothes Auto
 Armor Property RS_Item_Armor_StartShoes Auto
+;>
 
+;< Cell Properties
 Cell Property rscc Auto
+;>
 
+;< Faction Properties
 Faction Property RS_aFaction_AgroStop7 Auto
 Faction Property RS_aFaction_AgroStop9 Auto
 Faction Property RS_aFaction_AgroStop11 Auto
@@ -131,6 +148,12 @@ Faction Property RS_aFaction_AgroStop247 Auto
 Faction Property RS_aFaction_AgroStop249 Auto
 Faction Property RS_aFaction_AgroStop251 Auto
 Faction Property RS_aFaction_AgroStop253 Auto
+;>
+
+;< GV Properties
+GlobalVariable Property RS_Config_DnD_DailyInterval Auto
+GlobalVariable Property RS_Config_DnD_WeeklyInterval Auto
+GlobalVariable Property RS_Config_DnD_MonthlyInterval Auto
 
 GlobalVariable Property RS_Check_ModStatus Auto
 GlobalVariable Property RS_GV_SkyrimHealth Auto
@@ -222,19 +245,77 @@ GlobalVariable Property RS_GV_pStat_Bonus_Strength Auto
 
 GlobalVariable Property RS_GV_QuestPoints Auto
 
+GlobalVariable Property RS_TimeStamp_Agoroth Auto
+GlobalVariable Property RS_TimeStamp_BigChinchompa Auto
+GlobalVariable Property RS_TimeStamp_Bork Auto
+GlobalVariable Property RS_TimeStamp_Circus Auto
+GlobalVariable Property RS_TimeStamp_DemonFlashmobs Auto
+GlobalVariable Property RS_TimeStamp_EvilTree Auto
+GlobalVariable Property RS_TimeStamp_Familiarisation Auto
+GlobalVariable Property RS_TimeStamp_FishFlingers Auto
+GlobalVariable Property RS_TimeStamp_GiantOyster Auto
+GlobalVariable Property RS_TimeStamp_GoblinRaids Auto
+GlobalVariable Property RS_TimeStamp_GodStatues Auto
+GlobalVariable Property RS_TimeStamp_GuthixianCaches Auto
+GlobalVariable Property RS_TimeStamp_MemoryOfNomad Auto
+GlobalVariable Property RS_TimeStamp_PenguinHideAndSeek Auto
+GlobalVariable Property RS_TimeStamp_PhoenixLair Auto
+GlobalVariable Property RS_TimeStamp_RuneGoldbergMachine Auto
+GlobalVariable Property RS_TimeStamp_RushOfBlood Auto
+GlobalVariable Property RS_TimeStamp_ShootingStar Auto
+GlobalVariable Property RS_TimeStamp_Sinkholes Auto
+GlobalVariable Property RS_TimeStamp_SkeletalHorror Auto
+GlobalVariable Property RS_TimeStamp_TearsOfGuthix Auto
+GlobalVariable Property RS_TimeStamp_ThePit Auto
+GlobalVariable Property RS_TimeStamp_TrollInvasion Auto
+GlobalVariable Property RS_TimeStamp_WildernessWarbands Auto
+
+;>
+
+;< ObjectReference Properties
 ObjectReference Property RuneSkyStartLocation Auto
 ObjectReference Property RuneSkyLocation Auto
 ObjectReference Property SkyrimLocation Auto
 ObjectReference Property SkyrimPlayerStorage Auto
 ObjectReference Property RuneSkyPlayerStorage Auto
+;>
 
+;< Message Properties
 Message Property RS_Message_Combat_SelectAttackStyle Auto
+;>
 
+;< Spell Properties
 Spell Property RS_Prayer_ThickSkinPrayer Auto
+;>
+;>
 
-; Variables
+;< Variables
 
 String attackStyleString
+String stringTimeRemain_Agoroth
+String stringTimeRemain_BigChinchompa
+String stringTimeRemain_Bork
+String stringTimeRemain_Circus
+String stringTimeRemain_DemonFlashmobs
+String stringTimeRemain_EvilTree
+String stringTimeRemain_Familiarisation
+String stringTimeRemain_FishFlingers
+String stringTimeRemain_GiantOyster
+String stringTimeRemain_GoblinRaids
+String stringTimeRemain_GodStatues
+String stringTimeRemain_GuthixianCaches
+String stringTimeRemain_MemoryOfNomad
+String stringTimeRemain_PenguinHideAndSeek
+String stringTimeRemain_PhoenixLair
+String stringTimeRemain_RuneGoldbergMachine
+String stringTimeRemain_RushOfBlood
+String stringTimeRemain_ShootingStar
+String stringTimeRemain_Sinkholes
+String stringTimeRemain_SkeletalHorror
+String stringTimeRemain_TearsOfGuthix
+String stringTimeRemain_ThePit
+String stringTimeRemain_TrollInvasion
+String stringTimeRemain_WildernessWarbands
 
 Int CombatLVL
 Float BaseLVL
@@ -367,6 +448,55 @@ Int SummoningXP_T
 Int Dungeoneering_T
 Int DungeoneeringXP_T
 
+Int dndAgoroth_oid
+Int dndBigChinchompa_oid
+Int dndBork_oid
+Int dndCircus_oid
+Int dndDemonFlashmobs_oid
+Int dndEvilTree_oid
+Int dndFamiliarisation_oid
+Int dndFishFlingers_oid
+Int dndGiantOyster_oid
+Int dndGoblinRaids_oid
+Int dndGodStatues_oid
+Int dndGuthixianCaches_oid
+Int dndMemoryOfNomad_oid
+Int dndPenguinHideAndSeek_oid
+Int dndPhoenixLair_oid
+Int dndRuneGoldbergMachine_oid
+Int dndRushOfBlood_oid
+Int dndShootingStar_oid
+Int dndSinkholes_oid
+Int dndSkeletalHorror_oid
+Int dndTearsOfGuthix_oid
+Int dndThePit_oid
+Int dndTrollInvasion_oid
+Int dndWildernessWarbands_oid
+
+Int timeAgoroth_oid
+Int timeBigChinchompa_oid
+Int timeBork_oid
+Int timeCircus_oid
+Int timeDemonFlashmobs_oid
+Int timeEvilTree_oid
+Int timeFamiliarisation_oid
+Int timeFishFlingers_oid
+Int timeGiantOyster_oid
+Int timeGoblinRaids_oid
+Int timeGodStatues_oid
+Int timeGuthixianCaches_oid
+Int timeMemoryOfNomad_oid
+Int timePenguinHideAndSeek_oid
+Int timePhoenixLair_oid
+Int timeRuneGoldbergMachine_oid
+Int timeRushOfBlood_oid
+Int timeShootingStar_oid
+Int timeSinkholes_oid
+Int timeSkeletalHorror_oid
+Int timeTearsOfGuthix_oid
+Int timeThePit_oid
+Int timeTrollInvasion_oid
+Int timeWildernessWarbands_oid
 
 String aVal
 String bVal
@@ -394,7 +524,9 @@ String wVal
 String xVal
 String yVal
 String zVal
+;>
 
+;< EVENT - OnPageReset()
 event OnPageReset(string a_page)
 	If (a_page == "")
 		Int pLVL = ((RS_GV_PrayerLVL.GetValue())/2) as Int
@@ -731,82 +863,160 @@ event OnPageReset(string a_page)
 		AddHeaderOption("Time Remaining:")
 		;=================================================================================================================================================================================================
 		SetCursorPosition(2)
-		AddTextOption("Big Chinchompa")
+		dndBigChinchompa_oid = AddTextOption("Big Chinchompa", aVal)
 		
 		SetCursorPosition(3)
-		AddTextOption(DisplayDnDtimer("big chinchompa"))
+		timeBigChinchompa_oid = AddTextOption(stringTimeRemain_BigChinchompa, aVal)
 		;=================================================================================================================================================================================================
 		SetCursorPosition(4)
-		AddTextOption("Bork")
+		dndBork_oid = AddTextOption("Bork", aVal)
 		
 		SetCursorPosition(5)
-		AddTextOption(DisplayDnDtimer("bork"))
+		timeBork_oid = AddTextOption(stringTimeRemain_Bork, aVal)
 		;=================================================================================================================================================================================================
 		SetCursorPosition(6)
-		AddTextOption("Demon Flashmobs")
+		dndDemonFlashmobs_oid = AddTextOption("Demon Flashmobs", aVal)
 		
 		SetCursorPosition(7)
-		AddTextOption(DisplayDnDtimer("demon flashmobs"))
+		timeDemonFlashmobs_oid = AddTextOption(stringTimeRemain_DemonFlashmobs, aVal)
 		;=================================================================================================================================================================================================
 		SetCursorPosition(8)
-		AddTextOption("Evil Tree")
+		dndEvilTree_oid = AddTextOption("Evil Tree", aVal)
 		
 		SetCursorPosition(9)
-		AddTextOption(DisplayDnDtimer("evil tree"))
+		timeEvilTree_oid = AddTextOption(stringTimeRemain_EvilTree, aVal)
 		;=================================================================================================================================================================================================
 		SetCursorPosition(10)
-		AddTextOption("Fish Flingers")
+		dndFishFlingers_oid = AddTextOption("Fish Flingers", aVal)
 		
 		SetCursorPosition(11)
-		AddTextOption(DisplayDnDtimer("fish flingers"))
+		timeFishFlingers_oid = AddTextOption(stringTimeRemain_FishFlingers, aVal)
 		;=================================================================================================================================================================================================
 		SetCursorPosition(12)
-		AddTextOption("Goblin Raids")
+		dndGoblinRaids_oid = AddTextOption("Goblin Raids", aVal)
 		
 		SetCursorPosition(13)
-		AddTextOption(DisplayDnDtimer("goblin raids"))
+		timeGoblinRaids_oid = AddTextOption(stringTimeRemain_GoblinRaids, aVal)
 		;=================================================================================================================================================================================================
 		SetCursorPosition(14)
-		AddTextOption("Guthixian Caches")
+		dndGuthixianCaches_oid = AddTextOption("Guthixian Caches", aVal)
 		
 		SetCursorPosition(15)
-		AddTextOption(DisplayDnDtimer("guthixian caches"))
+		timeGuthixianCaches_oid = AddTextOption(stringTimeRemain_GuthixianCaches, aVal)
 		;=================================================================================================================================================================================================
 		SetCursorPosition(16)
-		AddTextOption("Phoenix Lair")
+		dndPhoenixLair_oid = AddTextOption("Phoenix Lair", aVal)
 		
 		SetCursorPosition(17)
-		AddTextOption(DisplayDnDtimer("phoenix lair"))
+		timePhoenixLair_oid = AddTextOption(stringTimeRemain_PhoenixLair, aVal)
 		;=================================================================================================================================================================================================
 		SetCursorPosition(18)
-		AddTextOption("Rune Goldberg Machine")
+		dndRuneGoldbergMachine_oid = AddTextOption("Rune Goldberg Machine", aVal)
 		
 		SetCursorPosition(19)
-		AddTextOption(DisplayDnDtimer("rune goldberg machine"))
+		timeRuneGoldbergMachine_oid = AddTextOption(stringTimeRemain_RuneGoldbergMachine, aVal)
 		;=================================================================================================================================================================================================
 		SetCursorPosition(20)
-		AddTextOption("Shooting Star")
+		dndShootingStar_oid = AddTextOption("Shooting Star", aVal)
 		
 		SetCursorPosition(21)
-		AddTextOption(DisplayDnDtimer("shooting star"))
+		timeShootingStar_oid = AddTextOption(stringTimeRemain_ShootingStar, aVal)
 		;=================================================================================================================================================================================================
 		SetCursorPosition(22)
-		AddTextOption("Sinkholes")
+		dndSinkholes_oid = AddTextOption("Sinkholes", aVal)
 		
 		SetCursorPosition(23)
-		AddTextOption(DisplayDnDtimer("sinkholes"))
+		timeSinkholes_oid = AddTextOption(stringTimeRemain_Sinkholes, aVal)
 		;=================================================================================================================================================================================================
 		SetCursorPosition(24)
-		AddTextOption("The Pit")
+		dndThePit_oid = AddTextOption("The Pit", aVal)
 		
 		SetCursorPosition(25)
-		AddTextOption(DisplayDnDtimer("the pit"))
+		timeThePit_oid = AddTextOption(stringTimeRemain_ThePit, aVal)
 		;=================================================================================================================================================================================================
 		SetCursorPosition(26)
-		AddTextOption("Wilderness Warbands")
+		dndWildernessWarbands_oid = AddTextOption("Wilderness Warbands", aVal)
 		
 		SetCursorPosition(27)
-		AddTextOption(DisplayDnDtimer("Wilderness Warbands"))
+		timeWildernessWarbands_oid = AddTextOption(stringTimeRemain_WildernessWarbands, aVal)
+		;=================================================================================================================================================================================================
+		SetCursorPosition(30)
+		AddHeaderOption("4-Hour Distractions and Diversions")
+		
+		SetCursorPosition(31)
+		AddHeaderOption("Time Remaining:")
+		;=================================================================================================================================================================================================
+		SetCursorPosition(32)
+		dndAgoroth_oid = AddTextOption("Agoroth", aVal)
+		
+		SetCursorPosition(33)
+		timeAgoroth_oid = AddTextOption(stringTimeRemain_WildernessWarbands, aVal)
+		;=================================================================================================================================================================================================
+		SetCursorPosition(34)
+		dndCircus_oid = AddTextOption("Balthazar Beauregard's Big Top Bonanza", aVal)
+		
+		SetCursorPosition(35)
+		timeCircus_oid = AddTextOption(stringTimeRemain_Circus, aVal)
+		;=================================================================================================================================================================================================
+		SetCursorPosition(36)
+		dndFamiliarisation_oid = AddTextOption("Familiarisation", aVal)
+		
+		SetCursorPosition(37)
+		timeFamiliarisation_oid = AddTextOption(stringTimeRemain_Familiarisation, aVal)
+		;=================================================================================================================================================================================================
+		SetCursorPosition(38)
+		dndMemoryOfNomad_oid = AddTextOption("Memory Of Nomad", aVal)
+		
+		SetCursorPosition(39)
+		timeMemoryOfNomad_oid = AddTextOption(stringTimeRemain_MemoryOfNomad, aVal)
+		;=================================================================================================================================================================================================
+		SetCursorPosition(40)
+		dndPenguinHideAndSeek_oid = AddTextOption("Penguin Hide-n-Seek", aVal)
+		
+		SetCursorPosition(41)
+		timePenguinHideAndSeek_oid = AddTextOption(stringTimeRemain_PenguinHideAndSeek, aVal)
+		;=================================================================================================================================================================================================
+		SetCursorPosition(42)
+		dndRushOfBlood_oid = AddTextOption("Rush Of Blood", aVal)
+		
+		SetCursorPosition(43)
+		timeRushOfBlood_oid = AddTextOption(stringTimeRemain_RushOfBlood, aVal)
+		;=================================================================================================================================================================================================
+		SetCursorPosition(44)
+		dndSkeletalHorror_oid = AddTextOption("Skeletal Horror", aVal)
+		
+		SetCursorPosition(45)
+		timeSkeletalHorror_oid = AddTextOption(stringTimeRemain_SkeletalHorror, aVal)
+		;=================================================================================================================================================================================================
+		SetCursorPosition(46)
+		dndTearsOfGuthix_oid = AddTextOption("Tears Of Guthix", aVal)
+		
+		SetCursorPosition(47)
+		timeTearsOfGuthix_oid = AddTextOption(stringTimeRemain_TearsOfGuthix, aVal)
+		;=================================================================================================================================================================================================
+		SetCursorPosition(50)
+		AddHeaderOption("6-Hour Distractions and Diversions")
+		
+		SetCursorPosition(51)
+		AddHeaderOption("Time Remaining:")
+		;=================================================================================================================================================================================================
+		SetCursorPosition(52)
+		dndGiantOyster_oid = AddTextOption("Giant Oyster", aVal)
+		
+		SetCursorPosition(53)
+		timeGiantOyster_oid = AddTextOption(stringTimeRemain_GiantOyster, aVal)
+		;=================================================================================================================================================================================================
+		SetCursorPosition(54)
+		dndGodStatues_oid = AddTextOption("God Statues", aVal)
+		
+		SetCursorPosition(55)
+		timeGodStatues_oid = AddTextOption(stringTimeRemain_GodStatues, aVal)
+		;=================================================================================================================================================================================================
+		SetCursorPosition(56)
+		dndTrollInvasion_oid = AddTextOption("Troll Invasion", aVal)
+		
+		SetCursorPosition(57)
+		timeTrollInvasion_oid = AddTextOption(stringTimeRemain_TrollInvasion, aVal)
 		
 	ElseIf (a_page == "Teleport")
 		Float gvSkyrimHealth = RS_GV_SkyrimHealth.GetValue()
@@ -957,7 +1167,9 @@ event OnPageReset(string a_page)
 		EndIf
 	EndIf
 endEvent
+;>
 
+;< EVENT - OnOptionHighlight()
 event OnOptionHighlight(int option)
 	if (option == Agility_T)
 		SetInfoText("Agility Skill Not In This Beta")
@@ -1086,7 +1298,9 @@ event OnOptionHighlight(int option)
 	else
 	EndIf
 endEvent
+;>
 
+;< EVENT - OnOptionSelect()
 event OnOptionSelect(int option)
 	if (option == Agility_T)
 		SetCursorFillMode(LEFT_TO_RIGHT)
@@ -1144,6 +1358,56 @@ event OnOptionSelect(int option)
 	
 	EndIf
 endEvent
+;>
+
+;< EVENT - OnKeyDown()
+Event OnKeyDown(Int KeyCode)
+	;Debug.MessageBox("A registered key has been pressed")
+	If ((RS_Check_ModStatus.GetValue()) == 0) || ((RS_Check_ModStatus.GetValue()) == 2)
+		;do nothing
+	Else
+		If KeyCode == 59
+			UpdateCurrentInstanceGlobal(RS_GV_AttackStyle)
+			if (RS_GV_AttackStyle.GetValue()) == 0;Accurate
+				attackStyleString = "Accurate"
+			elseif (RS_GV_AttackStyle.GetValue()) == 1;Agressive
+				attackStyleString = "Agressive"
+			elseif (RS_GV_AttackStyle.GetValue()) == 2;Defensive
+				attackStyleString = "Defensive"
+			elseif (RS_GV_AttackStyle.GetValue()) == 3;Controlled
+				attackStyleString = "Controlled"
+			Else
+				Debug.MessageBox("Problem with setting attack style for display!")
+			EndIf
+			Debug.Notification("Current attack style: " + attackStyleString)
+			int attackStyle = RS_Message_Combat_SelectAttackStyle.show()
+			if attackStyle == 0;Accurate
+				RS_GV_AttackStyle.SetValue(0)
+				RS_GV_FightStyleAttackBoost.SetValue(3)
+				RS_GV_FightStyleStrengthBoost.SetValue(0)
+				RS_GV_FightStyleDefenceBoost.SetValue(0)
+			elseif attackStyle == 1;Agressive
+				RS_GV_AttackStyle.SetValue(1)
+				RS_GV_FightStyleAttackBoost.SetValue(0)
+				RS_GV_FightStyleStrengthBoost.SetValue(3)
+				RS_GV_FightStyleDefenceBoost.SetValue(0)
+			elseif attackStyle == 2;Defensive
+				RS_GV_AttackStyle.SetValue(2)
+				RS_GV_FightStyleAttackBoost.SetValue(0)
+				RS_GV_FightStyleStrengthBoost.SetValue(0)
+				RS_GV_FightStyleDefenceBoost.SetValue(3)
+			elseif attackStyle == 3;Controlled
+				RS_GV_AttackStyle.SetValue(3)
+				RS_GV_FightStyleAttackBoost.SetValue(1)
+				RS_GV_FightStyleStrengthBoost.SetValue(1)
+				RS_GV_FightStyleDefenceBoost.SetValue(1)
+			Else
+			
+			EndIf
+		EndIf
+	EndIf
+EndEvent
+;>
 
 Function AttackInit()
 	AttackLVL = RS_GV_AttackLVL.GetValue() as Int
@@ -6347,32 +6611,32 @@ Function UpdateDnDtimers()
 	int timeRemain_GodStatues_h = Math.Floor(timeRemain_GodStatues)
 	int timeRemain_TrollInvasion_h = Math.Floor(timeRemain_TrollInvasion)
 	
-	int timeRemain_BigChinchompa_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
-	int timeRemain_Bork_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
-	int timeRemain_DemonFlashmobs_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
-	int timeRemain_EvilTree_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
-	int timeRemain_FishFlingers_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
-	int timeRemain_GoblinRaids_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
-	int timeRemain_GuthixianCaches_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
-	int timeRemain_PhoenixLair_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
-	int timeRemain_RuneGoldbergMachine_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
-	int timeRemain_ShootingStar_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
-	int timeRemain_Sinkholes_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
-	int timeRemain_ThePit_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
-	int timeRemain_WildernessWarbands_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
-	int timeRemain_Agoroth_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
-	int timeRemain_Circus_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
-	int timeRemain_Familiarisation_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
-	int timeRemain_MemoryOfNomad_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
-	int timeRemain_PenguinHideAndSeek_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
-	int timeRemain_RushOfBlood_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
-	int timeRemain_SkeletalHorror_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
-	int timeRemain_TearsOfGuthix_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
-	int timeRemain_GiantOyster_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
-	int timeRemain_GodStatues_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
-	int timeRemain_TrollInvasion_m = (timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60
+	int timeRemain_BigChinchompa_m = ((timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60) as int
+	int timeRemain_Bork_m = ((timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60) as int
+	int timeRemain_DemonFlashmobs_m = ((timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60) as int
+	int timeRemain_EvilTree_m = ((timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60) as int
+	int timeRemain_FishFlingers_m = ((timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60) as int
+	int timeRemain_GoblinRaids_m = ((timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60) as int
+	int timeRemain_GuthixianCaches_m = ((timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60) as int
+	int timeRemain_PhoenixLair_m = ((timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60) as int
+	int timeRemain_RuneGoldbergMachine_m = ((timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60) as int
+	int timeRemain_ShootingStar_m = ((timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60) as int
+	int timeRemain_Sinkholes_m = ((timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60) as int
+	int timeRemain_ThePit_m = ((timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60) as int
+	int timeRemain_WildernessWarbands_m = ((timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60) as int
+	int timeRemain_Agoroth_m = ((timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60) as int
+	int timeRemain_Circus_m = ((timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60) as int
+	int timeRemain_Familiarisation_m = ((timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60) as int
+	int timeRemain_MemoryOfNomad_m = ((timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60) as int
+	int timeRemain_PenguinHideAndSeek_m = ((timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60) as int
+	int timeRemain_RushOfBlood_m = ((timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60) as int
+	int timeRemain_SkeletalHorror_m = ((timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60) as int
+	int timeRemain_TearsOfGuthix_m = ((timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60) as int
+	int timeRemain_GiantOyster_m = ((timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60) as int
+	int timeRemain_GodStatues_m = ((timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60) as int
+	int timeRemain_TrollInvasion_m = ((timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60) as int
 
-	if timeRemain_BigChinchompa < 0
+	if timeRemain_BigChinchompa <= 0
 		stringTimeRemain_BigChinchompa = "00:00"
 	else
 		string zeroHour = ""
@@ -6386,80 +6650,326 @@ Function UpdateDnDtimers()
 		stringTimeRemain_BigChinchompa = zeroHour + "" + timeRemain_BigChinchompa_h + ":" + zeroMinute + "" + timeRemain_BigChinchompa_m
 	endif
 	
-	
-	stringTimeRemain_Bork = 
-	stringTimeRemain_DemonFlashmobs = 
-	stringTimeRemain_EvilTree = 
-	stringTimeRemain_FishFlingers = 
-	stringTimeRemain_GoblinRaids = 
-	stringTimeRemain_GuthixianCaches = 
-	stringTimeRemain_PhoenixLair = 
-	stringTimeRemain_RuneGoldbergMachine = 
-	stringTimeRemain_ShootingStar = 
-	stringTimeRemain_Sinkholes = 
-	stringTimeRemain_ThePit = 
-	stringTimeRemain_WildernessWarbands = 
-	stringTimeRemain_Agoroth = 
-	stringTimeRemain_Circus = 
-	stringTimeRemain_Familiarisation = 
-	stringTimeRemain_MemoryOfNomad = 
-	stringTimeRemain_PenguinHideAndSeek = 
-	stringTimeRemain_RushOfBlood = 
-	stringTimeRemain_SkeletalHorror = 
-	stringTimeRemain_TearsOfGuthix = 
-	stringTimeRemain_GiantOyster = 
-	stringTimeRemain_GodStatues = 
-	stringTimeRemain_TrollInvasion = 
-EndFunction
-
-;delete
-string Function DisplayDnDtimer(string dNdName)
-
-	float skyscapeHours = (Utility.GetCurrentRealTime()) / 3600
-	float timeRemain_BigChinchompa = skyscapeHours - RS_TimeStamp_BigChinchompa.GetValue()
-	float timeRemain_Bork = skyscapeHours - RS_TimeStamp_Bork.GetValue()
-	float timeRemain_DemonFlashmobs = skyscapeHours - RS_TimeStamp_DemonFlashmobs.GetValue()
-	float timeRemain_EvilTree = skyscapeHours - RS_TimeStamp_EvilTree.GetValue()
-	float timeRemain_FishFlingers = skyscapeHours - RS_TimeStamp_FishFlingers.GetValue()
-	float timeRemain_GoblinRaids = skyscapeHours - RS_TimeStamp_GoblinRaids.GetValue()
-	float timeRemain_GuthixianCaches = skyscapeHours - RS_TimeStamp_GuthixianCaches.GetValue()
-	float timeRemain_PhoenixLair = skyscapeHours - RS_TimeStamp_PhoenixLair.GetValue()
-	float timeRemain_RuneGoldbergMachine = skyscapeHours - RS_TimeStamp_RuneGoldbergMachine.GetValue()
-	float timeRemain_ShootingStar = skyscapeHours - RS_TimeStamp_ShootingStar.GetValue()
-	float timeRemain_Sinkholes = skyscapeHours - RS_TimeStamp_Sinkholes.GetValue()
-	float timeRemain_ThePit = skyscapeHours - RS_TimeStamp_ThePit.GetValue()
-	float timeRemain_WildernessWarbands = skyscapeHours - RS_TimeStamp_WildernessWarbands.GetValue()
-	float timeRemain_Agoroth = skyscapeHours - RS_TimeStamp_Agoroth.GetValue()
-	float timeRemain_Circus = skyscapeHours - RS_TimeStamp_Circus.GetValue()
-	float timeRemain_Familiarisation = skyscapeHours - RS_TimeStamp_Familiarisation.GetValue()
-	float timeRemain_MemoryOfNomad = skyscapeHours - RS_TimeStamp_MemoryOfNomad.GetValue()
-	float timeRemain_PenguinHideAndSeek = skyscapeHours - RS_TimeStamp_PenguinHideAndSeek.GetValue()
-	float timeRemain_RushOfBlood = skyscapeHours - RS_TimeStamp_RushOfBlood.GetValue()
-	float timeRemain_SkeletalHorror = skyscapeHours - RS_TimeStamp_SkeletalHorror.GetValue()
-	float timeRemain_TearsOfGuthix = skyscapeHours - RS_TimeStamp_TearsOfGuthix.GetValue()
-	float timeRemain_GiantOyster = skyscapeHours - RS_TimeStamp_GiantOyster.GetValue()
-	float timeRemain_GodStatues = skyscapeHours - RS_TimeStamp_GodStatues.GetValue()
-	float timeRemain_TrollInvasion = skyscapeHours - RS_TimeStamp_TrollInvasion.GetValue()
-	
-	
-	if dNdName == "god statues";god statues
-		return godStatueString 00:00
-	elseif dNdName == "tears of guthix"
-	
-	endif
-	;tears of guthix
-	;sinkholes
-	;etc
-	
-	
-	
-	; x = 2.75 - 0.50
-	;x = 2.25 hours
-	if timeSinceLast < intervalGodStatues
-		time remaining = intervalGodStatues - timeSinceLast
+	if timeRemain_Bork <= 0
+		stringTimeRemain_Bork = "00:00"
 	else
-		RS_TimeStamp_GodStatues_All.SetValue(0)
-		return "00:00"
+		string zeroHour = ""
+		string zeroMinute = ""
+		if timeRemain_Bork_h < 10
+			zeroHour = "0"
+		endif
+		if timeRemain_Bork_m < 10
+			zeroMinute = "0"
+		endif
+		stringTimeRemain_Bork = zeroHour + "" + timeRemain_Bork_h + ":" + zeroMinute + "" + timeRemain_Bork_m
+	endif
+	
+	if timeRemain_DemonFlashmobs <= 0
+		stringTimeRemain_DemonFlashmobs = "00:00"
+	else
+		string zeroHour = ""
+		string zeroMinute = ""
+		if timeRemain_DemonFlashmobs_h < 10
+			zeroHour = "0"
+		endif
+		if timeRemain_DemonFlashmobs_m < 10
+			zeroMinute = "0"
+		endif
+		stringTimeRemain_DemonFlashmobs = zeroHour + "" + timeRemain_DemonFlashmobs_h + ":" + zeroMinute + "" + timeRemain_DemonFlashmobs_m
+	endif
+	
+	if timeRemain_EvilTree <= 0
+		stringTimeRemain_EvilTree = "00:00"
+	else
+		string zeroHour = ""
+		string zeroMinute = ""
+		if timeRemain_EvilTree_h < 10
+			zeroHour = "0"
+		endif
+		if timeRemain_EvilTree_m < 10
+			zeroMinute = "0"
+		endif
+		stringTimeRemain_EvilTree = zeroHour + "" + timeRemain_EvilTree_h + ":" + zeroMinute + "" + timeRemain_EvilTree_m
+	endif
+	
+	if timeRemain_FishFlingers <= 0
+		stringTimeRemain_FishFlingers = "00:00"
+	else
+		string zeroHour = ""
+		string zeroMinute = ""
+		if timeRemain_FishFlingers_h < 10
+			zeroHour = "0"
+		endif
+		if timeRemain_FishFlingers_m < 10
+			zeroMinute = "0"
+		endif
+		stringTimeRemain_FishFlingers = zeroHour + "" + timeRemain_FishFlingers_h + ":" + zeroMinute + "" + timeRemain_FishFlingers_m
+	endif
+	
+	if timeRemain_GoblinRaids <= 0
+		stringTimeRemain_GoblinRaids = "00:00"
+	else
+		string zeroHour = ""
+		string zeroMinute = ""
+		if timeRemain_GoblinRaids_h < 10
+			zeroHour = "0"
+		endif
+		if timeRemain_GoblinRaids_m < 10
+			zeroMinute = "0"
+		endif
+		stringTimeRemain_GoblinRaids = zeroHour + "" + timeRemain_GoblinRaids_h + ":" + zeroMinute + "" + timeRemain_GoblinRaids_m
+	endif
+	
+	if timeRemain_GuthixianCaches <= 0
+		stringTimeRemain_GuthixianCaches = "00:00"
+	else
+		string zeroHour = ""
+		string zeroMinute = ""
+		if timeRemain_GuthixianCaches_h < 10
+			zeroHour = "0"
+		endif
+		if timeRemain_GuthixianCaches_m < 10
+			zeroMinute = "0"
+		endif
+		stringTimeRemain_GuthixianCaches = zeroHour + "" + timeRemain_GuthixianCaches_h + ":" + zeroMinute + "" + timeRemain_GuthixianCaches_m
+	endif
+	
+	if timeRemain_PhoenixLair <= 0
+		stringTimeRemain_PhoenixLair = "00:00"
+	else
+		string zeroHour = ""
+		string zeroMinute = ""
+		if timeRemain_PhoenixLair_h < 10
+			zeroHour = "0"
+		endif
+		if timeRemain_PhoenixLair_m < 10
+			zeroMinute = "0"
+		endif
+		stringTimeRemain_PhoenixLair = zeroHour + "" + timeRemain_PhoenixLair_h + ":" + zeroMinute + "" + timeRemain_PhoenixLair_m
+	endif
+	
+	if timeRemain_RuneGoldbergMachine <= 0
+		stringTimeRemain_RuneGoldbergMachine = "00:00"
+	else
+		string zeroHour = ""
+		string zeroMinute = ""
+		if timeRemain_RuneGoldbergMachine_h < 10
+			zeroHour = "0"
+		endif
+		if timeRemain_RuneGoldbergMachine_m < 10
+			zeroMinute = "0"
+		endif
+		stringTimeRemain_RuneGoldbergMachine = zeroHour + "" + timeRemain_RuneGoldbergMachine_h + ":" + zeroMinute + "" + timeRemain_RuneGoldbergMachine_m
+	endif
+	
+	if timeRemain_ShootingStar <= 0
+		stringTimeRemain_ShootingStar = "00:00"
+	else
+		string zeroHour = ""
+		string zeroMinute = ""
+		if timeRemain_ShootingStar_h < 10
+			zeroHour = "0"
+		endif
+		if timeRemain_ShootingStar_m < 10
+			zeroMinute = "0"
+		endif
+		stringTimeRemain_ShootingStar = zeroHour + "" + timeRemain_ShootingStar_h + ":" + zeroMinute + "" + timeRemain_ShootingStar_m
+	endif
+	
+	if timeRemain_Sinkholes <= 0
+		stringTimeRemain_Sinkholes = "00:00"
+	else
+		string zeroHour = ""
+		string zeroMinute = ""
+		if timeRemain_Sinkholes_h < 10
+			zeroHour = "0"
+		endif
+		if timeRemain_Sinkholes_m < 10
+			zeroMinute = "0"
+		endif
+		stringTimeRemain_Sinkholes = zeroHour + "" + timeRemain_Sinkholes_h + ":" + zeroMinute + "" + timeRemain_Sinkholes_m
+	endif
+	
+	if timeRemain_ThePit <= 0
+		stringTimeRemain_ThePit = "00:00"
+	else
+		string zeroHour = ""
+		string zeroMinute = ""
+		if timeRemain_ThePit_h < 10
+			zeroHour = "0"
+		endif
+		if timeRemain_ThePit_m < 10
+			zeroMinute = "0"
+		endif
+		stringTimeRemain_ThePit = zeroHour + "" + timeRemain_ThePit_h + ":" + zeroMinute + "" + timeRemain_ThePit_m
+	endif
+	
+	if timeRemain_WildernessWarbands <= 0
+		stringTimeRemain_WildernessWarbands = "00:00"
+	else
+		string zeroHour = ""
+		string zeroMinute = ""
+		if timeRemain_WildernessWarbands_h < 10
+			zeroHour = "0"
+		endif
+		if timeRemain_WildernessWarbands_m < 10
+			zeroMinute = "0"
+		endif
+		stringTimeRemain_WildernessWarbands = zeroHour + "" + timeRemain_WildernessWarbands_h + ":" + zeroMinute + "" + timeRemain_WildernessWarbands_m
+	endif
+	
+	if timeRemain_Agoroth <= 0
+		stringTimeRemain_Agoroth = "00:00"
+	else
+		string zeroHour = ""
+		string zeroMinute = ""
+		if timeRemain_Agoroth_h < 10
+			zeroHour = "0"
+		endif
+		if timeRemain_Agoroth_m < 10
+			zeroMinute = "0"
+		endif
+		stringTimeRemain_Agoroth = zeroHour + "" + timeRemain_Agoroth_h + ":" + zeroMinute + "" + timeRemain_Agoroth_m
+	endif
+	
+	if timeRemain_Circus <= 0
+		stringTimeRemain_Circus = "00:00"
+	else
+		string zeroHour = ""
+		string zeroMinute = ""
+		if timeRemain_Circus_h < 10
+			zeroHour = "0"
+		endif
+		if timeRemain_Circus_m < 10
+			zeroMinute = "0"
+		endif
+		stringTimeRemain_Circus = zeroHour + "" + timeRemain_Circus_h + ":" + zeroMinute + "" + timeRemain_Circus_m
+	endif
+	
+	if timeRemain_Familiarisation <= 0
+		stringTimeRemain_Familiarisation = "00:00"
+	else
+		string zeroHour = ""
+		string zeroMinute = ""
+		if timeRemain_Familiarisation_h < 10
+			zeroHour = "0"
+		endif
+		if timeRemain_Familiarisation_m < 10
+			zeroMinute = "0"
+		endif
+		stringTimeRemain_Familiarisation = zeroHour + "" + timeRemain_Familiarisation_h + ":" + zeroMinute + "" + timeRemain_Familiarisation_m
+	endif
+	
+	if timeRemain_MemoryOfNomad <= 0
+		stringTimeRemain_MemoryOfNomad = "00:00"
+	else
+		string zeroHour = ""
+		string zeroMinute = ""
+		if timeRemain_MemoryOfNomad_h < 10
+			zeroHour = "0"
+		endif
+		if timeRemain_MemoryOfNomad_m < 10
+			zeroMinute = "0"
+		endif
+		stringTimeRemain_MemoryOfNomad = zeroHour + "" + timeRemain_MemoryOfNomad_h + ":" + zeroMinute + "" + timeRemain_MemoryOfNomad_m
+	endif
+	
+	if timeRemain_PenguinHideAndSeek <= 0
+		stringTimeRemain_PenguinHideAndSeek = "00:00"
+	else
+		string zeroHour = ""
+		string zeroMinute = ""
+		if timeRemain_PenguinHideAndSeek_h < 10
+			zeroHour = "0"
+		endif
+		if timeRemain_PenguinHideAndSeek_m < 10
+			zeroMinute = "0"
+		endif
+		stringTimeRemain_PenguinHideAndSeek = zeroHour + "" + timeRemain_PenguinHideAndSeek_h + ":" + zeroMinute + "" + timeRemain_PenguinHideAndSeek_m
+	endif
+	
+	if timeRemain_RushOfBlood <= 0
+		stringTimeRemain_RushOfBlood = "00:00"
+	else
+		string zeroHour = ""
+		string zeroMinute = ""
+		if timeRemain_RushOfBlood_h < 10
+			zeroHour = "0"
+		endif
+		if timeRemain_RushOfBlood_m < 10
+			zeroMinute = "0"
+		endif
+		stringTimeRemain_RushOfBlood = zeroHour + "" + timeRemain_RushOfBlood_h + ":" + zeroMinute + "" + timeRemain_RushOfBlood_m
+	endif
+	
+	if timeRemain_SkeletalHorror <= 0
+		stringTimeRemain_SkeletalHorror = "00:00"
+	else
+		string zeroHour = ""
+		string zeroMinute = ""
+		if timeRemain_SkeletalHorror_h < 10
+			zeroHour = "0"
+		endif
+		if timeRemain_SkeletalHorror_m < 10
+			zeroMinute = "0"
+		endif
+		stringTimeRemain_SkeletalHorror = zeroHour + "" + timeRemain_SkeletalHorror_h + ":" + zeroMinute + "" + timeRemain_SkeletalHorror_m
+	endif
+	
+	if timeRemain_TearsOfGuthix <= 0
+		stringTimeRemain_TearsOfGuthix = "00:00"
+	else
+		string zeroHour = ""
+		string zeroMinute = ""
+		if timeRemain_TearsOfGuthix_h < 10
+			zeroHour = "0"
+		endif
+		if timeRemain_TearsOfGuthix_m < 10
+			zeroMinute = "0"
+		endif
+		stringTimeRemain_TearsOfGuthix = zeroHour + "" + timeRemain_TearsOfGuthix_h + ":" + zeroMinute + "" + timeRemain_TearsOfGuthix_m
+	endif
+	
+	if timeRemain_GiantOyster <= 0
+		stringTimeRemain_GiantOyster = "00:00"
+	else
+		string zeroHour = ""
+		string zeroMinute = ""
+		if timeRemain_GiantOyster_h < 10
+			zeroHour = "0"
+		endif
+		if timeRemain_GiantOyster_m < 10
+			zeroMinute = "0"
+		endif
+		stringTimeRemain_GiantOyster = zeroHour + "" + timeRemain_GiantOyster_h + ":" + zeroMinute + "" + timeRemain_GiantOyster_m
+	endif
+	
+	if timeRemain_GodStatues <= 0
+		stringTimeRemain_GodStatues = "00:00"
+	else
+		string zeroHour = ""
+		string zeroMinute = ""
+		if timeRemain_GodStatues_h < 10
+			zeroHour = "0"
+		endif
+		if timeRemain_GodStatues_m < 10
+			zeroMinute = "0"
+		endif
+		stringTimeRemain_GodStatues = zeroHour + "" + timeRemain_GodStatues_h + ":" + zeroMinute + "" + timeRemain_GodStatues_m
+	endif
+	
+	if timeRemain_TrollInvasion <= 0
+		stringTimeRemain_TrollInvasion = "00:00"
+	else
+		string zeroHour = ""
+		string zeroMinute = ""
+		if timeRemain_TrollInvasion_h < 10
+			zeroHour = "0"
+		endif
+		if timeRemain_TrollInvasion_m < 10
+			zeroMinute = "0"
+		endif
+		stringTimeRemain_TrollInvasion = zeroHour + "" + timeRemain_TrollInvasion_h + ":" + zeroMinute + "" + timeRemain_TrollInvasion_m
 	endif
 EndFunction
 
@@ -6541,49 +7051,8 @@ Function UpdateAgressions()
 	EndIf
 EndFunction
 
-Event OnKeyDown(Int KeyCode)
-	;Debug.MessageBox("A registered key has been pressed")
-	If ((RS_Check_ModStatus.GetValue()) == 0) || ((RS_Check_ModStatus.GetValue()) == 2)
-		;do nothing
-	Else
-		If KeyCode == 59
-			UpdateCurrentInstanceGlobal(RS_GV_AttackStyle)
-			if (RS_GV_AttackStyle.GetValue()) == 0;Accurate
-				attackStyleString = "Accurate"
-			elseif (RS_GV_AttackStyle.GetValue()) == 1;Agressive
-				attackStyleString = "Agressive"
-			elseif (RS_GV_AttackStyle.GetValue()) == 2;Defensive
-				attackStyleString = "Defensive"
-			elseif (RS_GV_AttackStyle.GetValue()) == 3;Controlled
-				attackStyleString = "Controlled"
-			Else
-				Debug.MessageBox("Problem with setting attack style for display!")
-			EndIf
-			Debug.Notification("Current attack style: " + attackStyleString)
-			int attackStyle = RS_Message_Combat_SelectAttackStyle.show()
-			if attackStyle == 0;Accurate
-				RS_GV_AttackStyle.SetValue(0)
-				RS_GV_FightStyleAttackBoost.SetValue(3)
-				RS_GV_FightStyleStrengthBoost.SetValue(0)
-				RS_GV_FightStyleDefenceBoost.SetValue(0)
-			elseif attackStyle == 1;Agressive
-				RS_GV_AttackStyle.SetValue(1)
-				RS_GV_FightStyleAttackBoost.SetValue(0)
-				RS_GV_FightStyleStrengthBoost.SetValue(3)
-				RS_GV_FightStyleDefenceBoost.SetValue(0)
-			elseif attackStyle == 2;Defensive
-				RS_GV_AttackStyle.SetValue(2)
-				RS_GV_FightStyleAttackBoost.SetValue(0)
-				RS_GV_FightStyleStrengthBoost.SetValue(0)
-				RS_GV_FightStyleDefenceBoost.SetValue(3)
-			elseif attackStyle == 3;Controlled
-				RS_GV_AttackStyle.SetValue(3)
-				RS_GV_FightStyleAttackBoost.SetValue(1)
-				RS_GV_FightStyleStrengthBoost.SetValue(1)
-				RS_GV_FightStyleDefenceBoost.SetValue(1)
-			Else
-			
-			EndIf
-		EndIf
-	EndIf
-EndEvent
+;< Notes:
+;The original goal of this script is to provide the necessary functions to other scripts that use a repeated element that appears in each script.
+;At this time, I have not tested it, so it is not ready to be put into action, and I am not sure if everything that is here will be here when it gets put in use.
+;To add additional requirements for level up unlocks, refer to agility level 53
+;>
