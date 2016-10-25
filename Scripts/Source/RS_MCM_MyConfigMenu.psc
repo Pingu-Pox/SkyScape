@@ -6946,6 +6946,7 @@ Function UpdateDnDtimers()
 	
 	if timeRemain_GodStatues <= 0
 		stringTimeRemain_GodStatues = "00:00"
+		ResetDnD_GodStatues()
 	else
 		string zeroHour = ""
 		string zeroMinute = ""
@@ -7049,6 +7050,39 @@ Function UpdateAgressions()
 	ElseIf CombatLVL == 3
 		Game.GetPlayer().AddToFaction(RS_aFaction_AgroStop7)
 	EndIf
+EndFunction
+
+Function ResetDnD_GodStatues()
+	RS_DnD_GodStatue_Rock_Lumbridge.Enable()
+	RS_DnD_GodStatue_Statue_Lumbridge_Saradomin.Disable()
+	RS_DnD_GodStatue_Statue_Lumbridge_Bandos.Disable()
+	RS_DnD_GodStatue_Statue_Lumbridge_Zamorak.Disable()
+	RS_DnD_GodStatue_Statue_Lumbridge_Seren.Disable()
+	RS_DnD_GodStatue_Statue_Lumbridge_Guthix.Disable()
+	RS_DnD_GodStatue_Rock_Taverly.Enable()
+	RS_DnD_GodStatue_Statue_Taverly_Saradomin.Disable()
+	RS_DnD_GodStatue_Statue_Taverly_Bandos.Disable()
+	RS_DnD_GodStatue_Statue_Taverly_Zamorak.Disable()
+	RS_DnD_GodStatue_Statue_Taverly_Seren.Disable()
+	RS_DnD_GodStatue_Statue_Taverly_Guthix.Disable()
+	RS_DnD_GodStatue_Rock_Yanille.Enable()
+	RS_DnD_GodStatue_Statue_Yanille_Saradomin.Disable()
+	RS_DnD_GodStatue_Statue_Yanille_Bandos.Disable()
+	RS_DnD_GodStatue_Statue_Yanille_Zamorak.Disable()
+	RS_DnD_GodStatue_Statue_Yanille_Seren.Disable()
+	RS_DnD_GodStatue_Statue_Yanille_Guthix.Disable()
+	RS_DnD_GodStatue_Rock_Canifis.Enable()
+	RS_DnD_GodStatue_Statue_Canifis_Saradomin.Disable()
+	RS_DnD_GodStatue_Statue_Canifis_Bandos.Disable()
+	RS_DnD_GodStatue_Statue_Canifis_Zamorak.Disable()
+	RS_DnD_GodStatue_Statue_Canifis_Seren.Disable()
+	RS_DnD_GodStatue_Statue_Canifis_Guthix.Disable()
+	RS_DnD_GodStatue_Rock_Prifddinas.Enable()
+	RS_DnD_GodStatue_Statue_Prifddinas_Saradomin.Disable()
+	RS_DnD_GodStatue_Statue_Prifddinas_Bandos.Disable()
+	RS_DnD_GodStatue_Statue_Prifddinas_Zamorak.Disable()
+	RS_DnD_GodStatue_Statue_Prifddinase_Seren.Disable()
+	RS_DnD_GodStatue_Statue_Prifddinas_Guthix.Disable()
 EndFunction
 
 ;< Notes:
