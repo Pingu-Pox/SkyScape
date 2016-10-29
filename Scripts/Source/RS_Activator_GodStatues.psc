@@ -1,7 +1,9 @@
 ScriptName RS_Activator_GodStatues Extends ObjectReference
 {This script is what starts the minigame, and sets it up. Hand off to other script for player input}
 
+Globalvariable Property godStatueTimeStamp_Master Auto
 Globalvariable Property godStatueTimeStamp Auto
+Globalvariable Property RS_Check_Reward2Claim_GodStatue_Region_Prayer Auto
 
 Globalvariable Property scaffoldAnswer1 Auto
 Globalvariable Property scaffoldAnswer2 Auto
@@ -50,8 +52,8 @@ Quest Property RS_Minigame_GodStatues Auto
 Event OnActivate(ObjectReference akActionRef)
 	float hoursElapsed = rsFrameworkMenu.GetElapsedHours(godStatueTimeStamp)
 	float hoursToMonth = rsFrameworkMenu.GetVariable_HoursToMonth()
-	if hoursElapsed < hoursToMonth
-		float difference = hoursToMonth - hoursElapsed
+	if hoursElapsed < hoursToMonth && (godStatueTimeStamp.GetValue() != 0.0)
+		int difference = Math.Ceiling(hoursToMonth - hoursElapsed) as int
 		Debug.MessageBox("This God Statue will be available again in " + difference + " hours.")
 	else
 		int minigameStatus = minigameStatusGlobal.GetValue() as int
@@ -173,7 +175,7 @@ Event OnActivate(ObjectReference akActionRef)
 			Debug.MessageBox("The lowest scaffold is " + array[0] + " high.")
 			Debug.MessageBox("The highest scaffold is " + array[array.length - 1] + " high.")
 			Debug.MessageBox("The total amount of scaffolding is " + permTotal + ".")
-			Debug.MessageBox("Pillar1 is =" + p1 + " high. Pillar2 is =" + p2 + " high. Pillar3 is =" + p3 + " high. Pillar4 is =" + p4 + " high. Pillar5 is =" + p5 + " high.")
+			;Debug.MessageBox("Pillar1 is =" + p1 + " high. Pillar2 is =" + p2 + " high. Pillar3 is =" + p3 + " high. Pillar4 is =" + p4 + " high. Pillar5 is =" + p5 + " high.")
 			Game.FadeOutGame(False, true, 0.0, 2.0)
 		else;We were doing the minigame... lets turn it in now
 			bool gradedScaffold01 = false
@@ -268,7 +270,10 @@ Event OnActivate(ObjectReference akActionRef)
 				stack5_3.Disable()
 				stack5_4.Disable()
 				stack5_5.Disable()
-				rsFrameworkMenu.TimeStampHours(godStatueTimeStamp)
+				RS_Check_Reward2Claim_GodStatue_Region_Prayer.SetValue(0)
+				rsFrameworkMenu.GetRewardXP_Lamps("construction", "medium")
+				rsFrameworkMenu.TimeStampHours(godStatueTimeStamp);Regional
+				rsFrameworkMenu.TimeStampHours(godStatueTimeStamp_Master)
 				Game.FadeOutGame(False, true, 0.0, 2.0)
 			endif
 		endif
