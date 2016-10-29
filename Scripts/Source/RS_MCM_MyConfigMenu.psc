@@ -278,6 +278,38 @@ ObjectReference Property RuneSkyLocation Auto
 ObjectReference Property SkyrimLocation Auto
 ObjectReference Property SkyrimPlayerStorage Auto
 ObjectReference Property RuneSkyPlayerStorage Auto
+
+ObjectReference Property RS_DnD_GodStatue_Rock_Lumbridge Auto
+ObjectReference Property RS_DnD_GodStatue_Statue_Lumbridge_Saradomin Auto
+ObjectReference Property RS_DnD_GodStatue_Statue_Lumbridge_Bandos Auto
+ObjectReference Property RS_DnD_GodStatue_Statue_Lumbridge_Zamorak Auto
+ObjectReference Property RS_DnD_GodStatue_Statue_Lumbridge_Seren Auto
+ObjectReference Property RS_DnD_GodStatue_Statue_Lumbridge_Guthix Auto
+ObjectReference Property RS_DnD_GodStatue_Rock_Taverly Auto
+ObjectReference Property RS_DnD_GodStatue_Statue_Taverly_Saradomin Auto
+ObjectReference Property RS_DnD_GodStatue_Statue_Taverly_Bandos Auto
+ObjectReference Property RS_DnD_GodStatue_Statue_Taverly_Zamorak Auto
+ObjectReference Property RS_DnD_GodStatue_Statue_Taverly_Seren Auto
+ObjectReference Property RS_DnD_GodStatue_Statue_Taverly_Guthix Auto
+ObjectReference Property RS_DnD_GodStatue_Rock_Yanille Auto
+ObjectReference Property RS_DnD_GodStatue_Statue_Yanille_Saradomin Auto
+ObjectReference Property RS_DnD_GodStatue_Statue_Yanille_Bandos Auto
+ObjectReference Property RS_DnD_GodStatue_Statue_Yanille_Zamorak Auto
+ObjectReference Property RS_DnD_GodStatue_Statue_Yanille_Seren Auto
+ObjectReference Property RS_DnD_GodStatue_Statue_Yanille_Guthix Auto
+ObjectReference Property RS_DnD_GodStatue_Rock_Canifis Auto
+ObjectReference Property RS_DnD_GodStatue_Statue_Canifis_Saradomin Auto
+ObjectReference Property RS_DnD_GodStatue_Statue_Canifis_Bandos Auto
+ObjectReference Property RS_DnD_GodStatue_Statue_Canifis_Zamorak Auto
+ObjectReference Property RS_DnD_GodStatue_Statue_Canifis_Seren Auto
+ObjectReference Property RS_DnD_GodStatue_Statue_Canifis_Guthix Auto
+ObjectReference Property RS_DnD_GodStatue_Rock_Prifddinas Auto
+ObjectReference Property RS_DnD_GodStatue_Statue_Prifddinas_Saradomin Auto
+ObjectReference Property RS_DnD_GodStatue_Statue_Prifddinas_Bandos Auto
+ObjectReference Property RS_DnD_GodStatue_Statue_Prifddinas_Zamorak Auto
+ObjectReference Property RS_DnD_GodStatue_Statue_Prifddinase_Seren Auto
+ObjectReference Property RS_DnD_GodStatue_Statue_Prifddinas_Guthix Auto
+
 ;>
 
 ;< Message Properties
@@ -6583,8 +6615,9 @@ Function UpdateDnDtimers()
 	float timeRemain_SkeletalHorror = RS_Config_DnD_WeeklyInterval.GetValue() - (skyscapeHours - RS_TimeStamp_SkeletalHorror.GetValue())
 	float timeRemain_TearsOfGuthix = RS_Config_DnD_WeeklyInterval.GetValue() - (skyscapeHours - RS_TimeStamp_TearsOfGuthix.GetValue())
 	float timeRemain_GiantOyster = RS_Config_DnD_MonthlyInterval.GetValue() - (skyscapeHours - RS_TimeStamp_GiantOyster.GetValue())
-	float timeRemain_GodStatues = RS_Config_DnD_WeeklyInterval.GetValue() - (skyscapeHours - RS_TimeStamp_GodStatues.GetValue())
-	float timeRemain_TrollInvasion = RS_Config_DnD_WeeklyInterval.GetValue() - (skyscapeHours - RS_TimeStamp_TrollInvasion.GetValue())
+	float timeRemain_GodStatues = RS_Config_DnD_MonthlyInterval.GetValue() - (skyscapeHours - RS_TimeStamp_GodStatues.GetValue())
+	float timeRemain_TrollInvasion = RS_Config_DnD_MonthlyInterval.GetValue() - (skyscapeHours - RS_TimeStamp_TrollInvasion.GetValue())
+	Debug.Trace("TRACE --" + timeRemain_GodStatues + " = " + RS_Config_DnD_MonthlyInterval.GetValue() + " - " + skyscapeHours + " - " + RS_TimeStamp_GodStatues.GetValue())
 	
 	int timeRemain_BigChinchompa_h = Math.Floor(timeRemain_BigChinchompa)
 	int timeRemain_Bork_h = Math.Floor(timeRemain_Bork)
@@ -6636,7 +6669,7 @@ Function UpdateDnDtimers()
 	int timeRemain_GodStatues_m = ((timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60) as int
 	int timeRemain_TrollInvasion_m = ((timeRemain_BigChinchompa - timeRemain_BigChinchompa_h) * 60) as int
 
-	if timeRemain_BigChinchompa <= 0
+	if timeRemain_BigChinchompa <= 0 || RS_TimeStamp_BigChinchompa.GetValue() <= 0
 		stringTimeRemain_BigChinchompa = "00:00"
 	else
 		string zeroHour = ""
@@ -6650,7 +6683,7 @@ Function UpdateDnDtimers()
 		stringTimeRemain_BigChinchompa = zeroHour + "" + timeRemain_BigChinchompa_h + ":" + zeroMinute + "" + timeRemain_BigChinchompa_m
 	endif
 	
-	if timeRemain_Bork <= 0
+	if timeRemain_Bork <= 0 || RS_TimeStamp_Bork.GetValue() <= 0
 		stringTimeRemain_Bork = "00:00"
 	else
 		string zeroHour = ""
@@ -6664,7 +6697,7 @@ Function UpdateDnDtimers()
 		stringTimeRemain_Bork = zeroHour + "" + timeRemain_Bork_h + ":" + zeroMinute + "" + timeRemain_Bork_m
 	endif
 	
-	if timeRemain_DemonFlashmobs <= 0
+	if timeRemain_DemonFlashmobs <= 0 || RS_TimeStamp_DemonFlashmobs.GetValue() <= 0
 		stringTimeRemain_DemonFlashmobs = "00:00"
 	else
 		string zeroHour = ""
@@ -6678,7 +6711,7 @@ Function UpdateDnDtimers()
 		stringTimeRemain_DemonFlashmobs = zeroHour + "" + timeRemain_DemonFlashmobs_h + ":" + zeroMinute + "" + timeRemain_DemonFlashmobs_m
 	endif
 	
-	if timeRemain_EvilTree <= 0
+	if timeRemain_EvilTree <= 0 || RS_TimeStamp_EvilTree.GetValue() <= 0
 		stringTimeRemain_EvilTree = "00:00"
 	else
 		string zeroHour = ""
@@ -6692,7 +6725,7 @@ Function UpdateDnDtimers()
 		stringTimeRemain_EvilTree = zeroHour + "" + timeRemain_EvilTree_h + ":" + zeroMinute + "" + timeRemain_EvilTree_m
 	endif
 	
-	if timeRemain_FishFlingers <= 0
+	if timeRemain_FishFlingers <= 0 || RS_TimeStamp_FishFlingers.GetValue() <= 0
 		stringTimeRemain_FishFlingers = "00:00"
 	else
 		string zeroHour = ""
@@ -6706,7 +6739,7 @@ Function UpdateDnDtimers()
 		stringTimeRemain_FishFlingers = zeroHour + "" + timeRemain_FishFlingers_h + ":" + zeroMinute + "" + timeRemain_FishFlingers_m
 	endif
 	
-	if timeRemain_GoblinRaids <= 0
+	if timeRemain_GoblinRaids <= 0 || RS_TimeStamp_GoblinRaids.GetValue() <= 0
 		stringTimeRemain_GoblinRaids = "00:00"
 	else
 		string zeroHour = ""
@@ -6720,7 +6753,7 @@ Function UpdateDnDtimers()
 		stringTimeRemain_GoblinRaids = zeroHour + "" + timeRemain_GoblinRaids_h + ":" + zeroMinute + "" + timeRemain_GoblinRaids_m
 	endif
 	
-	if timeRemain_GuthixianCaches <= 0
+	if timeRemain_GuthixianCaches <= 0 || RS_TimeStamp_GuthixianCaches.GetValue() <= 0
 		stringTimeRemain_GuthixianCaches = "00:00"
 	else
 		string zeroHour = ""
@@ -6734,7 +6767,7 @@ Function UpdateDnDtimers()
 		stringTimeRemain_GuthixianCaches = zeroHour + "" + timeRemain_GuthixianCaches_h + ":" + zeroMinute + "" + timeRemain_GuthixianCaches_m
 	endif
 	
-	if timeRemain_PhoenixLair <= 0
+	if timeRemain_PhoenixLair <= 0 || RS_TimeStamp_PhoenixLair.GetValue() <= 0
 		stringTimeRemain_PhoenixLair = "00:00"
 	else
 		string zeroHour = ""
@@ -6748,7 +6781,7 @@ Function UpdateDnDtimers()
 		stringTimeRemain_PhoenixLair = zeroHour + "" + timeRemain_PhoenixLair_h + ":" + zeroMinute + "" + timeRemain_PhoenixLair_m
 	endif
 	
-	if timeRemain_RuneGoldbergMachine <= 0
+	if timeRemain_RuneGoldbergMachine <= 0 || RS_TimeStamp_RuneGoldbergMachine.GetValue() <= 0
 		stringTimeRemain_RuneGoldbergMachine = "00:00"
 	else
 		string zeroHour = ""
@@ -6762,7 +6795,7 @@ Function UpdateDnDtimers()
 		stringTimeRemain_RuneGoldbergMachine = zeroHour + "" + timeRemain_RuneGoldbergMachine_h + ":" + zeroMinute + "" + timeRemain_RuneGoldbergMachine_m
 	endif
 	
-	if timeRemain_ShootingStar <= 0
+	if timeRemain_ShootingStar <= 0 || RS_TimeStamp_ShootingStar.GetValue() <= 0
 		stringTimeRemain_ShootingStar = "00:00"
 	else
 		string zeroHour = ""
@@ -6776,7 +6809,7 @@ Function UpdateDnDtimers()
 		stringTimeRemain_ShootingStar = zeroHour + "" + timeRemain_ShootingStar_h + ":" + zeroMinute + "" + timeRemain_ShootingStar_m
 	endif
 	
-	if timeRemain_Sinkholes <= 0
+	if timeRemain_Sinkholes <= 0 || RS_TimeStamp_Sinkholes.GetValue() <= 0
 		stringTimeRemain_Sinkholes = "00:00"
 	else
 		string zeroHour = ""
@@ -6790,7 +6823,7 @@ Function UpdateDnDtimers()
 		stringTimeRemain_Sinkholes = zeroHour + "" + timeRemain_Sinkholes_h + ":" + zeroMinute + "" + timeRemain_Sinkholes_m
 	endif
 	
-	if timeRemain_ThePit <= 0
+	if timeRemain_ThePit <= 0 || RS_TimeStamp_ThePit.GetValue() <= 0
 		stringTimeRemain_ThePit = "00:00"
 	else
 		string zeroHour = ""
@@ -6804,7 +6837,7 @@ Function UpdateDnDtimers()
 		stringTimeRemain_ThePit = zeroHour + "" + timeRemain_ThePit_h + ":" + zeroMinute + "" + timeRemain_ThePit_m
 	endif
 	
-	if timeRemain_WildernessWarbands <= 0
+	if timeRemain_WildernessWarbands <= 0 || RS_TimeStamp_WildernessWarbands.GetValue() <= 0
 		stringTimeRemain_WildernessWarbands = "00:00"
 	else
 		string zeroHour = ""
@@ -6818,7 +6851,7 @@ Function UpdateDnDtimers()
 		stringTimeRemain_WildernessWarbands = zeroHour + "" + timeRemain_WildernessWarbands_h + ":" + zeroMinute + "" + timeRemain_WildernessWarbands_m
 	endif
 	
-	if timeRemain_Agoroth <= 0
+	if timeRemain_Agoroth <= 0 || RS_TimeStamp_Agoroth.GetValue() <= 0
 		stringTimeRemain_Agoroth = "00:00"
 	else
 		string zeroHour = ""
@@ -6832,7 +6865,7 @@ Function UpdateDnDtimers()
 		stringTimeRemain_Agoroth = zeroHour + "" + timeRemain_Agoroth_h + ":" + zeroMinute + "" + timeRemain_Agoroth_m
 	endif
 	
-	if timeRemain_Circus <= 0
+	if timeRemain_Circus <= 0 || RS_TimeStamp_Circus.GetValue() <= 0
 		stringTimeRemain_Circus = "00:00"
 	else
 		string zeroHour = ""
@@ -6846,7 +6879,7 @@ Function UpdateDnDtimers()
 		stringTimeRemain_Circus = zeroHour + "" + timeRemain_Circus_h + ":" + zeroMinute + "" + timeRemain_Circus_m
 	endif
 	
-	if timeRemain_Familiarisation <= 0
+	if timeRemain_Familiarisation <= 0 || RS_TimeStamp_Familiarisation.GetValue() <= 0
 		stringTimeRemain_Familiarisation = "00:00"
 	else
 		string zeroHour = ""
@@ -6860,7 +6893,7 @@ Function UpdateDnDtimers()
 		stringTimeRemain_Familiarisation = zeroHour + "" + timeRemain_Familiarisation_h + ":" + zeroMinute + "" + timeRemain_Familiarisation_m
 	endif
 	
-	if timeRemain_MemoryOfNomad <= 0
+	if timeRemain_MemoryOfNomad <= 0 || RS_TimeStamp_MemoryOfNomad.GetValue() <= 0
 		stringTimeRemain_MemoryOfNomad = "00:00"
 	else
 		string zeroHour = ""
@@ -6874,7 +6907,7 @@ Function UpdateDnDtimers()
 		stringTimeRemain_MemoryOfNomad = zeroHour + "" + timeRemain_MemoryOfNomad_h + ":" + zeroMinute + "" + timeRemain_MemoryOfNomad_m
 	endif
 	
-	if timeRemain_PenguinHideAndSeek <= 0
+	if timeRemain_PenguinHideAndSeek <= 0 || RS_TimeStamp_PenguinHideAndSeek.GetValue() <= 0
 		stringTimeRemain_PenguinHideAndSeek = "00:00"
 	else
 		string zeroHour = ""
@@ -6888,7 +6921,7 @@ Function UpdateDnDtimers()
 		stringTimeRemain_PenguinHideAndSeek = zeroHour + "" + timeRemain_PenguinHideAndSeek_h + ":" + zeroMinute + "" + timeRemain_PenguinHideAndSeek_m
 	endif
 	
-	if timeRemain_RushOfBlood <= 0
+	if timeRemain_RushOfBlood <= 0 || RS_TimeStamp_RushOfBlood.GetValue() <= 0
 		stringTimeRemain_RushOfBlood = "00:00"
 	else
 		string zeroHour = ""
@@ -6902,7 +6935,7 @@ Function UpdateDnDtimers()
 		stringTimeRemain_RushOfBlood = zeroHour + "" + timeRemain_RushOfBlood_h + ":" + zeroMinute + "" + timeRemain_RushOfBlood_m
 	endif
 	
-	if timeRemain_SkeletalHorror <= 0
+	if timeRemain_SkeletalHorror <= 0 || RS_TimeStamp_SkeletalHorror.GetValue() <= 0
 		stringTimeRemain_SkeletalHorror = "00:00"
 	else
 		string zeroHour = ""
@@ -6916,7 +6949,7 @@ Function UpdateDnDtimers()
 		stringTimeRemain_SkeletalHorror = zeroHour + "" + timeRemain_SkeletalHorror_h + ":" + zeroMinute + "" + timeRemain_SkeletalHorror_m
 	endif
 	
-	if timeRemain_TearsOfGuthix <= 0
+	if timeRemain_TearsOfGuthix <= 0 || RS_TimeStamp_TearsOfGuthix.GetValue() <= 0
 		stringTimeRemain_TearsOfGuthix = "00:00"
 	else
 		string zeroHour = ""
@@ -6930,7 +6963,7 @@ Function UpdateDnDtimers()
 		stringTimeRemain_TearsOfGuthix = zeroHour + "" + timeRemain_TearsOfGuthix_h + ":" + zeroMinute + "" + timeRemain_TearsOfGuthix_m
 	endif
 	
-	if timeRemain_GiantOyster <= 0
+	if timeRemain_GiantOyster <= 0 || RS_TimeStamp_GiantOyster.GetValue() <= 0
 		stringTimeRemain_GiantOyster = "00:00"
 	else
 		string zeroHour = ""
@@ -6944,10 +6977,12 @@ Function UpdateDnDtimers()
 		stringTimeRemain_GiantOyster = zeroHour + "" + timeRemain_GiantOyster_h + ":" + zeroMinute + "" + timeRemain_GiantOyster_m
 	endif
 	
-	if timeRemain_GodStatues <= 0
+	if timeRemain_GodStatues <= 0 || RS_TimeStamp_GodStatues.GetValue() <= 0
+		Debug.Trace("TRACE -- Our time remaining was " + timeRemain_GodStatues + ". Our timestamp was " + RS_TimeStamp_GodStatues.GetValue() + " IF")
 		stringTimeRemain_GodStatues = "00:00"
 		ResetDnD_GodStatues()
 	else
+		Debug.Trace("TRACE -- Our time remaining was " + timeRemain_GodStatues + ". Our timestamp was " + RS_TimeStamp_GodStatues.GetValue() + " ELSE")
 		string zeroHour = ""
 		string zeroMinute = ""
 		if timeRemain_GodStatues_h < 10
@@ -6959,7 +6994,7 @@ Function UpdateDnDtimers()
 		stringTimeRemain_GodStatues = zeroHour + "" + timeRemain_GodStatues_h + ":" + zeroMinute + "" + timeRemain_GodStatues_m
 	endif
 	
-	if timeRemain_TrollInvasion <= 0
+	if timeRemain_TrollInvasion <= 0 || RS_TimeStamp_TrollInvasion.GetValue() <= 0
 		stringTimeRemain_TrollInvasion = "00:00"
 	else
 		string zeroHour = ""
@@ -7053,6 +7088,7 @@ Function UpdateAgressions()
 EndFunction
 
 Function ResetDnD_GodStatues()
+	Debug.Trace("TRACE -- ResetDnD_GodStatues called -- Reset Statues and stones.")
 	RS_DnD_GodStatue_Rock_Lumbridge.Enable()
 	RS_DnD_GodStatue_Statue_Lumbridge_Saradomin.Disable()
 	RS_DnD_GodStatue_Statue_Lumbridge_Bandos.Disable()
