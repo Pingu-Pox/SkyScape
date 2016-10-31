@@ -1,3 +1,5 @@
+WIP
+
 Resources:
 http://runescape.wikia.com/wiki/Thieving
 https://www.reddit.com/r/2007scape/comments/301w6d/the_laws_of_gielnor_jagex_formula_transparency/
