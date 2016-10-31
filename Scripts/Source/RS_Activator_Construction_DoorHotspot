@@ -1,4 +1,4 @@
-ScriptName RS_Skill_Construction_DoorHotspotBuild extends ObjectReference
+ScriptName RS_Activator_Construction_DoorHotspot Build extends ObjectReference
 {This script is activated by activating a door hotspot (only visible in building mode), it is used to select a room to build, rotate it to your liking, and place/finalize it}
 
 GlobalVariable Property RS_GV_Stat_Construction Auto
