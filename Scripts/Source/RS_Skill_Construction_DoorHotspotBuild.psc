@@ -1,0 +1,284 @@
+ScriptName RS_Skill_Construction_DoorHotspotBuild extends ObjectReference
+{This script is activated by activating a door hotspot (only visible in building mode), it is used to select a room to build, rotate it to your liking, and place/finalize it}
+
+GlobalVariable Property RS_GV_Stat_Construction Auto
+
+int costGarden = 1000
+int costParlor = 1000
+int costKitchen = 5000
+int costDiningRoom = 5000
+int costWorkshop = 10000
+int costBedroom = 10000
+int costSkillHall = 15000
+int costGamesRoom = 25000
+int costCombatRoom = 25000
+int costQuestHall = 25000
+int costMenagerie = 30000
+int costStudy = 50000
+int costCostumeRoom = 50000
+int costChapel = 50000
+int costPortalChamber = 100000
+int costFormalGarden = 75000
+int costThroneRoom = 150000
+int costAquarium = 200000
+int costOubliette = 150000
+int costDungeon = 7500
+int costPitDungeon = 10000
+int costTreasureRoom = 250000
+
+int reqLvlGarden = 1
+int reqLvlParlor = 1
+int reqLvlKitchen = 5
+int reqLvlDiningRoom = 10
+int reqLvlWorkshop = 15
+int reqLvlBedroom = 20
+int reqLvlSkillHall = 25
+int reqLvlGamesRoom = 30
+int reqLvlCombatRoom = 32
+int reqLvlQuestHall = 35
+int reqLvlMenagerie = 37
+int reqLvlStudy = 40
+int reqLvlCostumeRoom = 42
+int reqLvlChapel = 45
+int reqLvlPortalChamber = 50
+int reqLvlFormalGarden = 55
+int reqLvlThroneRoom = 60
+int reqLvlAquarium = 63
+int reqLvlOubliette = 65
+int reqLvlDungeon = 70
+int reqLvlPitDungeon = 70
+int reqLvlTreasureRoom = 75
+
+ObjectReference Property gardenBuildMarker0 Auto
+ObjectReference Property gardenBuildMarker90 Auto
+ObjectReference Property gardenBuildMarker180 Auto
+ObjectReference Property gardenBuildMarker270 Auto
+ObjectReference Property parlorBuildMarker0 Auto
+ObjectReference Property parlorBuildMarker90 Auto
+ObjectReference Property parlorBuildMarker180 Auto
+ObjectReference Property parlorBuildMarker270 Auto
+ObjectReference Property kitchenBuildMarker0 Auto
+ObjectReference Property kitchenBuildMarker90 Auto
+ObjectReference Property kitchenBuildMarker180 Auto
+ObjectReference Property kitchenBuildMarker270 Auto
+ObjectReference Property diningRoomBuildMarker0 Auto
+ObjectReference Property diningRoomBuildMarker90 Auto
+ObjectReference Property diningRoomBuildMarker180 Auto
+ObjectReference Property diningRoomBuildMarker270 Auto
+ObjectReference Property workshopBuildMarker0 Auto
+ObjectReference Property workshopBuildMarker90 Auto
+ObjectReference Property workshopBuildMarker180 Auto
+ObjectReference Property workshopBuildMarker270 Auto
+ObjectReference Property bedroomBuildMarker0 Auto
+ObjectReference Property bedroomBuildMarker90 Auto
+ObjectReference Property bedroomBuildMarker180 Auto
+ObjectReference Property bedroomBuildMarker270 Auto
+ObjectReference Property skillHallBuildMarker0 Auto
+ObjectReference Property skillHallBuildMarker90 Auto
+ObjectReference Property skillHallBuildMarker180 Auto
+ObjectReference Property skillHallBuildMarker270 Auto
+ObjectReference Property gamesRoomBuildMarker0 Auto
+ObjectReference Property gamesRoomBuildMarker90 Auto
+ObjectReference Property gamesRoomBuildMarker180 Auto
+ObjectReference Property gamesRoomBuildMarker270 Auto
+ObjectReference Property combatRoomBuildMarker0 Auto
+ObjectReference Property combatRoomBuildMarker90 Auto
+ObjectReference Property combatRoomBuildMarker180 Auto
+ObjectReference Property combatRoomBuildMarker270 Auto
+ObjectReference Property questHallBuildMarker0 Auto
+ObjectReference Property questHallBuildMarker90 Auto
+ObjectReference Property questHallBuildMarker180 Auto
+ObjectReference Property questHallBuildMarker270 Auto
+ObjectReference Property menagerieBuildMarker0 Auto
+ObjectReference Property menagerieBuildMarker90 Auto
+ObjectReference Property menagerieBuildMarker180 Auto
+ObjectReference Property menagerieBuildMarker270 Auto
+ObjectReference Property studyBuildMarker0 Auto
+ObjectReference Property studyBuildMarker90 Auto
+ObjectReference Property studyBuildMarker180 Auto
+ObjectReference Property studyBuildMarker270 Auto
+ObjectReference Property costumeRoomBuildMarker0 Auto
+ObjectReference Property costumeRoomBuildMarker90 Auto
+ObjectReference Property costumeRoomBuildMarker180 Auto
+ObjectReference Property costumeRoomBuildMarker270 Auto
+ObjectReference Property chapelBuildMarker0 Auto
+ObjectReference Property chapelBuildMarker90 Auto
+ObjectReference Property chapelBuildMarker180 Auto
+ObjectReference Property chapelBuildMarker270 Auto
+ObjectReference Property portalChamberBuildMarker0 Auto
+ObjectReference Property portalChamberBuildMarker90 Auto
+ObjectReference Property portalChamberBuildMarker180 Auto
+ObjectReference Property portalChamberBuildMarker270 Auto
+ObjectReference Property formalGardenBuildMarker0 Auto
+ObjectReference Property formalGardenBuildMarker90 Auto
+ObjectReference Property formalGardenBuildMarker180 Auto
+ObjectReference Property formalGardenBuildMarker270 Auto
+ObjectReference Property throneRoomBuildMarker0 Auto
+ObjectReference Property throneRoomBuildMarker90 Auto
+ObjectReference Property throneRoomBuildMarker180 Auto
+ObjectReference Property throneRoomBuildMarker270 Auto
+ObjectReference Property aquariumBuildMarker0 Auto
+ObjectReference Property aquariumBuildMarker90 Auto
+ObjectReference Property aquariumBuildMarker180 Auto
+ObjectReference Property aquariumBuildMarker270 Auto
+ObjectReference Property OublietteBuildMarker0 Auto
+ObjectReference Property OublietteBuildMarker90 Auto
+ObjectReference Property OublietteBuildMarker180 Auto
+ObjectReference Property OublietteBuildMarker270 Auto
+ObjectReference Property dungeonBuildMarker0 Auto
+ObjectReference Property dungeonBuildMarker90 Auto
+ObjectReference Property dungeonBuildMarker180 Auto
+ObjectReference Property dungeonBuildMarker270 Auto
+ObjectReference Property pitDungeonBuildMarker0 Auto
+ObjectReference Property pitDungeonBuildMarker90 Auto
+ObjectReference Property pitDungeonBuildMarker180 Auto
+ObjectReference Property pitDungeonBuildMarker270 Auto
+ObjectReference Property treasureRoomBuildMarker0 Auto
+ObjectReference Property treasureRoomBuildMarker90 Auto
+ObjectReference Property treasureRoomBuildMarker180 Auto
+ObjectReference Property treasureRoomBuildMarker270 Auto
+
+Message Property RS_Message_Skill_Construction_BuildWhichHotspot Auto
+Message Property RS_Message_Skill_Construction_BuildWhichRoomGroup1 Auto
+Message Property RS_Message_Skill_Construction_BuildWhichRoomGroup2 Auto
+Message Property RS_Message_Skill_Construction_BuildWhichRoomGroup3 Auto
+Message Property RS_Message_Skill_Construction_BuildWhichRoomGroup4 Auto
+Message Property RS_Message_Skill_Construction_BuildgardenConfirm Auto
+Message Property RS_Message_Skill_Construction_RotateRoom Auto
+
+Miscobject Property gold001 auto
+
+Sound Property buildSound Auto
+
+Event OnActivate(ObjectReference akActionRef);when the player activates this object...
+	ObjectReference playerRef = Game.GetPlayer();set player as a variable so we don't have to keep calling him...
+	If akActionRef == playerRef;if the person who activates this object is the player...
+		bool buildingRoom = true;menu start
+		While (buildingRoom == true)
+			int playerChoice001 = RS_Message_Skill_Construction_BuildWhichHotspot.Show()
+			If playerChoice001 == 0;alpha rooms a-d
+				int playerChoice002 = RS_Message_Skill_Construction_BuildWhichRoomGroup1.Show()
+				If playerChoice002 == 0;room 1Aquarium
+				ElseIf playerChoice002 == 1;room 2Bedroom
+				ElseIf playerChoice002 == 2;room 3Chapel
+				ElseIf playerChoice002 == 3;room 4Combat Room
+				ElseIf playerChoice002 == 4;room 5Costume Room
+				ElseIf playerChoice002 == 5;room 6Dining Room
+				ElseIf playerChoice002 == 6;room 7Dungeon
+				Else;Back
+				EndIf				
+			ElseIf playerChoice001 == 1;alpha rooms e-m
+				int playerChoice002 = RS_Message_Skill_Construction_BuildWhichRoomGroup2.Show()
+				If playerChoice002 == 0;room 1Formal Garden
+				ElseIf playerChoice002 == 1;room 2Games room
+				ElseIf playerChoice002 == 2;room 3Garden
+					int cLvl = RS_GV_Stat_Construction.GetValue() as int
+					If cLvl >= reqLvlGarden
+						int playerChoice003 = RS_Message_Skill_Construction_BuildgardenConfirm.Show();Show price of room
+						If playerChoice003 == 0;yes
+							int goldCount = playerRef.GetItemCount(gold001)
+							If goldCount >= costGarden
+								self.Disable();prevents activator from being activated again, might need to move to end of script if it terminates here...
+								Game.DisablePlayerControls()
+								bool roomRotate = true;start room rotating
+								While (roomRotate == true)
+									Utility.Wait(1)
+									int playerChoice004 = RS_Message_Skill_Construction_RotateRoom.Show()
+									If playerChoice004 == 0;90 degrees Clockwise
+										If (gardenBuildMarker0.IsEnabled());is 0 degrees enabled?
+											gardenBuildMarker0.Disable()
+											gardenBuildMarker90.Enable()
+										ElseIf (gardenBuildMarker90.IsEnabled());is 90 degrees enabled?
+											gardenBuildMarker90.Disable()
+											gardenBuildMarker180.Enable()
+										ElseIf (gardenBuildMarker180.IsEnabled());is 180 degrees enabled?
+											gardenBuildMarker180.Disable()
+											gardenBuildMarker270.Enable()
+										ElseIf (gardenBuildMarker270.IsEnabled());is 270 degrees enabled?
+											gardenBuildMarker270.Disable()
+											gardenBuildMarker0.Enable()
+										Else
+											Debug.MessageBox("Error discerning which room was enabled")
+											gardenBuildMarker0.Disable()
+											gardenBuildMarker90.Disable()
+											gardenBuildMarker180.Disable()
+											gardenBuildMarker270.Disable()
+											roomRotate = false
+										EndIf										
+									ElseIf playerChoice004 == 1;90 degrees CounterClockwise
+										If (gardenBuildMarker0.IsEnabled());is 0 degrees enabled?
+											gardenBuildMarker0.Disable()
+											gardenBuildMarker270.Enable()
+										ElseIf (gardenBuildMarker90.IsEnabled());is 90 degrees enabled?
+											gardenBuildMarker90.Disable()
+											gardenBuildMarker0.Enable()
+										ElseIf (gardenBuildMarker180.IsEnabled());is 180 degrees enabled?
+											gardenBuildMarker180.Disable()
+											gardenBuildMarker90.Enable()
+										ElseIf (gardenBuildMarker270.IsEnabled());is 270 degrees enabled?
+											gardenBuildMarker270.Disable()
+											gardenBuildMarker180.Enable()
+										Else
+											Debug.MessageBox("Error discerning which room was enabled")
+											gardenBuildMarker0.Disable()
+											gardenBuildMarker90.Disable()
+											gardenBuildMarker180.Disable()
+											gardenBuildMarker270.Disable()
+											roomRotate = false
+										EndIf
+									ElseIf playerChoice004 == 2;Finish
+										buildSound.Play(playerRef)
+										playerRef.RemoveItem(gold001, costgarden)
+										roomRotate = false
+										buildingRoom = false
+									Else
+										;exit/do nothing
+										gardenBuildMarker0.Disable()
+										gardenBuildMarker90.Disable()
+										gardenBuildMarker180.Disable()
+										gardenBuildMarker270.Disable()
+										roomRotate = false
+									EndIf
+								EndWhile
+								Game.EnablePlayerControls()
+							Else
+								int neededGold = costGarden - goldCount
+								Debug.MessageBox("Not enough GP, need" + neededGold + "more GP.")
+							EndIf
+						Else;no
+							;exit/do nothing
+						EndIf
+					Else;not high enough level
+						Debug.MessageBox("You do not meet the required construction level of " + reqLvlgarden + " to build this room.")
+					EndIf
+				ElseIf playerChoice002 == 3;room 4Kitchen
+				ElseIf playerChoice002 == 4;room 5Menagerie
+				Else;Back
+				EndIf
+			ElseIf playerChoice001 == 2;alpha rooms n-q
+				int playerChoice002 = RS_Message_Skill_Construction_BuildWhichRoomGroup3.Show()
+				If playerChoice002 == 0;room 1Oubliette
+				ElseIf playerChoice002 == 1;room 2Parlour
+				ElseIf playerChoice002 == 2;room 3Pit Dungeon
+				ElseIf playerChoice002 == 3;room 4Portal Chamber
+				ElseIf playerChoice002 == 4;room 5Quest Hall
+				Else;Back
+				EndIf
+			ElseIf playerChoice001 == 3;alpha rooms r-z
+				int playerChoice002 = RS_Message_Skill_Construction_BuildWhichRoomGroup4.Show()
+				If playerChoice002 == 0;room 1Skill Hall
+				ElseIf playerChoice002 == 1;room 2Study
+				ElseIf playerChoice002 == 2;room 3Throne Room
+				ElseIf playerChoice002 == 3;room 4Treasure Room
+				ElseIf playerChoice002 == 4;room 5Workshop
+				Else;Back
+				EndIf
+			Else;leave menu
+				;exit/do nothing
+				buildingRoom = false
+			EndIf
+		EndWhile
+	Else
+		Debug.Notification("Some other actor tried activating a Construction Hotspot... naughty!!")
+	EndIf
+EndEvent
