@@ -121,7 +121,7 @@ Event OnEffectStart(Actor akCaster, Actor akTarget)
 		meilyr worker
 		else
 		endif
-		
+		getplayer's information
 		;Roll Failure Probability, pass in above formlist to classify
 		
 		if true
