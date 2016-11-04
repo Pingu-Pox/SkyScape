@@ -230,6 +230,15 @@ Function HarvestItemOnce(GlobalVariable skillCounter, ObjectReference objRef, Ac
 	EndIf	
 EndFunction
 
+;--ACTION--Item stealing script, optional xp gain, has random events
+bool Function TryToSteal_NPC() Global
+	if (((GetGlobalCheck_RandomEvents()).GetValue()) == 1)
+		RollRandomEvent("thieving", spawnLocation)
+	endif
+	;roll
+	if roll == true
+EndFunction
+
 ;--ACTION--Cluster-Item harvesting script (like oak trees and LRC mineral deposits), optional xp gain, has random events -- come back to this part and add multi-add item statements  
 Function HarvestItemCluster(GlobalVariable skillCounter, ObjectReference objRef, Activator depletedActivator, int reqLVL, MiscObject newItem, Weapon equippedTool, Sound harvestSound, Sound depleteSound,  ObjectReference soundSource, Float respawnInterval, int addCount, bool xpGain = false, string skillName = "", float gainedXP = 0.0, ObjectReference spawnLocation) Global
 	if (((GetGlobalCheck_RandomEvents()).GetValue()) == 1)
@@ -304,19 +313,16 @@ float Function GetElapsedSeconds(GlobalVariable prevTime) Global
 	return (skyscapeSeconds - (prevTime.GetValue()))
 EndFunction
 
-;--FUNCTION--This gets the current play-time, and assigns it to a global variable in hours
 Function TimeStampHours(GlobalVariable globalValue) Global
 	float skyscapeHours = (Utility.GetCurrentRealTime()) / 3600
 	globalValue.SetValue(skyscapeHours)
 EndFunction
 
-;--FUNCTION--This gets the current play-time, and assigns it to a global variable in Minutes
 Function TimeStampMinutes(GlobalVariable globalValue) Global
 	float skyscapeMinutes = (Utility.GetCurrentRealTime()) / 60
 	globalValue.SetValue(skyscapeMinutes)
 EndFunction
 
-;--FUNCTION--This gets the current play-time, and assigns it to a global variable in Seconds
 Function TimeStampSeconds(GlobalVariable globalValue) Global
 	float skyscapeSeconds = (Utility.GetCurrentRealTime())
 	globalValue.SetValue(skyscapeSeconds)
@@ -324,426 +330,6 @@ EndFunction
 
 ;>
 ;< Child functions - do not use these functions, use the parent above
-
-;Gets the amount of xp to reward the player based on their level (Lamps)
-Function GetRewardXP_Lamps(String skillName, string size) Global
-	GlobalVariable skillLevel = rsGetLVLGlobalFromString(skillName)
-	GlobalVariable skillXP = rsGetXPGlobalFromString(skillName)
-	int level = skillLevel.GetValue() as int
-	int multiplier
-	if size == "small"
-		int mult = (GetVariable_LampMod())
-		multiplier = 1 * mult
-	elseif size == "medium"
-		int mult = (GetVariable_LampMod())
-		multiplier = 2 * mult
-	elseif size == "large"
-		int mult = (GetVariable_LampMod())
-		multiplier = 4 * mult
-	elseif size == "huge"
-		int mult = (GetVariable_LampMod())
-		multiplier = 8 * mult
-	else
-		Debug.MessageBox("ERROR: Cannot get Lamp-size!")
-	endif
-	
-	if level == 1
-		int xp = 62 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 2
-		int xp = 69 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 3
-		int xp = 77 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 4
-		int xp = 85 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 5
-		int xp = 93 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 6
-		int xp = 104 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 7
-		int xp = 123 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 8
-		int xp = 127 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 9
-		int xp = 194 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 10
-		int xp = 153 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 11
-		int xp = 170 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 12
-		int xp = 188 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 13
-		int xp = 205 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 14
-		int xp = 229 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 15
-		int xp = 252 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 16
-		int xp = 261 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 17
-		int xp = 274 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 18
-		int xp = 285 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 19
-		int xp = 298 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 20
-		int xp = 310 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 21
-		int xp = 324 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 22
-		int xp = 337 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 23
-		int xp = 352 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 24
-		int xp = 367 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 25
-		int xp = 384 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 26
-		int xp = 399 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 27
-		int xp = 405 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 28
-		int xp = 414 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 29
-		int xp = 453 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 30
-		int xp = 473 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 31
-		int xp = 493 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 32
-		int xp = 514 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 33
-		int xp = 536 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 34
-		int xp = 559 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 35
-		int xp = 583 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 36
-		int xp = 608 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 37
-		int xp = 635 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 38
-		int xp = 662 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 39
-		int xp = 691 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 40
-		int xp = 720 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 41
-		int xp = 752 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 42
-		int xp = 784 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 43
-		int xp = 818 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 44
-		int xp = 853 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 45
-		int xp = 889 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 46
-		int xp = 929 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 47
-		int xp = 970 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 48
-		int xp = 1012 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 49
-		int xp = 1055 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 50
-		int xp = 1101 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 51
-		int xp = 1148 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 52
-		int xp = 1200 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 53
-		int xp = 1249 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 54
-		int xp = 1304 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 55
-		int xp = 1362 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 56
-		int xp = 1422 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 57
-		int xp = 1485 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 58
-		int xp = 1546 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 59
-		int xp = 1616 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 60
-		int xp = 1684 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 61
-		int xp = 1757 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 62
-		int xp = 1835 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 63
-		int xp = 1911 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 64
-		int xp = 2004 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 65
-		int xp = 2108 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 66
-		int xp = 2171 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 67
-		int xp = 2269 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 68
-		int xp = 2379 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 69
-		int xp = 2470 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 70
-		int xp = 2592 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 71
-		int xp = 2693 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 72
-		int xp = 2809 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 73
-		int xp = 2946 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 74
-		int xp = 3082 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 75
-		int xp = 3213 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 76
-		int xp = 3339 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 77
-		int xp = 3495 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 78
-		int xp = 3646 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 79
-		int xp = 3792 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 80
-		int xp = 3980 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 81
-		int xp = 4166 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 82
-		int xp = 4347 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 83
-		int xp = 4521 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 84
-		int xp = 4762 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 85
-		int xp = 4918 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 86
-		int xp = 5033 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 87
-		int xp = 5375 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 88
-		int xp = 5592 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 89
-		int xp = 5922 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 90
-		int xp = 6121 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 91
-		int xp = 6451 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 92
-		int xp = 6614 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 93
-		int xp = 6928 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 94
-		int xp = 7236 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 95
-		int xp = 7532 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 96
-		int xp = 8064 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level == 97
-		int xp = 8347 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	elseif level >= 98
-		int xp = 8602 * multiplier
-		skillXP.SetValue((skillXP.GetValue() + xp))
-		Debug.Notification("You have gained " + xp + " experience points in the " + skillName + " skill.")
-	else
-		Debug.MessageBox("ERROR: Cannot discern skill level!")
-	endif
-	rsCheckForLevelUp(skillName)
-EndFunction
 
 ;Returns the strength of the equipped tool (pickaxe or hatchet)
 Float Function GetToolStrength(weapon equippedTool) Global
@@ -20676,14 +20262,6 @@ EndFunction
 
 ;>
 ;< Low-Level Framework
-;< Get Config Properties
-;Gets property from rsFrameworkData
-Int Function GetVariable_LampMod() Global
-	GlobalVariable lampMod = GetFrameworkData().RS_Check_LampMod
-	int lampModInt = lampMod.GetValue() as int
-	return  lampModInt
-EndFunction
-;>
 ;< Get Skill Properties
 ;< Agility
 
@@ -21335,15 +20913,6 @@ EndFunction
 ;>
 ;>
 ;< Get Checks
-
-;Checks if it is Halloween
-Bool Function IsItHalloween() Global
-	if (GetFrameworkData().RS_Check_IsItHalloween).GetValue() == 1
-		return false
-	else
-		return true
-	endif
-EndFunction
 
 ;Gets property from rsFrameworkData
 GlobalVariable Function GetGlobalCheck_RandomEvents() Global
