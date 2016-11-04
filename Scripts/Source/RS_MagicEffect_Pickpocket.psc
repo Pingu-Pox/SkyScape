@@ -83,61 +83,135 @@ Quadruple Loot = [level]+30 thieving and [level]+20 agility
 	Possible prob:
 	(1% for every thieving level above the required lvl)
 	
-ScriptName RS_MagicEffect_ThievingSpell Extends ActiveMagicEffect
-{Script that handles probability for pickpocketing using touch spell, see if you can squeeze the logic processing into a single second, 3 is the max}
+Scriptname rsFrameworkTest Extends ActiveMagicEffect
+{Script for testing... things}
 
-Event OnEffectStart(Actor akCaster, Actor akTarget)
-	Debug.Trace("TRACE -- OnEffectStart Event Started...")
-	If akCaster == Game.GetPlayer()
-		;get information on target, xp, difficulty, etc.
-		if (use formlist properties to classify NPCs in groups (i.e. guards = Varrock Guards, Lumby guards, falador guards, etc))
-		man/woman (quest NPCs can be put in this group most likely)
-		farmer
-		female ham
-		male ham
-		ham guard
-		warrior woman/al kharid warrior
-		rogue
-		cave goblin
-		master farmer
-		guard
-		fremennik citizen
-		beared pollnivian bandit
-		desert bandit
-		knight of ardy
-		pollnivian bandit
-		yanille watchman
-		menaphite thug
-		paladin
-		monkey knife fighter
-		gnome
-		hero
-		elf
-		dwarf trader
-		iorwerth worker
-		ithell worker
-		cadarn worker
-		amlodd worker
-		trahaearn worker
-		hefin worker
-		meilyr worker
-		else
-		endif
-		getplayer's information
-		;Roll Failure Probability, pass in above formlist to classify
-		
-		if true
-			;succeed
-			;roll for loot
-			;grant xp and check for level up
-		else false
-			;fail
-			;damage and stun player
-			damage = get player's current HP, multiply by 0.03... the player loses 3% of their life each failure
-			
-		endif
+Formlist Property RS_PickpocketList_MenWomenQuest Auto
+Formlist Property RS_PickpocketList_Farmer Auto
+Formlist Property RS_PickpocketList_HamFemale Auto
+Formlist Property RS_PickpocketList_HamMale Auto
+Formlist Property RS_PickpocketList_HamGuard Auto
+Formlist Property RS_PickpocketList_AlKharidWarriorWomen Auto
+Formlist Property RS_PickpocketList_Rogue Auto
+Formlist Property RS_PickpocketList_CaveGoblin Auto
+Formlist Property RS_PickpocketList_MasterFarmer Auto
+Formlist Property RS_PickpocketList_Guard Auto
+Formlist Property RS_PickpocketList_FremennikCitizen Auto
+Formlist Property RS_PickpocketList_BeardedPollnivianBandit Auto
+Formlist Property RS_PickpocketList_DesertBandit Auto
+Formlist Property RS_PickpocketList_KnightOfArdougne Auto
+Formlist Property RS_PickpocketList_PollnivianBandit Auto
+Formlist Property RS_PickpocketList_YanilleWatchman Auto
+Formlist Property RS_PickpocketList_MenaphiteThug Auto
+Formlist Property RS_PickpocketList_Paladin Auto
+Formlist Property RS_PickpocketList_MonkeyKnifeFighter Auto
+Formlist Property RS_PickpocketList_Gnome Auto
+Formlist Property RS_PickpocketList_Hero Auto
+Formlist Property RS_PickpocketList_Elf Auto
+Formlist Property RS_PickpocketList_DwarfTrader Auto
+Formlist Property RS_PickpocketList_IorwerthWorker Auto
+Formlist Property RS_PickpocketList_IthellWorker Auto
+Formlist Property RS_PickpocketList_CadarnWorker Auto
+Formlist Property RS_PickpocketList_AmloddWorker Auto
+Formlist Property RS_PickpocketList_TrahaearnWorker Auto
+Formlist Property RS_PickpocketList_HefinWorker Auto
+Formlist Property RS_PickpocketList_MeilyrWorker Auto
+
+LeveledItem Property RS_PickpocketLoot_MenWomenQuest Auto
+
+Spell Property RS_Script_ParalyzePlayer Auto
+
+Event OnEffectStart(Actor akTarget, Actor akCaster)
+	Debug.Trace("TRACE -- OnEffectStart...")
+	If akCaster != Game.GetPlayer()
+		;Do nothing
 	Else
-		;some other actor tried casting this touch spell...
-	Endif
-	Debug.Trace("TRACE -- ...OnEffectStart Event Ended")
+		FindTarget(akTarget)
+	EndIf
+	Debug.Trace("TRACE -- ... OnEffectStart Ended")
 EndEvent
+
+Function FindTarget(Actor akTarget)
+	Form akTargetForm = akTarget.GetActorBase() as Form
+	Debug.Trace("TRACE -- Tried to pickpocket a " + akTargetForm.GetName() +"...")
+	if RS_PickpocketList_MenWomenQuest.HasForm(akTargetForm)
+		int reqLVLt = 1
+		float xp = 8.0
+		if ((rsFrameworkMenu.GetThievingLVL()).GetValue()) < reqLVLt
+			Debug.Notification("You lack the required thieving level of '" + reqLVLt + "'")
+		else
+			bool roll = true
+			;roll
+			if (roll == false)
+				RS_Script_ParalyzePlayer.Cast(Game.GetPlayer(), Game.GetPlayer())
+				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))));Damage the player for 3% of their current HP
+				
+			else
+				;roll for loot and multi-loot
+				Game.GetPlayer().AddItem(RS_PickpocketLoot_MenWomenQuest, 1)
+				;grant xp and check for level up
+				
+			endif
+		endif
+	elseif RS_PickpocketList_Farmer.HasForm(akTargetForm)
+	
+	elseif RS_PickpocketList_HamFemale.HasForm(akTargetForm)
+	
+	elseif RS_PickpocketList_HamMale.HasForm(akTargetForm)
+	
+	elseif RS_PickpocketList_HamGuard.HasForm(akTargetForm)
+	
+	elseif RS_PickpocketList_AlKharidWarriorWomen.HasForm(akTargetForm)
+	
+	elseif RS_PickpocketList_Rogue.HasForm(akTargetForm)
+	
+	elseif RS_PickpocketList_CaveGoblin.HasForm(akTargetForm)
+	
+	elseif RS_PickpocketList_MasterFarmer.HasForm(akTargetForm)
+	
+	elseif RS_PickpocketList_Guard.HasForm(akTargetForm)
+	
+	elseif RS_PickpocketList_FremennikCitizen.HasForm(akTargetForm)
+	
+	elseif RS_PickpocketList_BeardedPollnivianBandit.HasForm(akTargetForm)
+	
+	elseif RS_PickpocketList_DesertBandit.HasForm(akTargetForm)
+	
+	elseif RS_PickpocketList_KnightOfArdougne.HasForm(akTargetForm)
+	
+	elseif RS_PickpocketList_PollnivianBandit.HasForm(akTargetForm)
+	
+	elseif RS_PickpocketList_YanilleWatchman.HasForm(akTargetForm)
+	
+	elseif RS_PickpocketList_MenaphiteThug.HasForm(akTargetForm)
+	
+	elseif RS_PickpocketList_Paladin.HasForm(akTargetForm)
+	
+	elseif RS_PickpocketList_MonkeyKnifeFighter.HasForm(akTargetForm)
+	
+	elseif RS_PickpocketList_Gnome.HasForm(akTargetForm)
+	
+	elseif RS_PickpocketList_Hero.HasForm(akTargetForm)
+	
+	elseif RS_PickpocketList_Elf.HasForm(akTargetForm)
+	
+	elseif RS_PickpocketList_DwarfTrader.HasForm(akTargetForm)
+	
+	elseif RS_PickpocketList_IorwerthWorker.HasForm(akTargetForm)
+	
+	elseif RS_PickpocketList_IthellWorker.HasForm(akTargetForm)
+	
+	elseif RS_PickpocketList_CadarnWorker.HasForm(akTargetForm)
+	
+	elseif RS_PickpocketList_AmloddWorker.HasForm(akTargetForm)
+	
+	elseif RS_PickpocketList_TrahaearnWorker.HasForm(akTargetForm)
+	
+	elseif RS_PickpocketList_HefinWorker.HasForm(akTargetForm)
+	
+	elseif RS_PickpocketList_MeilyrWorker.HasForm(akTargetForm)
+	
+	else
+		Debug.Trace("TRACE -- You cannot pick this target's pockets.")
+	endif
+EndFunction
