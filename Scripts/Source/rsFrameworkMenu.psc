@@ -231,12 +231,23 @@ Function HarvestItemOnce(GlobalVariable skillCounter, ObjectReference objRef, Ac
 EndFunction
 
 ;--ACTION--Item stealing script, optional xp gain, has random events
-bool Function TryToSteal_NPC() Global
+bool Function TryToSteal_NPC(int reqLVL) Global
 	if (((GetGlobalCheck_RandomEvents()).GetValue()) == 1)
 		RollRandomEvent("thieving", spawnLocation)
 	endif
-	;roll
-	if roll == true
+	if ((GetThievingLVL()).GetValue() - reqLVL) < 20
+		if (Utility.RandomInt(1,2) == 1)
+            return false
+		else
+			return true
+		endif
+	else
+		if (Utility.RandomInt(1,4) == 1)
+            return false
+		else
+			return true
+		endif
+	endif
 EndFunction
 
 ;--ACTION--Cluster-Item harvesting script (like oak trees and LRC mineral deposits), optional xp gain, has random events -- come back to this part and add multi-add item statements  
