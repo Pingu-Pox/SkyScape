@@ -1,3 +1,20 @@
+Skip to content
+This repository
+Search
+Pull requests
+Issues
+Gist
+ @TripleSixes
+ Watch 0
+  Star 0
+  Fork 0 TripleSixes/SkyScape
+ Code  Issues 0  Pull requests 0  Projects 0  Wiki  Pulse  Graphs  Settings
+Branch: master Find file Copy pathSkyScape/Scripts/Source/RS_MagicEffect_Pickpocket.psc
+b407f19  2 days ago
+@TripleSixes TripleSixes Update RS_MagicEffect_Pickpocket.psc
+1 contributor
+RawBlameHistory     
+737 lines (671 sloc)  29.8 KB
 ;< Information
 ;WIP
 ;
@@ -734,3 +751,5 @@ Function FindTarget(Actor akTarget)
 		Debug.Trace("TRACE -- You cannot pick this target's pockets.")
 	endif
 EndFunction
+Contact GitHub API Training Shop Blog About
+© 2016 GitHub, Inc. Terms Privacy Security Status Help
