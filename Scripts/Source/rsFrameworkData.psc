@@ -183,6 +183,13 @@ ActorBase Property RS_Monster_TreeSpirit_re_049 Auto
 ActorBase Property RS_Monster_TreeSpirit_re_079 Auto
 ActorBase Property RS_Monster_TreeSpirit_re_120 Auto
 ActorBase Property RS_Monster_TreeSpirit_re_159 Auto
+
+ActorBase Property RS_Monster_Watchman_re_014 Auto
+ActorBase Property RS_Monster_Watchman_re_029 Auto
+ActorBase Property RS_Monster_Watchman_re_049 Auto
+ActorBase Property RS_Monster_Watchman_re_079 Auto
+ActorBase Property RS_Monster_Watchman_re_120 Auto
+ActorBase Property RS_Monster_Watchman_re_159 Auto
 ;>
 ;< Weapon Properties
 Weapon Property RS_Item_Weapon_Special_InfernoAdze Auto
