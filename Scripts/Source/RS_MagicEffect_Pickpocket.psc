@@ -1,5 +1,5 @@
-Scriptname rsFrameworkTest Extends ActiveMagicEffect
-{Script for testing... things}
+Scriptname RS_MagicEffect_Pickpocket Extends ActiveMagicEffect
+{Script that handles pickpocketing}
 ;< Properties
 Formlist Property RS_PickpocketList_MenWomenQuest Auto
 Formlist Property RS_PickpocketList_Farmer Auto
@@ -68,13 +68,13 @@ LeveledItem Property RS_PickpocketLoot_MeilyrWorker Auto
 Spell Property RS_Script_ParalyzePlayer Auto
 ;>
 Event OnEffectStart(Actor akTarget, Actor akCaster)
-	Debug.Trace("TRACE -- OnEffectStart...")
+	Debug.Trace("TRACE -- Pickpocket Started...")
 	If akCaster != Game.GetPlayer()
 		;Do nothing
 	Else
 		FindTarget(akTarget)
 	EndIf
-	Debug.Trace("TRACE -- ... OnEffectStart Ended")
+	Debug.Trace("TRACE -- ... Pickpocket Ended")
 EndEvent
 
 Function FindTarget(Actor akTarget)
@@ -86,16 +86,16 @@ Function FindTarget(Actor akTarget)
 		if ((rsFrameworkMenu.GetThievingLVL()).GetValue()) < reqLVLt
 			Debug.Notification("You lack the required thieving level of '" + reqLVLt + "'")
 		else
-			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
+			ObjectReference targetRef = akTarget as ObjectReference
+			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt, targetRef)
 			
 			if (roll == false)
 				RS_Script_ParalyzePlayer.Cast(Game.GetPlayer(), Game.GetPlayer())
-				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))));Damage the player for 3% of their current HP
+				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))))
 				
 			else
-				bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
-				Game.GetPlayer().AddItem(RS_PickpocketLoot_MenWomenQuest, 1)
-				;grant xp and check for level up
+				int pickpocketCount = rsFrameworkMenu.RollMultiSteal(reqLVLt)
+				Game.GetPlayer().AddItem(RS_PickpocketLoot_MenWomenQuest, pickpocketCount)
 				rsFrameworkMenu.rsXPGain("thieving", xp)
 			endif
 		endif
@@ -105,16 +105,16 @@ Function FindTarget(Actor akTarget)
 		if ((rsFrameworkMenu.GetThievingLVL()).GetValue()) < reqLVLt
 			Debug.Notification("You lack the required thieving level of '" + reqLVLt + "'")
 		else
-			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
+			ObjectReference targetRef = akTarget as ObjectReference
+			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt, targetRef)
 			
 			if (roll == false)
 				RS_Script_ParalyzePlayer.Cast(Game.GetPlayer(), Game.GetPlayer())
-				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))));Damage the player for 3% of their current HP
+				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))))
 				
 			else
-				bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
-				Game.GetPlayer().AddItem(RS_PickpocketLoot_Farmer, 1)
-				;grant xp and check for level up
+				int pickpocketCount = rsFrameworkMenu.RollMultiSteal(reqLVLt)
+				Game.GetPlayer().AddItem(RS_PickpocketLoot_Farmer, pickpocketCount)
 				rsFrameworkMenu.rsXPGain("thieving", xp)
 			endif
 		endif
@@ -124,16 +124,16 @@ Function FindTarget(Actor akTarget)
 		if ((rsFrameworkMenu.GetThievingLVL()).GetValue()) < reqLVLt
 			Debug.Notification("You lack the required thieving level of '" + reqLVLt + "'")
 		else
-			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
+			ObjectReference targetRef = akTarget as ObjectReference
+			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt, targetRef)
 			
 			if (roll == false)
 				RS_Script_ParalyzePlayer.Cast(Game.GetPlayer(), Game.GetPlayer())
-				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))));Damage the player for 3% of their current HP
+				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))))
 				
 			else
-				bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
-				Game.GetPlayer().AddItem(RS_PickpocketLoot_HamFemale, 1)
-				;grant xp and check for level up
+				int pickpocketCount = rsFrameworkMenu.RollMultiSteal(reqLVLt)
+				Game.GetPlayer().AddItem(RS_PickpocketLoot_HamFemale, pickpocketCount)
 				rsFrameworkMenu.rsXPGain("thieving", xp)
 			endif
 		endif
@@ -143,16 +143,16 @@ Function FindTarget(Actor akTarget)
 		if ((rsFrameworkMenu.GetThievingLVL()).GetValue()) < reqLVLt
 			Debug.Notification("You lack the required thieving level of '" + reqLVLt + "'")
 		else
-			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
+			ObjectReference targetRef = akTarget as ObjectReference
+			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt, targetRef)
 			
 			if (roll == false)
 				RS_Script_ParalyzePlayer.Cast(Game.GetPlayer(), Game.GetPlayer())
-				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))));Damage the player for 3% of their current HP
+				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))))
 				
 			else
-				bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
-				Game.GetPlayer().AddItem(RS_PickpocketLoot_HamMale, 1)
-				;grant xp and check for level up
+				int pickpocketCount = rsFrameworkMenu.RollMultiSteal(reqLVLt)
+				Game.GetPlayer().AddItem(RS_PickpocketLoot_HamMale, pickpocketCount)
 				rsFrameworkMenu.rsXPGain("thieving", xp)
 			endif
 		endif
@@ -162,16 +162,16 @@ Function FindTarget(Actor akTarget)
 		if ((rsFrameworkMenu.GetThievingLVL()).GetValue()) < reqLVLt
 			Debug.Notification("You lack the required thieving level of '" + reqLVLt + "'")
 		else
-			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
+			ObjectReference targetRef = akTarget as ObjectReference
+			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt, targetRef)
 			
 			if (roll == false)
 				RS_Script_ParalyzePlayer.Cast(Game.GetPlayer(), Game.GetPlayer())
-				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))));Damage the player for 3% of their current HP
+				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))))
 				
 			else
-				bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
-				Game.GetPlayer().AddItem(RS_PickpocketLoot_HamGuard, 1)
-				;grant xp and check for level up
+				int pickpocketCount = rsFrameworkMenu.RollMultiSteal(reqLVLt)
+				Game.GetPlayer().AddItem(RS_PickpocketLoot_HamGuard, pickpocketCount)
 				rsFrameworkMenu.rsXPGain("thieving", xp)
 			endif
 		endif
@@ -181,16 +181,16 @@ Function FindTarget(Actor akTarget)
 		if ((rsFrameworkMenu.GetThievingLVL()).GetValue()) < reqLVLt
 			Debug.Notification("You lack the required thieving level of '" + reqLVLt + "'")
 		else
-			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
+			ObjectReference targetRef = akTarget as ObjectReference
+			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt, targetRef)
 			
 			if (roll == false)
 				RS_Script_ParalyzePlayer.Cast(Game.GetPlayer(), Game.GetPlayer())
-				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))));Damage the player for 3% of their current HP
+				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))))
 				
 			else
-				bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
-				Game.GetPlayer().AddItem(RS_PickpocketLoot_AlKharidWarriorWomen, 1)
-				;grant xp and check for level up
+				int pickpocketCount = rsFrameworkMenu.RollMultiSteal(reqLVLt)
+				Game.GetPlayer().AddItem(RS_PickpocketLoot_AlKharidWarriorWomen, pickpocketCount)
 				rsFrameworkMenu.rsXPGain("thieving", xp)
 			endif
 		endif
@@ -200,16 +200,16 @@ Function FindTarget(Actor akTarget)
 		if ((rsFrameworkMenu.GetThievingLVL()).GetValue()) < reqLVLt
 			Debug.Notification("You lack the required thieving level of '" + reqLVLt + "'")
 		else
-			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
+			ObjectReference targetRef = akTarget as ObjectReference
+			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt, targetRef)
 			
 			if (roll == false)
 				RS_Script_ParalyzePlayer.Cast(Game.GetPlayer(), Game.GetPlayer())
-				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))));Damage the player for 3% of their current HP
+				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))))
 				
 			else
-				bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
-				Game.GetPlayer().AddItem(RS_PickpocketLoot_Rogue, 1)
-				;grant xp and check for level up
+				int pickpocketCount = rsFrameworkMenu.RollMultiSteal(reqLVLt)
+				Game.GetPlayer().AddItem(RS_PickpocketLoot_Rogue, pickpocketCount)
 				rsFrameworkMenu.rsXPGain("thieving", xp)
 			endif
 		endif
@@ -219,16 +219,16 @@ Function FindTarget(Actor akTarget)
 		if ((rsFrameworkMenu.GetThievingLVL()).GetValue()) < reqLVLt
 			Debug.Notification("You lack the required thieving level of '" + reqLVLt + "'")
 		else
-			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
+			ObjectReference targetRef = akTarget as ObjectReference
+			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt, targetRef)
 			
 			if (roll == false)
 				RS_Script_ParalyzePlayer.Cast(Game.GetPlayer(), Game.GetPlayer())
-				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))));Damage the player for 3% of their current HP
+				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))))
 				
 			else
-				bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
-				Game.GetPlayer().AddItem(RS_PickpocketLoot_CaveGoblin, 1)
-				;grant xp and check for level up
+				int pickpocketCount = rsFrameworkMenu.RollMultiSteal(reqLVLt)
+				Game.GetPlayer().AddItem(RS_PickpocketLoot_CaveGoblin, pickpocketCount)
 				rsFrameworkMenu.rsXPGain("thieving", xp)
 			endif
 		endif
@@ -238,16 +238,16 @@ Function FindTarget(Actor akTarget)
 		if ((rsFrameworkMenu.GetThievingLVL()).GetValue()) < reqLVLt
 			Debug.Notification("You lack the required thieving level of '" + reqLVLt + "'")
 		else
-			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
+			ObjectReference targetRef = akTarget as ObjectReference
+			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt, targetRef)
 			
 			if (roll == false)
 				RS_Script_ParalyzePlayer.Cast(Game.GetPlayer(), Game.GetPlayer())
-				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))));Damage the player for 3% of their current HP
+				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))))
 				
 			else
-				bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
-				Game.GetPlayer().AddItem(RS_PickpocketLoot_MasterFarmer, 1)
-				;grant xp and check for level up
+				int pickpocketCount = rsFrameworkMenu.RollMultiSteal(reqLVLt)
+				Game.GetPlayer().AddItem(RS_PickpocketLoot_MasterFarmer, pickpocketCount)
 				rsFrameworkMenu.rsXPGain("thieving", xp)
 			endif
 		endif
@@ -257,16 +257,16 @@ Function FindTarget(Actor akTarget)
 		if ((rsFrameworkMenu.GetThievingLVL()).GetValue()) < reqLVLt
 			Debug.Notification("You lack the required thieving level of '" + reqLVLt + "'")
 		else
-			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
+			ObjectReference targetRef = akTarget as ObjectReference
+			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt, targetRef)
 			
 			if (roll == false)
 				RS_Script_ParalyzePlayer.Cast(Game.GetPlayer(), Game.GetPlayer())
-				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))));Damage the player for 3% of their current HP
+				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))))
 				
 			else
-				bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
-				Game.GetPlayer().AddItem(RS_PickpocketLoot_Guard, 1)
-				;grant xp and check for level up
+				int pickpocketCount = rsFrameworkMenu.RollMultiSteal(reqLVLt)
+				Game.GetPlayer().AddItem(RS_PickpocketLoot_Guard, pickpocketCount)
 				rsFrameworkMenu.rsXPGain("thieving", xp)
 			endif
 		endif
@@ -276,16 +276,16 @@ Function FindTarget(Actor akTarget)
 		if ((rsFrameworkMenu.GetThievingLVL()).GetValue()) < reqLVLt
 			Debug.Notification("You lack the required thieving level of '" + reqLVLt + "'")
 		else
-			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
+			ObjectReference targetRef = akTarget as ObjectReference
+			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt, targetRef)
 			
 			if (roll == false)
 				RS_Script_ParalyzePlayer.Cast(Game.GetPlayer(), Game.GetPlayer())
-				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))));Damage the player for 3% of their current HP
+				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))))
 				
 			else
-				bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
-				Game.GetPlayer().AddItem(RS_PickpocketLoot_FremennikCitizen, 1)
-				;grant xp and check for level up
+				int pickpocketCount = rsFrameworkMenu.RollMultiSteal(reqLVLt)
+				Game.GetPlayer().AddItem(RS_PickpocketLoot_FremennikCitizen, pickpocketCount)
 				rsFrameworkMenu.rsXPGain("thieving", xp)
 			endif
 		endif
@@ -295,16 +295,16 @@ Function FindTarget(Actor akTarget)
 		if ((rsFrameworkMenu.GetThievingLVL()).GetValue()) < reqLVLt
 			Debug.Notification("You lack the required thieving level of '" + reqLVLt + "'")
 		else
-			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
+			ObjectReference targetRef = akTarget as ObjectReference
+			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt, targetRef)
 			
 			if (roll == false)
 				RS_Script_ParalyzePlayer.Cast(Game.GetPlayer(), Game.GetPlayer())
-				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))));Damage the player for 3% of their current HP
+				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))))
 				
 			else
-				bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
-				Game.GetPlayer().AddItem(RS_PickpocketLoot_BeardedPollnivianBandit, 1)
-				;grant xp and check for level up
+				int pickpocketCount = rsFrameworkMenu.RollMultiSteal(reqLVLt)
+				Game.GetPlayer().AddItem(RS_PickpocketLoot_BeardedPollnivianBandit, pickpocketCount)
 				rsFrameworkMenu.rsXPGain("thieving", xp)
 			endif
 		endif
@@ -314,16 +314,16 @@ Function FindTarget(Actor akTarget)
 		if ((rsFrameworkMenu.GetThievingLVL()).GetValue()) < reqLVLt
 			Debug.Notification("You lack the required thieving level of '" + reqLVLt + "'")
 		else
-			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
+			ObjectReference targetRef = akTarget as ObjectReference
+			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt, targetRef)
 			
 			if (roll == false)
 				RS_Script_ParalyzePlayer.Cast(Game.GetPlayer(), Game.GetPlayer())
-				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))));Damage the player for 3% of their current HP
+				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))))
 				
 			else
-				bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
-				Game.GetPlayer().AddItem(RS_PickpocketLoot_DesertBandit, 1)
-				;grant xp and check for level up
+				int pickpocketCount = rsFrameworkMenu.RollMultiSteal(reqLVLt)
+				Game.GetPlayer().AddItem(RS_PickpocketLoot_DesertBandit, pickpocketCount)
 				rsFrameworkMenu.rsXPGain("thieving", xp)
 			endif
 		endif
@@ -333,16 +333,16 @@ Function FindTarget(Actor akTarget)
 		if ((rsFrameworkMenu.GetThievingLVL()).GetValue()) < reqLVLt
 			Debug.Notification("You lack the required thieving level of '" + reqLVLt + "'")
 		else
-			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
+			ObjectReference targetRef = akTarget as ObjectReference
+			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt, targetRef)
 			
 			if (roll == false)
 				RS_Script_ParalyzePlayer.Cast(Game.GetPlayer(), Game.GetPlayer())
-				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))));Damage the player for 3% of their current HP
+				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))))
 				
 			else
-				bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
-				Game.GetPlayer().AddItem(RS_PickpocketLoot_KnightOfArdougne, 1)
-				;grant xp and check for level up
+				int pickpocketCount = rsFrameworkMenu.RollMultiSteal(reqLVLt)
+				Game.GetPlayer().AddItem(RS_PickpocketLoot_KnightOfArdougne, pickpocketCount)
 				rsFrameworkMenu.rsXPGain("thieving", xp)
 			endif
 		endif
@@ -352,16 +352,16 @@ Function FindTarget(Actor akTarget)
 		if ((rsFrameworkMenu.GetThievingLVL()).GetValue()) < reqLVLt
 			Debug.Notification("You lack the required thieving level of '" + reqLVLt + "'")
 		else
-			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
+			ObjectReference targetRef = akTarget as ObjectReference
+			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt, targetRef)
 			
 			if (roll == false)
 				RS_Script_ParalyzePlayer.Cast(Game.GetPlayer(), Game.GetPlayer())
-				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))));Damage the player for 3% of their current HP
+				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))))
 				
 			else
-				bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
-				Game.GetPlayer().AddItem(RS_PickpocketLoot_PollnivianBandit, 1)
-				;grant xp and check for level up
+				int pickpocketCount = rsFrameworkMenu.RollMultiSteal(reqLVLt)
+				Game.GetPlayer().AddItem(RS_PickpocketLoot_PollnivianBandit, pickpocketCount)
 				rsFrameworkMenu.rsXPGain("thieving", xp)
 			endif
 		endif
@@ -371,16 +371,16 @@ Function FindTarget(Actor akTarget)
 		if ((rsFrameworkMenu.GetThievingLVL()).GetValue()) < reqLVLt
 			Debug.Notification("You lack the required thieving level of '" + reqLVLt + "'")
 		else
-			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
+			ObjectReference targetRef = akTarget as ObjectReference
+			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt, targetRef)
 			
 			if (roll == false)
 				RS_Script_ParalyzePlayer.Cast(Game.GetPlayer(), Game.GetPlayer())
-				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))));Damage the player for 3% of their current HP
+				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))))
 				
 			else
-				bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
-				Game.GetPlayer().AddItem(RS_PickpocketLoot_YanilleWatchman, 1)
-				;grant xp and check for level up
+				int pickpocketCount = rsFrameworkMenu.RollMultiSteal(reqLVLt)
+				Game.GetPlayer().AddItem(RS_PickpocketLoot_YanilleWatchman, pickpocketCount)
 				rsFrameworkMenu.rsXPGain("thieving", xp)
 			endif
 		endif
@@ -390,16 +390,16 @@ Function FindTarget(Actor akTarget)
 		if ((rsFrameworkMenu.GetThievingLVL()).GetValue()) < reqLVLt
 			Debug.Notification("You lack the required thieving level of '" + reqLVLt + "'")
 		else
-			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
+			ObjectReference targetRef = akTarget as ObjectReference
+			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt, targetRef)
 			
 			if (roll == false)
 				RS_Script_ParalyzePlayer.Cast(Game.GetPlayer(), Game.GetPlayer())
-				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))));Damage the player for 3% of their current HP
+				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))))
 				
 			else
-				bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
-				Game.GetPlayer().AddItem(RS_PickpocketLoot_MenaphiteThug, 1)
-				;grant xp and check for level up
+				int pickpocketCount = rsFrameworkMenu.RollMultiSteal(reqLVLt)
+				Game.GetPlayer().AddItem(RS_PickpocketLoot_MenaphiteThug, pickpocketCount)
 				rsFrameworkMenu.rsXPGain("thieving", xp)
 			endif
 		endif
@@ -409,16 +409,16 @@ Function FindTarget(Actor akTarget)
 		if ((rsFrameworkMenu.GetThievingLVL()).GetValue()) < reqLVLt
 			Debug.Notification("You lack the required thieving level of '" + reqLVLt + "'")
 		else
-			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
+			ObjectReference targetRef = akTarget as ObjectReference
+			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt, targetRef)
 			
 			if (roll == false)
 				RS_Script_ParalyzePlayer.Cast(Game.GetPlayer(), Game.GetPlayer())
-				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))));Damage the player for 3% of their current HP
+				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))))
 				
 			else
-				bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
-				Game.GetPlayer().AddItem(RS_PickpocketLoot_Paladin, 1)
-				;grant xp and check for level up
+				int pickpocketCount = rsFrameworkMenu.RollMultiSteal(reqLVLt)
+				Game.GetPlayer().AddItem(RS_PickpocketLoot_Paladin, pickpocketCount)
 				rsFrameworkMenu.rsXPGain("thieving", xp)
 			endif
 		endif
@@ -428,16 +428,16 @@ Function FindTarget(Actor akTarget)
 		if ((rsFrameworkMenu.GetThievingLVL()).GetValue()) < reqLVLt
 			Debug.Notification("You lack the required thieving level of '" + reqLVLt + "'")
 		else
-			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
+			ObjectReference targetRef = akTarget as ObjectReference
+			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt, targetRef)
 			
 			if (roll == false)
 				RS_Script_ParalyzePlayer.Cast(Game.GetPlayer(), Game.GetPlayer())
-				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))));Damage the player for 3% of their current HP
+				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))))
 				
 			else
-				bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
-				Game.GetPlayer().AddItem(RS_PickpocketLoot_MonkeyKnifeFighter, 1)
-				;grant xp and check for level up
+				int pickpocketCount = rsFrameworkMenu.RollMultiSteal(reqLVLt)
+				Game.GetPlayer().AddItem(RS_PickpocketLoot_MonkeyKnifeFighter, pickpocketCount)
 				rsFrameworkMenu.rsXPGain("thieving", xp)
 			endif
 		endif
@@ -447,16 +447,16 @@ Function FindTarget(Actor akTarget)
 		if ((rsFrameworkMenu.GetThievingLVL()).GetValue()) < reqLVLt
 			Debug.Notification("You lack the required thieving level of '" + reqLVLt + "'")
 		else
-			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
+			ObjectReference targetRef = akTarget as ObjectReference
+			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt, targetRef)
 			
 			if (roll == false)
 				RS_Script_ParalyzePlayer.Cast(Game.GetPlayer(), Game.GetPlayer())
-				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))));Damage the player for 3% of their current HP
+				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))))
 				
 			else
-				bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
-				Game.GetPlayer().AddItem(RS_PickpocketLoot_Gnome, 1)
-				;grant xp and check for level up
+				int pickpocketCount = rsFrameworkMenu.RollMultiSteal(reqLVLt)
+				Game.GetPlayer().AddItem(RS_PickpocketLoot_Gnome, pickpocketCount)
 				rsFrameworkMenu.rsXPGain("thieving", xp)
 			endif
 		endif
@@ -466,16 +466,16 @@ Function FindTarget(Actor akTarget)
 		if ((rsFrameworkMenu.GetThievingLVL()).GetValue()) < reqLVLt
 			Debug.Notification("You lack the required thieving level of '" + reqLVLt + "'")
 		else
-			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
+			ObjectReference targetRef = akTarget as ObjectReference
+			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt, targetRef)
 			
 			if (roll == false)
 				RS_Script_ParalyzePlayer.Cast(Game.GetPlayer(), Game.GetPlayer())
-				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))));Damage the player for 3% of their current HP
+				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))))
 				
 			else
-				bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
-				Game.GetPlayer().AddItem(RS_PickpocketLoot_Hero, 1)
-				;grant xp and check for level up
+				int pickpocketCount = rsFrameworkMenu.RollMultiSteal(reqLVLt)
+				Game.GetPlayer().AddItem(RS_PickpocketLoot_Hero, pickpocketCount)
 				rsFrameworkMenu.rsXPGain("thieving", xp)
 			endif
 		endif
@@ -485,16 +485,16 @@ Function FindTarget(Actor akTarget)
 		if ((rsFrameworkMenu.GetThievingLVL()).GetValue()) < reqLVLt
 			Debug.Notification("You lack the required thieving level of '" + reqLVLt + "'")
 		else
-			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
+			ObjectReference targetRef = akTarget as ObjectReference
+			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt, targetRef)
 			
 			if (roll == false)
 				RS_Script_ParalyzePlayer.Cast(Game.GetPlayer(), Game.GetPlayer())
-				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))));Damage the player for 3% of their current HP
+				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))))
 				
 			else
-				bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
-				Game.GetPlayer().AddItem(RS_PickpocketLoot_Elf, 1)
-				;grant xp and check for level up
+				int pickpocketCount = rsFrameworkMenu.RollMultiSteal(reqLVLt)
+				Game.GetPlayer().AddItem(RS_PickpocketLoot_Elf, pickpocketCount)
 				rsFrameworkMenu.rsXPGain("thieving", xp)
 			endif
 		endif
@@ -504,16 +504,16 @@ Function FindTarget(Actor akTarget)
 		if ((rsFrameworkMenu.GetThievingLVL()).GetValue()) < reqLVLt
 			Debug.Notification("You lack the required thieving level of '" + reqLVLt + "'")
 		else
-			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
+			ObjectReference targetRef = akTarget as ObjectReference
+			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt, targetRef)
 			
 			if (roll == false)
 				RS_Script_ParalyzePlayer.Cast(Game.GetPlayer(), Game.GetPlayer())
-				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))));Damage the player for 3% of their current HP
+				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))))
 				
 			else
-				bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
-				Game.GetPlayer().AddItem(RS_PickpocketLoot_DwarfTrader, 1)
-				;grant xp and check for level up
+				int pickpocketCount = rsFrameworkMenu.RollMultiSteal(reqLVLt)
+				Game.GetPlayer().AddItem(RS_PickpocketLoot_DwarfTrader, pickpocketCount)
 				rsFrameworkMenu.rsXPGain("thieving", xp)
 			endif
 		endif
@@ -523,16 +523,16 @@ Function FindTarget(Actor akTarget)
 		if ((rsFrameworkMenu.GetThievingLVL()).GetValue()) < reqLVLt
 			Debug.Notification("You lack the required thieving level of '" + reqLVLt + "'")
 		else
-			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
+			ObjectReference targetRef = akTarget as ObjectReference
+			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt, targetRef)
 			
 			if (roll == false)
 				RS_Script_ParalyzePlayer.Cast(Game.GetPlayer(), Game.GetPlayer())
-				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))));Damage the player for 3% of their current HP
+				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))))
 				
 			else
-				bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
-				Game.GetPlayer().AddItem(RS_PickpocketLoot_IorwerthWorker, 1)
-				;grant xp and check for level up
+				int pickpocketCount = rsFrameworkMenu.RollMultiSteal(reqLVLt)
+				Game.GetPlayer().AddItem(RS_PickpocketLoot_IorwerthWorker, pickpocketCount)
 				rsFrameworkMenu.rsXPGain("thieving", xp)
 			endif
 		endif
@@ -542,16 +542,16 @@ Function FindTarget(Actor akTarget)
 		if ((rsFrameworkMenu.GetThievingLVL()).GetValue()) < reqLVLt
 			Debug.Notification("You lack the required thieving level of '" + reqLVLt + "'")
 		else
-			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
+			ObjectReference targetRef = akTarget as ObjectReference
+			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt, targetRef)
 			
 			if (roll == false)
 				RS_Script_ParalyzePlayer.Cast(Game.GetPlayer(), Game.GetPlayer())
-				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))));Damage the player for 3% of their current HP
+				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))))
 				
 			else
-				bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
-				Game.GetPlayer().AddItem(RS_PickpocketLoot_IthellWorker, 1)
-				;grant xp and check for level up
+				int pickpocketCount = rsFrameworkMenu.RollMultiSteal(reqLVLt)
+				Game.GetPlayer().AddItem(RS_PickpocketLoot_IthellWorker, pickpocketCount)
 				rsFrameworkMenu.rsXPGain("thieving", xp)
 			endif
 		endif
@@ -561,16 +561,16 @@ Function FindTarget(Actor akTarget)
 		if ((rsFrameworkMenu.GetThievingLVL()).GetValue()) < reqLVLt
 			Debug.Notification("You lack the required thieving level of '" + reqLVLt + "'")
 		else
-			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
+			ObjectReference targetRef = akTarget as ObjectReference
+			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt, targetRef)
 			
 			if (roll == false)
 				RS_Script_ParalyzePlayer.Cast(Game.GetPlayer(), Game.GetPlayer())
-				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))));Damage the player for 3% of their current HP
+				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))))
 				
 			else
-				bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
-				Game.GetPlayer().AddItem(RS_PickpocketLoot_CadarnWorker, 1)
-				;grant xp and check for level up
+				int pickpocketCount = rsFrameworkMenu.RollMultiSteal(reqLVLt)
+				Game.GetPlayer().AddItem(RS_PickpocketLoot_CadarnWorker, pickpocketCount)
 				rsFrameworkMenu.rsXPGain("thieving", xp)
 			endif
 		endif
@@ -580,16 +580,16 @@ Function FindTarget(Actor akTarget)
 		if ((rsFrameworkMenu.GetThievingLVL()).GetValue()) < reqLVLt
 			Debug.Notification("You lack the required thieving level of '" + reqLVLt + "'")
 		else
-			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
+			ObjectReference targetRef = akTarget as ObjectReference
+			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt, targetRef)
 			
 			if (roll == false)
 				RS_Script_ParalyzePlayer.Cast(Game.GetPlayer(), Game.GetPlayer())
-				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))));Damage the player for 3% of their current HP
+				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))))
 				
 			else
-				bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
-				Game.GetPlayer().AddItem(RS_PickpocketLoot_AmloddWorker, 1)
-				;grant xp and check for level up
+				int pickpocketCount = rsFrameworkMenu.RollMultiSteal(reqLVLt)
+				Game.GetPlayer().AddItem(RS_PickpocketLoot_AmloddWorker, pickpocketCount)
 				rsFrameworkMenu.rsXPGain("thieving", xp)
 			endif
 		endif
@@ -599,16 +599,16 @@ Function FindTarget(Actor akTarget)
 		if ((rsFrameworkMenu.GetThievingLVL()).GetValue()) < reqLVLt
 			Debug.Notification("You lack the required thieving level of '" + reqLVLt + "'")
 		else
-			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
+			ObjectReference targetRef = akTarget as ObjectReference
+			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt, targetRef)
 			
 			if (roll == false)
 				RS_Script_ParalyzePlayer.Cast(Game.GetPlayer(), Game.GetPlayer())
-				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))));Damage the player for 3% of their current HP
+				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))))
 				
 			else
-				bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
-				Game.GetPlayer().AddItem(RS_PickpocketLoot_TrahaearnWorker, 1)
-				;grant xp and check for level up
+				int pickpocketCount = rsFrameworkMenu.RollMultiSteal(reqLVLt)
+				Game.GetPlayer().AddItem(RS_PickpocketLoot_TrahaearnWorker, pickpocketCount)
 				rsFrameworkMenu.rsXPGain("thieving", xp)
 			endif
 		endif
@@ -618,16 +618,16 @@ Function FindTarget(Actor akTarget)
 		if ((rsFrameworkMenu.GetThievingLVL()).GetValue()) < reqLVLt
 			Debug.Notification("You lack the required thieving level of '" + reqLVLt + "'")
 		else
-			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
+			ObjectReference targetRef = akTarget as ObjectReference
+			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt, targetRef)
 			
 			if (roll == false)
 				RS_Script_ParalyzePlayer.Cast(Game.GetPlayer(), Game.GetPlayer())
-				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))));Damage the player for 3% of their current HP
+				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))))
 				
 			else
-				bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
-				Game.GetPlayer().AddItem(RS_PickpocketLoot_HefinWorker, 1)
-				;grant xp and check for level up
+				int pickpocketCount = rsFrameworkMenu.RollMultiSteal(reqLVLt)
+				Game.GetPlayer().AddItem(RS_PickpocketLoot_HefinWorker, pickpocketCount)
 				rsFrameworkMenu.rsXPGain("thieving", xp)
 			endif
 		endif
@@ -637,16 +637,16 @@ Function FindTarget(Actor akTarget)
 		if ((rsFrameworkMenu.GetThievingLVL()).GetValue()) < reqLVLt
 			Debug.Notification("You lack the required thieving level of '" + reqLVLt + "'")
 		else
-			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
+			ObjectReference targetRef = akTarget as ObjectReference
+			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt, targetRef)
 			
 			if (roll == false)
 				RS_Script_ParalyzePlayer.Cast(Game.GetPlayer(), Game.GetPlayer())
-				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))));Damage the player for 3% of their current HP
+				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))))
 				
 			else
-				bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
-				Game.GetPlayer().AddItem(RS_PickpocketLoot_CrwysWorker, 1)
-				;grant xp and check for level up
+				int pickpocketCount = rsFrameworkMenu.RollMultiSteal(reqLVLt)
+				Game.GetPlayer().AddItem(RS_PickpocketLoot_CrwysWorker, pickpocketCount)
 				rsFrameworkMenu.rsXPGain("thieving", xp)
 			endif
 		endif
@@ -656,16 +656,16 @@ Function FindTarget(Actor akTarget)
 		if ((rsFrameworkMenu.GetThievingLVL()).GetValue()) < reqLVLt
 			Debug.Notification("You lack the required thieving level of '" + reqLVLt + "'")
 		else
-			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
+			ObjectReference targetRef = akTarget as ObjectReference
+			bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt, targetRef)
 			
 			if (roll == false)
 				RS_Script_ParalyzePlayer.Cast(Game.GetPlayer(), Game.GetPlayer())
-				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))));Damage the player for 3% of their current HP
+				Game.GetPlayer().DamageActorValue("Health", (0.03 * (Game.GetPlayer().GetActorValue("Health"))))
 				
 			else
-				bool roll = rsFrameworkMenu.TryToSteal_NPC(reqLVLt)
-				Game.GetPlayer().AddItem(RS_PickpocketLoot_MeilyrWorker, 1)
-				;grant xp and check for level up
+				int pickpocketCount = rsFrameworkMenu.RollMultiSteal(reqLVLt)
+				Game.GetPlayer().AddItem(RS_PickpocketLoot_MeilyrWorker, pickpocketCount)
 				rsFrameworkMenu.rsXPGain("thieving", xp)
 			endif
 		endif
@@ -673,5 +673,3 @@ Function FindTarget(Actor akTarget)
 		Debug.Trace("TRACE -- You cannot pick this target's pockets.")
 	endif
 EndFunction
-Contact GitHub API Training Shop Blog About
-© 2016 GitHub, Inc. Terms Privacy Security Status Help
