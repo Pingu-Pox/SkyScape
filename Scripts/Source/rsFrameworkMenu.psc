@@ -230,6 +230,84 @@ Function HarvestItemOnce(GlobalVariable skillCounter, ObjectReference objRef, Ac
 	EndIf	
 EndFunction
 
+Skip to content
+This repository
+Search
+Pull requests
+Issues
+Gist
+ @TripleSixes
+ Watch 0
+  Star 0
+  Fork 0 TripleSixes/SkyScape
+ Code  Issues 0  Pull requests 0  Projects 0  Wiki  Pulse  Graphs  Settings
+Branch: master Find file Copy pathSkyScape/Scripts/Source/RS_MagicEffect_Pickpocket.psc
+b407f19  2 days ago
+@TripleSixes TripleSixes Update RS_MagicEffect_Pickpocket.psc
+1 contributor
+RawBlameHistory     
+737 lines (671 sloc)  29.8 KB
+;< Information
+;WIP
+;
+;Resources:
+;http://runescape.wikia.com/wiki/Thieving
+;https://www.reddit.com/r/2007scape/comments/301w6d/the_laws_of_gielnor_jagex_formula_transparency/
+;maybe take the probability of woodcutting (a number between 0-100) and minus 100, then get the absolute value.... 62=62%               [62-100] = 38%
+;
+;Knights (Req. 55) 59-60 (Analysis of data in above paragrph;
+;                                       not an identical run.)
+;Actual: 150/198 = 75.76%
+;Avg Time per Success: 1.91 sec
+;XP: 84.3 (159k/hr)
+;Loot: 50 gp (94k/hr)
+;
+;Master Farmers (Req. 38) 61
+;Actual: 108/138 = 78.26%
+;Avg Time per Success: 1.77 sec
+;XP: 43 (87k/hr)
+;Loot: 95.7 gp (195k/hr)
+;      I ignored all low-value seeds, valuing only seeds exceeding 1k each.
+;      I got: 1 Rannar, 1 Snap, 2 Toadflax, 1 Watermelon - 10.3k total
+;
+;Warriors (Req. 25) 61
+;Actual: 137/167 = 82.04% (This number may be inflated, I was interrupted
+;                          by a rather rude newbie who intentionally killed my
+;                          targets. I noticed a much higher success rate against
+;                          warriors under attack.)
+;Avg Time per Success: 1.57 sec
+;XP: 26 (60k/hr)
+;Loot: 18 gp (41k/hr)
+;
+;Farmers (Req. 10) 61
+;Actual: 131/161 = 81.37%
+;Avg Time per Success: 1.61 sec
+;XP: 14.5(32k/hr)
+;Loot: 9 gp(20k/hr)
+;
+;Man (Req 1) 61
+;Actual: 176/191 = 92.15%
+;Avg Time per Success: 1.02 sec
+;XP: 8 (28k/hr)
+;Loot: 3 gp (11k/hr)
+;	
+;	
+;	Levels for stealing multiples of normal loot all follow these formulae ([level] stands for the base level required to steal from the NPC):
+;
+;Double Loot = [level]+10 thieving and [level] agility
+;
+;Triple Loot = [level]+20 thieving and [level]+10 agility
+;
+;Quadruple Loot = [level]+30 thieving and [level]+20 agility 
+;	
+;	A counter that starts when stealing from a stall, that counts down from 5 minutes after the last successful thieving (Steal cake, timer starts, steal cake again, timer resets)
+;	
+;	Possible prob:
+;	(1% for every thieving level above the required lvl)
+;
+;	Reminder to make Strange Rock DnD in framework, this can be toggled off. Finding the 2nd rock in a set is 50% less likely after obtaining the first
+;	xp gained = level^2 - (2 * level) + 100
+;>
 ;--ACTION--Item stealing script, optional xp gain, has random events
 bool Function TryToSteal_NPC(int reqLVL) Global
 	if (((GetGlobalCheck_RandomEvents()).GetValue()) == 1)
