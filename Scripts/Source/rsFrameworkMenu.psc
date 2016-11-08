@@ -230,23 +230,6 @@ Function HarvestItemOnce(GlobalVariable skillCounter, ObjectReference objRef, Ac
 	EndIf	
 EndFunction
 
-Skip to content
-This repository
-Search
-Pull requests
-Issues
-Gist
- @TripleSixes
- Watch 0
-  Star 0
-  Fork 0 TripleSixes/SkyScape
- Code  Issues 0  Pull requests 0  Projects 0  Wiki  Pulse  Graphs  Settings
-Branch: master Find file Copy pathSkyScape/Scripts/Source/RS_MagicEffect_Pickpocket.psc
-b407f19  2 days ago
-@TripleSixes TripleSixes Update RS_MagicEffect_Pickpocket.psc
-1 contributor
-RawBlameHistory     
-737 lines (671 sloc)  29.8 KB
 ;< Information
 ;WIP
 ;
@@ -292,13 +275,7 @@ RawBlameHistory
 ;Loot: 3 gp (11k/hr)
 ;	
 ;	
-;	Levels for stealing multiples of normal loot all follow these formulae ([level] stands for the base level required to steal from the NPC):
-;
-;Double Loot = [level]+10 thieving and [level] agility
-;
-;Triple Loot = [level]+20 thieving and [level]+10 agility
-;
-;Quadruple Loot = [level]+30 thieving and [level]+20 agility 
+;	
 ;	
 ;	A counter that starts when stealing from a stall, that counts down from 5 minutes after the last successful thieving (Steal cake, timer starts, steal cake again, timer resets)
 ;	
@@ -309,7 +286,7 @@ RawBlameHistory
 ;	xp gained = level^2 - (2 * level) + 100
 ;>
 ;--ACTION--Item stealing script, optional xp gain, has random events
-bool Function TryToSteal_NPC(int reqLVL) Global
+bool Function TryToSteal_NPC(int reqLVL, ObjectReference spawnLocation) Global
 	if (((GetGlobalCheck_RandomEvents()).GetValue()) == 1)
 		RollRandomEvent("thieving", spawnLocation)
 	endif
@@ -326,6 +303,21 @@ bool Function TryToSteal_NPC(int reqLVL) Global
 			return true
 		endif
 	endif
+EndFunction
+
+;--FUNCTION--This checks the player's Thieving LVL and Agility LVL and sees if the player is going to steal more than once
+int Function RollMultiSteal(int reqLVL) Global
+	int tLVL = (GetThievingLVL().GetValue()) as int
+	int aLVL = (GetAgilityLVL().GetValue()) as int
+	If tLVL - 30 >= reqLVL && aLVL - 20 >= reqLVL
+		return 4; Steal 4 times
+	ElseIf tLVL - 20 >= reqLVL && aLVL - 10 >= reqLVL
+		return 3; Steal 3 times
+	ElseIf  tLVL - 10 >= reqLVL && aLVL >= reqLVL
+		return 2; Steal 2 times
+	Else
+		return 1; Steal 1 time
+	EndIf
 EndFunction
 
 ;--ACTION--Cluster-Item harvesting script (like oak trees and LRC mineral deposits), optional xp gain, has random events -- come back to this part and add multi-add item statements  
@@ -563,6 +555,10 @@ EndFunction
 
 ;Rolls for a random event, pass through what you were doing when it was triggered, and the spawn location of the actorbase (can be location of skilling activator -- self) -- untested
 Function RollRandomEvent(string randomType = "general", objectreference spawnLocation) Global
+	;=====================
+	;Add condition to check if player is in a non-event area:
+	;TzHaar Fight Cave, Pest Control (While in bank or during the activity and waiting in the boats), Soul Wars, God Wars Dungeon, Kuradal's Dungeon, Pyramid Plunder, Runecrafting Altars during the Great Orb Project (though they can still appear in the guild itself after finishing the game) They did happen when runecrafting normally to get runes, Fist of Guthix (while playing), Under Daemonheim during Dungeoneering, While Guthix Sleeps cavern (tormented demons), Balthazar Beauregard's Big Top Bonanza, Clan Wars (though they can still happen after a war), Ape Atoll (with greegree equipped, without the greegree on, you can still get randoms), Waterbirth Island Dungeon, Clan Citadels, Ancient Cavern, Glacor Cave (The area available after completion of the quest, Ritual of the Mahjarrat), which contains Glacors.(non-aggressive) 
+	;=====================
 	If Utility.RandomInt(1,512) == 1
 		if randomType == "general"
 			;spawn a unique actor that engages the player in a conversation, dialogue take over from there. Remember to disable the actor after a while.
@@ -585,6 +581,14 @@ Function RollRandomEvent(string randomType = "general", objectreference spawnLoc
 			;endif
 		elseif randomType == "woodcutting"
 			spawnLocation.PlaceActorAtMe((GetActorBase_RandomEvent_TreeSpirit())).StartCombat(Game.GetPlayer())
+			;---Delete two statements above this one when ready to add more randoms
+			;randomChoice = Utility.RandomInt(0,x)
+			;if randomChoice == 0 Certer
+			;elseif randomChoice == 1 Drill Demon
+			;elseif randomChoice == 2 Freaky Forester, etc.
+			;endif
+		elseif randomType == "thieving"
+			spawnLocation.PlaceActorAtMe((GetActorBase_RandomEvent_Watchman())).StartCombat(Game.GetPlayer())
 			;---Delete two statements above this one when ready to add more randoms
 			;randomChoice = Utility.RandomInt(0,x)
 			;if randomChoice == 0 Certer
@@ -21081,6 +21085,24 @@ Actorbase Function GetActorBase_RandomEvent_TreeSpirit() Global
 		return GetFrameworkData().RS_Monster_TreeSpirit_re_120
 	ElseIf clvl >= 91
 		return GetFrameworkData().RS_Monster_TreeSpirit_re_159
+	EndIf
+EndFunction
+
+;Gets property from rsFrameworkData
+Actorbase Function GetActorBase_RandomEvent_Watchman() Global
+	Int clvl = (GetCombatLVL())
+	If clvl == 1 && clvl <= 10
+		return GetFrameworkData().RS_Monster_Watchman_re_014
+	ElseIf clvl == 11 && clvl <= 20
+		return GetFrameworkData().RS_Monster_Watchman_re_029
+	ElseIf clvl == 21 && clvl <= 40
+		return GetFrameworkData().RS_Monster_Watchman_re_049
+	ElseIf clvl == 41 && clvl <= 60
+		return GetFrameworkData().RS_Monster_Watchman_re_079
+	ElseIf clvl == 61 && clvl <= 90
+		return GetFrameworkData().RS_Monster_Watchman_re_120
+	ElseIf clvl >= 91
+		return GetFrameworkData().RS_Monster_Watchman_re_159
 	EndIf
 EndFunction
 
