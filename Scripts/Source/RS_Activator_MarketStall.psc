@@ -1,7 +1,9 @@
 Scriptname RS_Activator_MarketStall Extends ObjectReference
 {Script that handles market stalls}
 
-string property stallType auto;
+string property stallType auto
+
+int property minDist auto
 
 int property reqLVL auto
 
@@ -65,7 +67,7 @@ Bool Function RollCaught()
 			guardDistances[0] = distToGuard0
 			guardDistances[1] = distToGuard1
 			guardDistances[2] = distToGuard2
-			SortArray(guardDistances)
+			rsFrameworkMenu.SortArray(guardDistances)
 			if guardDistances[0] == distToGuard0;guard0 is closest?
 				guard0.PathToReference(Game.GetPlayer(), 1.0);latent, may halt script until succeeds/fails
 				guard0.StartCombat(Game.GetPlayer());make the guard say something?
@@ -83,6 +85,14 @@ Bool Function RollCaught()
 		endif
 	endif
 	;if closest guard is less than x amount of units from the player, roll a chance to get caught
+EndFunction
+
+Bool Function CatchProbability()
+	If (Utility.RandomInt(1,6)) == 6
+		return true
+	Else
+		return false
+	EndIf
 EndFunction
 
 ;Note: In Keldagrim, stalls often differ in respawn time and their experience given. The silver stalls respawn twice as fast, but yields half the experience. The bakery stall, however, respawns half as fast, and gives the same experience. 
