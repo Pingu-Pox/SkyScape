@@ -34,7 +34,7 @@ Event OnActivate(ObjectReference akActionRef)
 				rsFrameworkMenu.ItemForItemLoop(RS_Item_Ore_Clay, RS_Item_Crafting_SoftClay, RS_SM_FillWater, Self, count, 1, 1, 1, "clay", false, "", 0.0, self)
 				bLooping = false
 			else; Exit
-			
+				bLooping = false
 			endif
 		EndWhile
 	endif
