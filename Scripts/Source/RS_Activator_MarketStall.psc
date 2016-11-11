@@ -17,6 +17,8 @@ Actor Property guard0 Auto
 Actor Property guard1 Auto
 Actor Property guard2 Auto
 
+Sound Property RS_SM_StealStall Auto
+
 Event OnActivate(ObjectReference akActionRef)
 	If akActionRef != Game.GetPlayer()
 		;Some other objectreference tried activating the stall...
@@ -25,24 +27,10 @@ Event OnActivate(ObjectReference akActionRef)
 		if ((rsFrameworkMenu.GetThievingLVL()).GetValue()) < reqLVL
 			Debug.Notification("You lack the required thieving level of '" + reqLVL + "'")
 		else
-			;bool caught = RollCaught()
 			if RollCaught()
-				
-				;Cannot use this as it choses randomly
-				;int rollGuard = Utility.RandomInt(0,2)
-				;if rollGuard == 0
-				;	guard0.PathToReference(Game.GetPlayer(), 1.0);latent, may halt script until succeeds/fails
-				;	guard0.StartCombat(Game.GetPlayer());make the guard say something?
-				;elseif rollGuard == 1
-				;	guard1.PathToReference(Game.GetPlayer(), 1.0);latent, may halt script until succeeds/fails
-				;	guard1.StartCombat(Game.GetPlayer());make the guard say something?
-				;elseif rollGuard == 2
-				;	guard2.PathToReference(Game.GetPlayer(), 1.0);latent, may halt script until succeeds/fails
-				;	guard2.StartCombat(Game.GetPlayer());make the guard say something?
-				;else
-				;	Debug.Trace("ERROR - Cannot discern which guard to attack player for stealing from the stall!")
-				;endif
+				Debug.Trace("TRACE -- You were caught by the guard!")
 			else
+				RS_SM_StealStall.Play(self)
 				Self.Disable()
 				Game.GetPlayer().AddItem(RS_StallLootList, 1)
 				rsFrameworkMenu.rsXPGain("thieving", xp)
@@ -71,20 +59,23 @@ Bool Function RollCaught()
 			if guardDistances[0] == distToGuard0;guard0 is closest?
 				guard0.PathToReference(Game.GetPlayer(), 1.0);latent, may halt script until succeeds/fails
 				guard0.StartCombat(Game.GetPlayer());make the guard say something?
+				return true
 			elseif guardDistances[0] == distToGuard1;guard1 is closest?
 				guard1.PathToReference(Game.GetPlayer(), 1.0);latent, may halt script until succeeds/fails
 				guard1.StartCombat(Game.GetPlayer());make the guard say something?
+				return true
 			elseif guardDistances[0] == distToGuard2;guard2 is closest?
 				guard2.PathToReference(Game.GetPlayer(), 1.0);latent, may halt script until succeeds/fails
 				guard2.StartCombat(Game.GetPlayer());make the guard say something?
+				return true
 			else
 				Debug.Trace("ERROR -- MarketStall - Couldn't compare array to distance to guard...")
+				return false
 			endif
 		else
 			return false			
 		endif
 	endif
-	;if closest guard is less than x amount of units from the player, roll a chance to get caught
 EndFunction
 
 Bool Function CatchProbability()
