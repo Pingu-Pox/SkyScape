@@ -154,6 +154,7 @@ Faction Property RS_aFaction_AgroStop253 Auto
 GlobalVariable Property RS_Config_DnD_DailyInterval Auto
 GlobalVariable Property RS_Config_DnD_WeeklyInterval Auto
 GlobalVariable Property RS_Config_DnD_MonthlyInterval Auto
+GlobalVariable Property RS_Config_RandomEvents Auto
 
 GlobalVariable Property RS_Check_ModStatus Auto
 GlobalVariable Property RS_GV_SkyrimHealth Auto
@@ -195,6 +196,8 @@ GlobalVariable Property RS_GV_AgilityLVL Auto
 GlobalVariable Property RS_GV_AgilityXP Auto
 GlobalVariable Property RS_GV_HerbloreLVL Auto
 GlobalVariable Property RS_GV_HerbloreXP Auto
+GlobalVariable Property RS_GV_InventionLVL Auto
+GlobalVariable Property RS_GV_InventionXP Auto
 GlobalVariable Property RS_GV_ThievingLVL Auto
 GlobalVariable Property RS_GV_ThievingXP Auto
 GlobalVariable Property RS_GV_CraftingLVL Auto
@@ -323,6 +326,8 @@ Spell Property RS_Skill_Pickpocketing Auto
 
 ;< Variables
 
+bool bSettingRandomEvents = false
+
 String attackStyleString
 String stringTimeRemain_Agoroth
 String stringTimeRemain_BigChinchompa
@@ -429,6 +434,7 @@ Int cDungeoneeringXP
 Int tDungeoneeringXP
 
 ; OID
+int toggleSetting_RandomEvents
 Int Attack_T
 Int AttackXP_T
 Int Strength_T
@@ -606,7 +612,7 @@ event OnPageReset(string a_page)
 		AddHeaderOption("Attack Bonus")
 		
 		SetCursorPosition(4);left
-		AddTextOption("You have " + questPoints + " Quest Points.", aVal)
+		AddTextOption("Your total level is " + (CalculateTotalLevel()) + ".", aVal)
 		
 		SetCursorPosition(5);right
 		If (RS_GV_pStat_AttBonus_Stab.GetValue()) < 0
@@ -615,12 +621,18 @@ event OnPageReset(string a_page)
 			AddTextOption("Stab: +" + (RS_GV_pStat_AttBonus_Stab.GetValue() as int), aVal)
 		EndIf
 		
+		SetCursorPosition(6);left
+		AddTextOption("Your total XP is " + (CalculateTotalXP()) + ".", aVal)
+		
 		SetCursorPosition(7);right
 		If (RS_GV_pStat_AttBonus_Slash.GetValue()) < 0
 			AddTextOption("Slash: " + (RS_GV_pStat_AttBonus_Slash.GetValue() as int), aVal)
 		Else
 			AddTextOption("Slash: +" + (RS_GV_pStat_AttBonus_Slash.GetValue() as int), aVal)
 		EndIf
+		
+		SetCursorPosition(8);left
+		AddTextOption("You have " + questPoints + " Quest Points.", aVal)
 		
 		SetCursorPosition(9);right
 		If (RS_GV_pStat_AttBonus_Crush.GetValue()) < 0
@@ -1050,6 +1062,14 @@ event OnPageReset(string a_page)
 		SetCursorPosition(57)
 		timeTrollInvasion_oid = AddTextOption(stringTimeRemain_TrollInvasion, aVal)
 		
+	ElseIf (a_page == "Settings")
+		SetCursorFillMode(LEFT_TO_RIGHT)
+		bSettingRandomEvents = false
+		if ((RS_Config_RandomEvents.GetValue()) != 1)
+			bSettingRandomEvents = true
+		endif
+		SetCursorPosition(0)
+		toggleSetting_RandomEvents = AddToggleOption("Turn off random events", bSettingRandomEvents)
 	ElseIf (a_page == "Teleport")
 		Float gvSkyrimHealth = RS_GV_SkyrimHealth.GetValue()
 		Float gvSkyrimMagicka = RS_GV_SkyrimMagicka.GetValue()
@@ -1329,6 +1349,9 @@ event OnOptionHighlight(int option)
 		SetInfoText((tWoodcuttingXP - cWoodcuttingXP) + " more Woodcutting XP until next level!")		
 	else
 	EndIf
+	If (option == toggleSetting_RandomEvents)
+		SetInfoText("While this option is enabled, you will receive random events occasionally.")
+	endif
 endEvent
 ;>
 
@@ -1389,6 +1412,10 @@ event OnOptionSelect(int option)
 	elseif (option == Woodcutting_T)		
 	
 	EndIf
+	
+	If (option == toggleSetting_RandomEvents)
+		bSettingRandomEvents = !bSettingRandomEvents
+	endif
 endEvent
 ;>
 
@@ -7091,6 +7118,68 @@ Function UpdateAgressions()
 	ElseIf CombatLVL == 3
 		Game.GetPlayer().AddToFaction(RS_aFaction_AgroStop7)
 	EndIf
+EndFunction
+
+int Function CalculateTotalLevel()
+	int totalLVL = 0
+	totalLVL += RS_GV_AgilityLVL.GetValue() as int
+	totalLVL += RS_GV_AttackLVL.GetValue() as int
+	totalLVL += RS_GV_ConstructionLVL.GetValue() as int
+	totalLVL += RS_GV_CookingLVL.GetValue() as int
+	totalLVL += RS_GV_CraftingLVL.GetValue() as int
+	totalLVL += RS_GV_DefenseLVL.GetValue() as int
+	totalLVL += RS_GV_DungeoneeringLVL.GetValue() as int
+	totalLVL += RS_GV_FarmingLVL.GetValue() as int
+	totalLVL += RS_GV_FiremakingLVL.GetValue() as int
+	totalLVL += RS_GV_FishingLVL.GetValue() as int
+	totalLVL += RS_GV_FletchingLVL.GetValue() as int
+	totalLVL += RS_GV_HerbloreLVL.GetValue() as int
+	totalLVL += RS_GV_HitpointLVL.GetValue() as int
+	totalLVL += RS_GV_HunterLVL.GetValue() as int
+	totalLVL += RS_GV_InventionLVL.GetValue() as int
+	totalLVL += RS_GV_MagicLVL.GetValue() as int
+	totalLVL += RS_GV_MiningLVL.GetValue() as int
+	totalLVL += RS_GV_PrayerLVL.GetValue() as int
+	totalLVL += RS_GV_RangedLVL.GetValue() as int
+	totalLVL += RS_GV_RunecraftingLVL.GetValue() as int
+	totalLVL += RS_GV_SlayerLVL.GetValue() as int
+	totalLVL += RS_GV_SmithingLVL.GetValue() as int
+	totalLVL += RS_GV_StrengthLVL.GetValue() as int
+	totalLVL += RS_GV_SummoningLVL.GetValue() as int
+	totalLVL += RS_GV_ThievingLVL.GetValue() as int
+	totalLVL += RS_GV_WoodcuttingLVL.GetValue() as int
+	return totalLVL
+EndFunction
+
+int Function CalculateTotalXP()
+	int totalXP = 0
+	totalXP += RS_GV_AgilityXP.GetValue() as int
+	totalXP += RS_GV_AttackXP.GetValue() as int
+	totalXP += RS_GV_ConstructionXP.GetValue() as int
+	totalXP += RS_GV_CookingXP.GetValue() as int
+	totalXP += RS_GV_CraftingXP.GetValue() as int
+	totalXP += RS_GV_DefenseXP.GetValue() as int
+	totalXP += RS_GV_DungeoneeringXP.GetValue() as int
+	totalXP += RS_GV_FarmingXP.GetValue() as int
+	totalXP += RS_GV_FiremakingXP.GetValue() as int
+	totalXP += RS_GV_FishingXP.GetValue() as int
+	totalXP += RS_GV_FletchingXP.GetValue() as int
+	totalXP += RS_GV_HerbloreXP.GetValue() as int
+	totalXP += RS_GV_HitpointXP.GetValue() as int
+	totalXP += RS_GV_HunterXP.GetValue() as int
+	totalXP += RS_GV_InventionXP.GetValue() as int
+	totalXP += RS_GV_MagicXP.GetValue() as int
+	totalXP += RS_GV_MiningXP.GetValue() as int
+	totalXP += RS_GV_PrayerXP.GetValue() as int
+	totalXP += RS_GV_RangedXP.GetValue() as int
+	totalXP += RS_GV_RunecraftingXP.GetValue() as int
+	totalXP += RS_GV_SlayerXP.GetValue() as int
+	totalXP += RS_GV_SmithingXP.GetValue() as int
+	totalXP += RS_GV_StrengthXP.GetValue() as int
+	totalXP += RS_GV_SummoningXP.GetValue() as int
+	totalXP += RS_GV_ThievingXP.GetValue() as int
+	totalXP += RS_GV_WoodcuttingXP.GetValue() as int
+	return totalXP
 EndFunction
 
 Function ResetDnD_GodStatues()
