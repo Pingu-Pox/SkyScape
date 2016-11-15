@@ -317,7 +317,7 @@ Message Property RS_Message_Combat_SelectAttackStyle Auto
 ;>
 
 ;< Spell Properties
-Spell Property RS_Prayer_ThickSkinPrayer Auto
+Spell Property RS_Skill_Pickpocketing Auto
 ;>
 ;>
 
@@ -587,7 +587,7 @@ event OnPageReset(string a_page)
 		ElseIf RangerLVL == MageLVL
 			CombatLVL = (BaseLVL + RangerLVL) as Int		
 		EndIf
-		
+		AddSkillSpells()
 		UpdateAgressions()
 		UpdateDnDtimers()
 		RegisterForKey(59)
@@ -7007,6 +7007,12 @@ Function UpdateDnDtimers()
 		endif
 		stringTimeRemain_TrollInvasion = zeroHour + "" + timeRemain_TrollInvasion_h + ":" + zeroMinute + "" + timeRemain_TrollInvasion_m
 	endif
+EndFunction
+
+Function AddSkillSpells()
+	If (Game.GetPlayer().HasSpell(RS_Skill_Pickpocketing)) == false
+			Game.GetPlayer().AddSpell(RS_Skill_Pickpocketing)
+	EndIf
 EndFunction
 
 Function UpdateAgressions()
