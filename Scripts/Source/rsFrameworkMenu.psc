@@ -290,14 +290,15 @@ bool Function TryToSteal_NPC(int reqLVL, ObjectReference spawnLocation) Global
 	if (((GetGlobalCheck_RandomEvents()).GetValue()) == 1)
 		RollRandomEvent("thieving", spawnLocation)
 	endif
+	;The shitty probability formula
 	if ((GetThievingLVL()).GetValue() - reqLVL) < 20
-		if (Utility.RandomInt(1,2) == 1)
+		if (Utility.RandomInt(1,4) == 1)
             return false
 		else
 			return true
 		endif
 	else
-		if (Utility.RandomInt(1,4) == 1)
+		if (Utility.RandomInt(1,8) == 1)
             return false
 		else
 			return true
