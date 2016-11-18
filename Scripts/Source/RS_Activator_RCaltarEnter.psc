@@ -1,4 +1,4 @@
-ScriptName RS_Activator_RCaltar Extends ObjectReference
+ScriptName RS_Activator_RCaltarEnter Extends ObjectReference
 {Script to put on the actual ruins/door to the altar}
 
 MiscObject Property requiredTalisman Auto
