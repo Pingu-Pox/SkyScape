@@ -1,8 +1,8 @@
 ScriptName RS_Activator_RCaltar Extends ObjectReference
 {Script to put on the actual runecrafting altar}
 
-Int Property reqLVL Auto
-bool Property bOnlyPureEssence Auto
+Int Property reqLVL Auto; required level for crafting runes at this altar
+bool Property bOnlyPureEssence Auto = false; TRUE=Requires pure ess to craft, FALSE=Use any rune essence available
 string Property runeType Auto
 
 Event OnActivate(ObjectReference akActionRef)
@@ -17,9 +17,9 @@ Event OnActivate(ObjectReference akActionRef)
 				int craftType = craftRCmenu.Show()
 				if craftType == 0;runes
 					;tell which essType you have, act accordingly
-					if (RS_Config_Runecrafting_UnpackPouch.GetValue()) == 1
-						int pouchPureCount = rsFrameworkMenu.GetPouchPureCount()
-						int pouchEssCount = rsFrameworkMenu.GetPouchEssCount()
+					if (RS_Config_Runecrafting_UnpackPouch.GetValue()) == 1; Check if player set the config to auto-unpack pouches
+						int pouchPureCount = rsFrameworkMenu.GetPouchPureCount(); //Ensure to check which pouches are carried
+						int pouchEssCount = rsFrameworkMenu.GetPouchEssCount(); //Ensure to check which pouches are carried
 						if (bOnlyPureEssence)
 							int essCountPure = (Game.GetPlayer().GetItemCount(RS_Item_Runecrafting_RuneEssencePure)) + pouchPureCount
 							rsFrameworkMenu.Runecraft(runeType, pure, essCountPure)
@@ -29,7 +29,7 @@ Event OnActivate(ObjectReference akActionRef)
 							rsFrameworkMenu.Runecraft(runeType, either, essCountTotal)
 							mainLoop = false
 						endif
-					else
+					else; Player will unpack pouches manually
 						if (bOnlyPureEssence)
 							int essCountPure = Game.GetPlayer().GetItemCount(RS_Item_Runecrafting_RuneEssencePure)
 							rsFrameworkMenu.Runecraft(runeType, pure, essCountPure)
@@ -44,7 +44,7 @@ Event OnActivate(ObjectReference akActionRef)
 					rsFrameworkMenu.CraftRCTiara(runeType)
 					mainLoop = false
 				elseif craftType == 2;staff
-					rsFrameworkMenu.CraftRCStaff(runeType) ;make sure to include dramen staff (air fire water earth) into lunar staff
+					rsFrameworkMenu.CraftRCStaff(runeType); //Make sure to include dramen staff (air fire water earth) into lunar staff
 					mainLoop = false
 				else
 					;exit
