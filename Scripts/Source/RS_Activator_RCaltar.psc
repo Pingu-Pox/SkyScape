@@ -9,7 +9,7 @@ Event OnActivate(ObjectReference akActionRef)
 	if (akActionRef != Game.GetPlayer())
 		;do nothing, some other actor tried to activate this
 	else
-		if (RS_GV_RunecraftingLVL.GetValue()) < reqLVL
+		if ((rsFrameworkMenu.GetRunecraftingLVL()).GetValue()) < reqLVL
 			Debug.Notification("You lack the required runecrafting level of '" + reqLVL + "'")
 		else
 			int mainLoop = true
@@ -18,38 +18,39 @@ Event OnActivate(ObjectReference akActionRef)
 				if craftType == 0;runes
 					;tell which essType you have, act accordingly
 					if (RS_Config_Runecrafting_UnpackPouch.GetValue()) == 1
-						;small, medium, large, giant, massive
-						;convert all essence in inventory and Pouch, zero out bag globals that are in the inventory, all in one
-						;give xp
+						int pouchPureCount = rsFrameworkMenu.GetPouchPureCount()
+						int pouchEssCount = rsFrameworkMenu.GetPouchEssCount()
+						if (bOnlyPureEssence)
+							int essCountPure = (Game.GetPlayer().GetItemCount(RS_Item_Runecrafting_RuneEssencePure)) + pouchPureCount
+							rsFrameworkMenu.Runecraft(runeType, pure, essCountPure)
+							mainLoop = false
+						else
+							int essCountTotal = (Game.GetPlayer().GetItemCount(RS_Item_Runecrafting_RuneEssencePure)) + (Game.GetPlayer().GetItemCount(RS_Item_Runecrafting_RuneEssence)) + pouchPureCount + pouchEssCount
+							rsFrameworkMenu.Runecraft(runeType, either, essCountTotal)
+							mainLoop = false
+						endif
 					else
 						if (bOnlyPureEssence)
 							int essCountPure = Game.GetPlayer().GetItemCount(RS_Item_Runecrafting_RuneEssencePure)
-							rsFramework.Runecraft(runeType, pure, essCountPure)
+							rsFrameworkMenu.Runecraft(runeType, pure, essCountPure)
 							mainLoop = false
 						else
-							int essCountPure = Game.GetPlayer().GetItemCount(RS_Item_Runecrafting_RuneEssencePure)
-							int essCount = Game.GetPlayer().GetItemCount(RS_Item_Runecrafting_RuneEssence)
-							if essCountPure > 0;if you have pure essence...
-								rsFramework.Runecraft(runeType, pure, essCountPure)
-								mainLoop = false
-							else
-								rsFramework.Runecraft(runeType, regular, essCount)
-								mainLoop = false					
-							endif
+							int essCountTotal = (Game.GetPlayer().GetItemCount(RS_Item_Runecrafting_RuneEssencePure)) + (Game.GetPlayer().GetItemCount(RS_Item_Runecrafting_RuneEssence))
+							rsFrameworkMenu.Runecraft(runeType, either, essCountTotal)
+							mainLoop = false
 						endif
 					endif
 				elseif craftType == 1;tiara
-					;rsFramework.GetCount - can exit
-					;produce item one at a time - can exit
-					;give xp
+					rsFrameworkMenu.CraftRCTiara(runeType)
+					mainLoop = false
 				elseif craftType == 2;staff
-					;rsFramework.GetCount - can exit
-					;produce item one at a time - can exit
+					rsFrameworkMenu.CraftRCStaff(runeType) ;make sure to include dramen staff (air fire water earth) into lunar staff
+					mainLoop = false
 				else
 					;exit
 					mainLoop = false
 				endif
-			endwhile;mainloop
+			endwhile;
 		endif
 	endif
 EndEvent
