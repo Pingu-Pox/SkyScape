@@ -21,6 +21,7 @@ Event OnActivate(ObjectReference akActionRef)
 		While(bLooping == true)
 			int choice = RS_Message_General_WaterSourceVessel.Show()
 			int count = rsFrameworkMenu.rsMakeCount(RS_Message_General_MakeCount)
+			; //Add other containers...
 			if choice == 0; Cups
 				rsFrameworkMenu.ItemForItemLoop(RS_Item_Tool_VialEmpty, RS_Item_Herblore_VialWater, RS_SM_FillWater, Self, count, 1, 1, 1, "empty vials", false, "", 0.0, self)
 				bLooping = false
