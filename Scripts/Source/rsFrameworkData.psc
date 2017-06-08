@@ -70,6 +70,16 @@ Globalvariable Property RS_GV_WoodcuttingXP Auto
 ;< Message Properties
 
 ;>
+;< Count Globalvariable Properties
+Globalvariable Property RS_Count_Runecrafting_Ess_Small Auto
+Globalvariable Property RS_Count_Runecrafting_Ess_Medium Auto
+Globalvariable Property RS_Count_Runecrafting_Ess_Large Auto
+Globalvariable Property RS_Count_Runecrafting_Ess_Giant Auto
+Globalvariable Property RS_Count_Runecrafting_EssPure_Small Auto
+Globalvariable Property RS_Count_Runecrafting_EssPure_Medium Auto
+Globalvariable Property RS_Count_Runecrafting_EssPure_Large Auto
+Globalvariable Property RS_Count_Runecrafting_EssPure_Giant Auto
+;>
 ;< Misc Globalvariable Properties
 Globalvariable Property RS_GV_PrayerEndCheck Auto
 Globalvariable Property RS_Check_Dungeoneering_PurchaseRapidRenewal Auto
@@ -196,4 +206,13 @@ Weapon Property RS_Item_Weapon_Special_InfernoAdze Auto
 ;>
 ;< Config Properties
 Globalvariable Property RS_Check_LampMod Auto; Modifier on lamp xp rates, 1 is normal, 2 is double, etc.
+;>
+;< ObjectReference Properties
+ObjectReference Property RS_Bank Auto
+;>
+;< MiscObject Properties
+MiscObject Property RS_Item_RunecraftingPouch_Small Auto
+MiscObject Property RS_Item_RunecraftingPouch_Medium Auto
+MiscObject Property RS_Item_RunecraftingPouch_Large Auto
+MiscObject Property RS_Item_RunecraftingPouch_Giant Auto
 ;>
