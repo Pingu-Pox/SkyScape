@@ -230,6 +230,82 @@ Function HarvestItemOnce(GlobalVariable skillCounter, ObjectReference objRef, Ac
 	EndIf	
 EndFunction
 
+;--ACTION--Runecrafting script, has random events
+;Function Runecraft(string runeType, bool pure, int essCountPure) Global
+;	if (((GetGlobalCheck_RandomEvents()).GetValue()) == 1)
+;		RollRandomEvent(skillName, spawnLocation)
+;	endif
+;	;The meat and potatoes... the probability formula
+;	;pure=true
+;	;either=false
+;EndFunction
+;
+;Function CraftRCTiara(runeType) Global
+;	if (((GetGlobalCheck_RandomEvents()).GetValue()) == 1)
+;		RollRandomEvent(skillName, spawnLocation)
+;	endif
+;	;The meat and potatoes... the probability formula
+;	;pure=true
+;	;either=false
+;EndFunction
+;
+;Function CraftRCStaff(runeType) Global
+;	if (((GetGlobalCheck_RandomEvents()).GetValue()) == 1)
+;		RollRandomEvent(skillName, spawnLocation)
+;	endif
+;	;The meat and potatoes... the probability formula
+;	;pure=true
+;	;either=false
+;EndFunction
+
+;Gets amount of pure ess in pouches
+int Function GetPouchPureCount(bool small, bool medium, bool large, bool giant) Global
+	RemoveSparePouches();Removes spare pouches
+	int smallCount = 0
+	int mediumCount = 0
+	int largeCount = 0
+	int giantCount = 0
+	
+	if (small == true)
+		smallCount = GetCount_Runecrafting_EssPure_Small().GetValue() as int
+	endif
+	if (medium == true)
+		mediumCount = GetCount_Runecrafting_EssPure_Medium().GetValue() as int
+	endif
+	if (large == true)
+		largeCount = GetCount_Runecrafting_EssPure_Large().GetValue() as int
+	endif
+	if (giant == true)
+		giantCount = GetCount_Runecrafting_EssPure_Giant().GetValue() as int
+	endif
+	
+	return (smallCount + mediumCount + largeCount + giantCount)
+EndFunction
+
+;Gets amount of either ess in pouches
+int Function GetPouchEssCount(bool small, bool medium, bool large, bool giant) Global
+	RemoveSparePouches();Removes spare pouches
+	int smallCount = 0
+	int mediumCount = 0
+	int largeCount = 0
+	int giantCount = 0
+	
+	if (small == true)
+		smallCount = ((GetCount_Runecrafting_Ess_Small().GetValue()) + (GetCount_Runecrafting_EssPure_Small().GetValue())) as int
+	endif
+	if (medium == true)
+		mediumCount = ((GetCount_Runecrafting_Ess_Medium().GetValue()) + (GetCount_Runecrafting_EssPure_Medium().GetValue())) as int
+	endif
+	if (large == true)
+		largeCount = ((GetCount_Runecrafting_Ess_Large().GetValue()) + (GetCount_Runecrafting_EssPure_Large().GetValue())) as int
+	endif
+	if (giant == true)
+		giantCount = ((GetCount_Runecrafting_Ess_Giant().GetValue()) + (GetCount_Runecrafting_EssPure_Giant().GetValue())) as int
+	endif
+	
+	return (smallCount + mediumCount + largeCount + giantCount)
+EndFunction
+
 ;< Information
 ;WIP
 ;
@@ -20065,6 +20141,26 @@ Function rsLevelCheck_Woodcutting() Global
 	EndIf
 EndFunction
 
+;Remove extra Runecrafting Pouches... cheater...
+Function RemoveSparePouches() Global
+	if (game.getplayer().GetItemCount(GetItem_RCpouch_Small())) >= 1
+		game.getplayer().RemoveItem(GetItem_RCpouch_Small(), ((game.getplayer().GetItemCount(GetItem_RCpouch_Small())) - 1))
+		GetBankReference().RemoveItem(GetItem_RCpouch_Small(), (GetBankReference().GetItemCount(GetItem_RCpouch_Small())))
+	endif
+	if (game.getplayer().GetItemCount(GetItem_RCpouch_Medium())) >= 1
+		game.getplayer().RemoveItem(GetItem_RCpouch_Medium(), ((game.getplayer().GetItemCount(GetItem_RCpouch_Medium())) - 1))
+		GetBankReference().RemoveItem(GetItem_RCpouch_Medium(), (GetBankReference().GetItemCount(GetItem_RCpouch_Medium())))
+	endif
+	if (game.getplayer().GetItemCount(GetItem_RCpouch_Large())) >= 1
+		game.getplayer().RemoveItem(GetItem_RCpouch_Large(), ((game.getplayer().GetItemCount(GetItem_RCpouch_Large())) - 1))
+		GetBankReference().RemoveItem(GetItem_RCpouch_Large(), (GetBankReference().GetItemCount(GetItem_RCpouch_Large())))
+	endif
+	if (game.getplayer().GetItemCount(GetItem_RCpouch_Giant())) >= 1
+		game.getplayer().RemoveItem(GetItem_RCpouch_Giant(), ((game.getplayer().GetItemCount(GetItem_RCpouch_Giant())) - 1))
+		GetBankReference().RemoveItem(GetItem_RCpouch_Giant(), (GetBankReference().GetItemCount(GetItem_RCpouch_Giant())))
+	endif
+EndFunction
+
 ;>
 ;< Misc. functions - can be used on their own
 
@@ -21167,6 +21263,79 @@ EndFunction
 Weapon Function GetWeapon_Special_InfernoAdze() Global
 	return GetFrameworkData().RS_Item_Weapon_Special_InfernoAdze
 EndFunction
+;>
+;< Get Count Variables
+;< Runecrafting Counts
+;Gets pure essence count from pouch
+GlobalVariable Function GetCount_Runecrafting_EssPure_Small() Global
+	return GetFrameworkData().RS_Count_Runecrafting_EssPure_Small
+EndFunction
+
+;Gets pure essence count from pouch
+GlobalVariable Function GetCount_Runecrafting_EssPure_Medium() Global
+	return GetFrameworkData().RS_Count_Runecrafting_EssPure_Medium
+EndFunction
+
+;Gets pure essence count from pouch
+GlobalVariable Function GetCount_Runecrafting_EssPure_Large() Global
+	return GetFrameworkData().RS_Count_Runecrafting_EssPure_Large
+EndFunction
+
+;Gets pure essence count from pouch
+GlobalVariable Function GetCount_Runecrafting_EssPure_Giant() Global
+	return GetFrameworkData().RS_Count_Runecrafting_EssPure_Giant
+EndFunction
+
+;Gets reg essence count from pouch
+GlobalVariable Function GetCount_Runecrafting_Ess_Small() Global
+	return GetFrameworkData().RS_Count_Runecrafting_Ess_Small
+EndFunction
+
+;Gets reg essence count from pouch
+GlobalVariable Function GetCount_Runecrafting_Ess_Medium() Global
+	return GetFrameworkData().RS_Count_Runecrafting_Ess_Medium
+EndFunction
+
+;Gets reg essence count from pouch
+GlobalVariable Function GetCount_Runecrafting_Ess_Large() Global
+	return GetFrameworkData().RS_Count_Runecrafting_Ess_Large
+EndFunction
+
+;Gets reg essence count from pouch
+GlobalVariable Function GetCount_Runecrafting_Ess_Giant() Global
+	return GetFrameworkData().RS_Count_Runecrafting_Ess_Giant
+EndFunction
+;>
+;>
+;< Get Container Properties
+
+;Gets objectreference of the bank
+ObjectReference Function GetBankReference() Global
+	return GetFrameworkData().RS_Bank
+EndFunction
+;>
+;< Get Item
+
+;Gets runecraft pouch reference
+MiscObject Function GetItem_RCpouch_Small() Global
+	return GetFrameworkData().RS_Item_RunecraftingPouch_Small
+EndFunction
+
+;Gets runecraft pouch reference
+MiscObject Function GetItem_RCpouch_Medium() Global
+	return GetFrameworkData().RS_Item_RunecraftingPouch_Medium
+EndFunction
+
+;Gets runecraft pouch reference
+MiscObject Function GetItem_RCpouch_Large() Global
+	return GetFrameworkData().RS_Item_RunecraftingPouch_Large
+EndFunction
+
+;Gets runecraft pouch reference
+MiscObject Function GetItem_RCpouch_Giant() Global
+	return GetFrameworkData().RS_Item_RunecraftingPouch_Giant
+EndFunction
+
 ;>
 ;>
 ;< Notes:
