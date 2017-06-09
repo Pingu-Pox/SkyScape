@@ -231,32 +231,32 @@ Function HarvestItemOnce(GlobalVariable skillCounter, ObjectReference objRef, Ac
 EndFunction
 
 ;--ACTION--Runecrafting script, has random events
-;Function Runecraft(string runeType, bool pure, int essCountPure) Global
-;	if (((GetGlobalCheck_RandomEvents()).GetValue()) == 1)
-;		RollRandomEvent(skillName, spawnLocation)
-;	endif
-;	;The meat and potatoes... the probability formula
-;	;pure=true
-;	;either=false
-;EndFunction
-;
-;Function CraftRCTiara(runeType) Global
-;	if (((GetGlobalCheck_RandomEvents()).GetValue()) == 1)
-;		RollRandomEvent(skillName, spawnLocation)
-;	endif
-;	;The meat and potatoes... the probability formula
-;	;pure=true
-;	;either=false
-;EndFunction
-;
-;Function CraftRCStaff(runeType) Global
-;	if (((GetGlobalCheck_RandomEvents()).GetValue()) == 1)
-;		RollRandomEvent(skillName, spawnLocation)
-;	endif
-;	;The meat and potatoes... the probability formula
-;	;pure=true
-;	;either=false
-;EndFunction
+Function Runecraft(string runeType, bool pure, int essCountPure) Global
+	;if (((GetGlobalCheck_RandomEvents()).GetValue()) == 1)
+	;	RollRandomEvent("runecrafting", spawnLocation)
+	;endif
+	;The meat and potatoes... the probability formula
+	;pure=true
+	;either=false
+EndFunction
+
+Function CraftRCTiara(string runeType) Global
+	;if (((GetGlobalCheck_RandomEvents()).GetValue()) == 1)
+	;	RollRandomEvent(skillName, spawnLocation)
+	;endif
+	;The meat and potatoes... the probability formula
+	;pure=true
+	;either=false
+EndFunction
+
+Function CraftRCStaff(string runeType) Global
+	;if (((GetGlobalCheck_RandomEvents()).GetValue()) == 1)
+	;	RollRandomEvent(skillName, spawnLocation)
+	;endif
+	;The meat and potatoes... the probability formula
+	;pure=true
+	;either=false
+EndFunction
 
 ;Gets amount of pure ess in pouches
 int Function GetPouchPureCount(bool small, bool medium, bool large, bool giant) Global
