@@ -240,22 +240,148 @@ Function Runecraft(string runeType, bool pure, int essCountPure) Global
 	;either=false
 EndFunction
 
-Function CraftRCTiara(string runeType) Global
-	;if (((GetGlobalCheck_RandomEvents()).GetValue()) == 1)
-	;	RollRandomEvent(skillName, spawnLocation)
-	;endif
-	;The meat and potatoes... the probability formula
-	;pure=true
-	;either=false
+Function rsCraftRCTiara(string runeType, int count, ObjectReference spawnLocation) Global
+
+	float gainedXP = 0
+	int countTalisman = 0
+	Armor tiara = GetArmor_Head_Tiara()
+	int countTiara = Game.GetPlayer().GetItemCount(tiara)
+	
+	if runeType == "air"
+		gainedXP = 25
+		MiscObject talisman = GetItem_Talisman_Air()
+		countTalisman = (Game.GetPlayer().GetItemCount(talisman))		
+		rsMakeTiara(GetItem_Talisman_Air(), GetArmor_Head_Tiara_Air(), count, gainedXP, countTalisman, countTiara)
+	elseif runeType == "mind"
+		gainedXP = 27.5
+		MiscObject talisman = GetItem_Talisman_Mind()
+		countTalisman = (Game.GetPlayer().GetItemCount(talisman))
+		rsMakeTiara(GetItem_Talisman_Mind(), GetArmor_Head_Tiara_Mind(), count, gainedXP, countTalisman, countTiara)
+	elseif runeType == "water"
+		gainedXP = 30
+		MiscObject talisman = GetItem_Talisman_Water()
+		countTalisman = (Game.GetPlayer().GetItemCount(talisman))
+		rsMakeTiara(GetItem_Talisman_Water(), GetArmor_Head_Tiara_Water(), count, gainedXP, countTalisman, countTiara)
+	elseif runeType == "earth"
+		gainedXP = 32.5
+		MiscObject talisman = GetItem_Talisman_Earth()
+		countTalisman = (Game.GetPlayer().GetItemCount(talisman))
+		rsMakeTiara(GetItem_Talisman_Earth(), GetArmor_Head_Tiara_Earth(), count, gainedXP, countTalisman, countTiara)
+	elseif runeType == "fire"
+		gainedXP = 35
+		MiscObject talisman = GetItem_Talisman_Fire()
+		countTalisman = (Game.GetPlayer().GetItemCount(talisman))
+		rsMakeTiara(GetItem_Talisman_Fire(), GetArmor_Head_Tiara_Fire(), count, gainedXP, countTalisman, countTiara)
+	elseif runeType == "body"
+		gainedXP = 37.5
+		MiscObject talisman = GetItem_Talisman_Body()
+		countTalisman = (Game.GetPlayer().GetItemCount(talisman))
+		rsMakeTiara(GetItem_Talisman_Body(), GetArmor_Head_Tiara_Body(), count, gainedXP, countTalisman, countTiara)
+	elseif runeType == "cosmic"
+		gainedXP = 40
+		MiscObject talisman = GetItem_Talisman_Cosmic()
+		countTalisman = (Game.GetPlayer().GetItemCount(talisman))
+		rsMakeTiara(GetItem_Talisman_Cosmic(), GetArmor_Head_Tiara_Cosmic(), count, gainedXP, countTalisman, countTiara)
+	elseif runeType == "chaos"
+		gainedXP = 42.5
+		MiscObject talisman = GetItem_Talisman_Chaos()
+		countTalisman = (Game.GetPlayer().GetItemCount(talisman))
+		rsMakeTiara(GetItem_Talisman_Chaos(), GetArmor_Head_Tiara_Chaos(), count, gainedXP, countTalisman, countTiara)
+	elseif runeType == "nature"
+		gainedXP = 45
+		MiscObject talisman = GetItem_Talisman_Nature()
+		countTalisman = (Game.GetPlayer().GetItemCount(talisman))
+		rsMakeTiara(GetItem_Talisman_Nature(), GetArmor_Head_Tiara_Nature(), count, gainedXP, countTalisman, countTiara)
+	elseif runeType == "law"
+		gainedXP = 47.5
+		MiscObject talisman = GetItem_Talisman_Law()
+		countTalisman = (Game.GetPlayer().GetItemCount(talisman))
+		rsMakeTiara(GetItem_Talisman_Law(), GetArmor_Head_Tiara_Law(), count, gainedXP, countTalisman, countTiara)
+	elseif runeType == "death"
+		gainedXP = 50
+		MiscObject talisman = GetItem_Talisman_Death()
+		countTalisman = (Game.GetPlayer().GetItemCount(talisman))
+		rsMakeTiara(GetItem_Talisman_Death(), GetArmor_Head_Tiara_Death(), count, gainedXP, countTalisman, countTiara)
+	else
+		debug.messagebox("Runecrafting Error 001 - Could not parse runeType")
+	endif
+	
+	if (((GetGlobalCheck_RandomEvents()).GetValue()) == 1)
+		RollRandomEvent("runecrafting", spawnLocation)
+	endif
+	
 EndFunction
 
-Function CraftRCStaff(string runeType) Global
-	;if (((GetGlobalCheck_RandomEvents()).GetValue()) == 1)
-	;	RollRandomEvent(skillName, spawnLocation)
-	;endif
-	;The meat and potatoes... the probability formula
-	;pure=true
-	;either=false
+Function rsCraftTalismanStaff(string runeType, int count, ObjectReference spawnLocation) Global
+	
+	float gainedXP = 0
+	int countTalisman = 0
+	Weapon staff = GetWeapon_Staff_Talisman()
+	int countStaff = Game.GetPlayer().GetItemCount(staff)
+	
+	if runeType == "air"
+		gainedXP = 25
+		MiscObject talisman = GetItem_Talisman_Air()
+		countTalisman = (Game.GetPlayer().GetItemCount(talisman))		
+		rsMakeTalismanStaff(GetItem_Talisman_Air(), GetWeapon_Staff_Talisman_Air(), count, gainedXP, countTalisman, countStaff)
+	elseif runeType == "mind"
+		gainedXP = 27.5
+		MiscObject talisman = GetItem_Talisman_Mind()
+		countTalisman = (Game.GetPlayer().GetItemCount(talisman))
+		rsMakeTalismanStaff(GetItem_Talisman_Mind(), GetWeapon_Staff_Talisman_Mind(), count, gainedXP, countTalisman, countStaff)
+	elseif runeType == "water"
+		gainedXP = 30
+		MiscObject talisman = GetItem_Talisman_Water()
+		countTalisman = (Game.GetPlayer().GetItemCount(talisman))
+		rsMakeTalismanStaff(GetItem_Talisman_Water(), GetWeapon_Staff_Talisman_Water(), count, gainedXP, countTalisman, countStaff)
+	elseif runeType == "earth"
+		gainedXP = 32.5
+		MiscObject talisman = GetItem_Talisman_Earth()
+		countTalisman = (Game.GetPlayer().GetItemCount(talisman))
+		rsMakeTalismanStaff(GetItem_Talisman_Earth(), GetWeapon_Staff_Talisman_Earth(), count, gainedXP, countTalisman, countStaff)
+	elseif runeType == "fire"
+		gainedXP = 35
+		MiscObject talisman = GetItem_Talisman_Fire()
+		countTalisman = (Game.GetPlayer().GetItemCount(talisman))
+		rsMakeTalismanStaff(GetItem_Talisman_Fire(), GetWeapon_Staff_Talisman_Fire(), count, gainedXP, countTalisman, countStaff)
+	elseif runeType == "body"
+		gainedXP = 37.5
+		MiscObject talisman = GetItem_Talisman_Body()
+		countTalisman = (Game.GetPlayer().GetItemCount(talisman))
+		rsMakeTalismanStaff(GetItem_Talisman_Body(), GetWeapon_Staff_Talisman_Body(), count, gainedXP, countTalisman, countStaff)
+	elseif runeType == "cosmic"
+		gainedXP = 40
+		MiscObject talisman = GetItem_Talisman_Cosmic()
+		countTalisman = (Game.GetPlayer().GetItemCount(talisman))
+		rsMakeTalismanStaff(GetItem_Talisman_Cosmic(), GetWeapon_Staff_Talisman_Cosmic(), count, gainedXP, countTalisman, countStaff)
+	elseif runeType == "chaos"
+		gainedXP = 42.5
+		MiscObject talisman = GetItem_Talisman_Chaos()
+		countTalisman = (Game.GetPlayer().GetItemCount(talisman))
+		rsMakeTalismanStaff(GetItem_Talisman_Chaos(), GetWeapon_Staff_Talisman_Chaos(), count, gainedXP, countTalisman, countStaff)
+	elseif runeType == "nature"
+		gainedXP = 45
+		MiscObject talisman = GetItem_Talisman_Nature()
+		countTalisman = (Game.GetPlayer().GetItemCount(talisman))
+		rsMakeTalismanStaff(GetItem_Talisman_Nature(), GetWeapon_Staff_Talisman_Nature(), count, gainedXP, countTalisman, countStaff)
+	elseif runeType == "law"
+		gainedXP = 47.5
+		MiscObject talisman = GetItem_Talisman_Law()
+		countTalisman = (Game.GetPlayer().GetItemCount(talisman))
+		rsMakeTalismanStaff(GetItem_Talisman_Law(), GetWeapon_Staff_Talisman_Law(), count, gainedXP, countTalisman, countStaff)
+	elseif runeType == "death"
+		gainedXP = 50
+		MiscObject talisman = GetItem_Talisman_Death()
+		countTalisman = (Game.GetPlayer().GetItemCount(talisman))
+		rsMakeTalismanStaff(GetItem_Talisman_Death(), GetWeapon_Staff_Talisman_Death(), count, gainedXP, countTalisman, countStaff)
+	else
+		debug.messagebox("Runecrafting Error 001 - Could not parse runeType")
+	endif
+	
+	if (((GetGlobalCheck_RandomEvents()).GetValue()) == 1)
+		RollRandomEvent("runecrafting", spawnLocation)
+	endif
+	
 EndFunction
 
 ;Gets amount of pure ess in pouches
@@ -489,6 +615,101 @@ EndFunction
 ;>
 ;< Child functions - do not use these functions, use the parent above
 
+Function rsMakeTalismanStaff(MiscObject talisman, Weapon staff, int count, float gainedXP, int countTalisman, int countStaff) Global
+	bool bWantToLeave = false
+	if count == 666
+		While (bWantToLeave == false)
+			if countTalisman >= 1 && countStaff >= 1
+				Game.GetPlayer().RemoveItem(GetWeapon_Staff_Talisman(), 1, true)
+				Game.GetPlayer().RemoveItem(talisman, 1, true)
+				GetSound_UI_Runecrafting().Play(Game.GetPlayer())
+				Utility.Wait(1)
+				Game.GetPlayer().AddItem(staff, 1)
+				rsXPGain("runecrafting", gainedXP)
+				bWantToLeave = Input.IsKeyPressed(18)
+			elseif countTalisman >= 1 && countStaff < 1; not enough Staffs
+				bWantToLeave = true
+				Debug.Notification("You need need an additional Talisman Staff before you can craft more.")
+			elseif countStaff >= 1 && countTalisman < 1; not enough Talismans
+				bWantToLeave = true
+				Debug.Notification("You need need an additional Talisman before you can craft more.")
+			else;not enough of either item
+				bWantToLeave = true
+				Debug.Notification("You need need an additional Talisman Staff and Talisman before you can craft more.")
+			endif
+		EndWhile
+	else
+		While (count != 0 && bWantToLeave == false)
+			if countTalisman >= 1 && countStaff >= 1
+				Game.GetPlayer().RemoveItem(GetWeapon_Staff_Talisman(), 1, true)
+				Game.GetPlayer().RemoveItem(talisman, 1, true)
+				GetSound_UI_Runecrafting().Play(Game.GetPlayer())
+				Utility.Wait(1)
+				Game.GetPlayer().AddItem(staff, 1)
+				rsXPGain("runecrafting", gainedXP)
+				bWantToLeave = Input.IsKeyPressed(18)
+				count = (count - 1)
+			elseif countTalisman >= 1 && countStaff < 1; not enough Staffs
+				bWantToLeave = true
+				Debug.Notification("You need need an additional Talisman Staff before you can craft more.")
+			elseif countStaff >= 1 && countTalisman < 1; not enough Talismans
+				bWantToLeave = true
+				Debug.Notification("You need need an additional Talisman before you can craft more.")
+			else;not enough of either item
+				bWantToLeave = true
+				Debug.Notification("You need need an additional Talisman Staff and Talisman before you can craft more.")
+			endif
+		EndWhile
+	endif
+endfunction
+
+Function rsMakeTiara(MiscObject talisman, Armor tiara, int count, float gainedXP, int countTalisman, int countTiara) Global
+	bool bWantToLeave = false
+	if count == 666
+		While (bWantToLeave == false)
+			if countTalisman >= 1 && countTiara >= 1
+				Game.GetPlayer().RemoveItem(GetArmor_Head_Tiara(), 1, true)
+				Game.GetPlayer().RemoveItem(talisman, 1, true)
+				GetSound_UI_Runecrafting().Play(Game.GetPlayer())
+				Utility.Wait(1)
+				Game.GetPlayer().AddItem(tiara, 1)
+				rsXPGain("runecrafting", gainedXP)
+				bWantToLeave = Input.IsKeyPressed(18)
+			elseif countTalisman >= 1 && countTiara < 1; not enough tiaras
+				bWantToLeave = true
+				Debug.Notification("You need need an additional tiara before you can craft more.")
+			elseif countTiara >= 1 && countTalisman < 1; not enough talismans
+				bWantToLeave = true
+				Debug.Notification("You need need an additional talisman before you can craft more.")
+			else;not enough of either item
+				bWantToLeave = true
+				Debug.Notification("You need need an additional tiara and talisman before you can craft more.")
+			endif
+		EndWhile
+	else
+		While (count != 0 && bWantToLeave == false)
+			if countTalisman >= 1 && countTiara >= 1
+				Game.GetPlayer().RemoveItem(GetArmor_Head_Tiara(), 1, true)
+				Game.GetPlayer().RemoveItem(talisman, 1, true)
+				GetSound_UI_Runecrafting().Play(Game.GetPlayer())
+				Utility.Wait(1)
+				Game.GetPlayer().AddItem(tiara, 1)
+				rsXPGain("runecrafting", gainedXP)
+				bWantToLeave = Input.IsKeyPressed(18)
+				count = (count - 1)
+			elseif countTalisman >= 1 && countTiara < 1; not enough tiaras
+				bWantToLeave = true
+				Debug.Notification("You need need an additional tiara before you can craft more.")
+			elseif countTiara >= 1 && countTalisman < 1; not enough talismans
+				bWantToLeave = true
+				Debug.Notification("You need need an additional talisman before you can craft more.")
+			else;not enough of either item
+				bWantToLeave = true
+				Debug.Notification("You need need an additional tiara and talisman before you can craft more.")
+			endif
+		EndWhile
+	endif
+endfunction
 ;Returns the strength of the equipped tool (pickaxe or hatchet)
 Float Function GetToolStrength(weapon equippedTool) Global
 	If (GetFormList_WeaponBronze()).HasForm(equippedTool)
@@ -21263,6 +21484,56 @@ EndFunction
 Weapon Function GetWeapon_Special_InfernoAdze() Global
 	return GetFrameworkData().RS_Item_Weapon_Special_InfernoAdze
 EndFunction
+
+;< Runecrafting Staves
+Weapon Function GetWeapon_Staff_Talisman() Global
+	return GetFrameworkData().RS_Weapon_Staff_Talisman
+EndFunction
+
+Weapon Function GetWeapon_Staff_Talisman_Air() Global
+	return GetFrameworkData().RS_Weapon_Staff_Talisman_Air
+EndFunction
+
+Weapon Function GetWeapon_Staff_Talisman_Mind() Global
+	return GetFrameworkData().RS_Weapon_Staff_Talisman_Mind
+EndFunction
+
+Weapon Function GetWeapon_Staff_Talisman_Water() Global
+	return GetFrameworkData().RS_Weapon_Staff_Talisman_Water
+EndFunction
+
+Weapon Function GetWeapon_Staff_Talisman_Earth() Global
+	return GetFrameworkData().RS_Weapon_Staff_Talisman_Earth
+EndFunction
+
+Weapon Function GetWeapon_Staff_Talisman_Fire() Global
+	return GetFrameworkData().RS_Weapon_Staff_Talisman_Fire
+EndFunction
+
+Weapon Function GetWeapon_Staff_Talisman_Body() Global
+	return GetFrameworkData().RS_Weapon_Staff_Talisman_Body
+EndFunction
+
+Weapon Function GetWeapon_Staff_Talisman_Cosmic() Global
+	return GetFrameworkData().RS_Weapon_Staff_Talisman_Cosmic
+EndFunction
+
+Weapon Function GetWeapon_Staff_Talisman_Chaos() Global
+	return GetFrameworkData().RS_Weapon_Staff_Talisman_Chaos
+EndFunction
+
+Weapon Function GetWeapon_Staff_Talisman_Nature() Global
+	return GetFrameworkData().RS_Weapon_Staff_Talisman_Nature
+EndFunction
+
+Weapon Function GetWeapon_Staff_Talisman_Law() Global
+	return GetFrameworkData().RS_Weapon_Staff_Talisman_Law
+EndFunction
+
+Weapon Function GetWeapon_Staff_Talisman_Death() Global
+	return GetFrameworkData().RS_Weapon_Staff_Talisman_Death
+EndFunction
+
 ;>
 ;< Get Count Variables
 ;< Runecrafting Counts
@@ -21316,7 +21587,7 @@ EndFunction
 ;>
 ;< Get Item
 
-;Gets runecraft pouch reference
+;< Runecrafting Pouches
 MiscObject Function GetItem_RCpouch_Small() Global
 	return GetFrameworkData().RS_Item_RunecraftingPouch_Small
 EndFunction
@@ -21335,8 +21606,111 @@ EndFunction
 MiscObject Function GetItem_RCpouch_Giant() Global
 	return GetFrameworkData().RS_Item_RunecraftingPouch_Giant
 EndFunction
+;>
+;< Runecrafting Talismans
+MiscObject Function GetItem_Talisman_Air() Global
+	return GetFrameworkData().RS_Item_Talisman_Air
+EndFunction
+
+MiscObject Function GetItem_Talisman_Mind() Global
+	return GetFrameworkData().RS_Item_Talisman_Mind
+EndFunction
+
+MiscObject Function GetItem_Talisman_Water() Global
+	return GetFrameworkData().RS_Item_Talisman_Water
+EndFunction
+
+MiscObject Function GetItem_Talisman_Earth() Global
+	return GetFrameworkData().RS_Item_Talisman_Earth
+EndFunction
+
+MiscObject Function GetItem_Talisman_Fire() Global
+	return GetFrameworkData().RS_Item_Talisman_Fire
+EndFunction
+
+MiscObject Function GetItem_Talisman_Body() Global
+	return GetFrameworkData().RS_Item_Talisman_Body
+EndFunction
+
+MiscObject Function GetItem_Talisman_Cosmic() Global
+	return GetFrameworkData().RS_Item_Talisman_Cosmic
+EndFunction
+
+MiscObject Function GetItem_Talisman_Chaos() Global
+	return GetFrameworkData().RS_Item_Talisman_Chaos
+EndFunction
+
+MiscObject Function GetItem_Talisman_Nature() Global
+	return GetFrameworkData().RS_Item_Talisman_Nature
+EndFunction
+
+MiscObject Function GetItem_Talisman_Law() Global
+	return GetFrameworkData().RS_Item_Talisman_Law
+EndFunction
+
+MiscObject Function GetItem_Talisman_Death() Global
+	return GetFrameworkData().RS_Item_Talisman_Death
+EndFunction
 
 ;>
+
+;< Get Armor
+Armor Function GetArmor_Head_Tiara() Global
+	return GetFrameworkData().RS_Armor_Head_Tiara
+EndFunction
+
+Armor Function GetArmor_Head_Tiara_Air() Global
+	return GetFrameworkData().RS_Armor_Head_Tiara_Air
+EndFunction
+
+Armor Function GetArmor_Head_Tiara_Mind() Global
+	return GetFrameworkData().RS_Armor_Head_Tiara_Mind
+EndFunction
+
+Armor Function GetArmor_Head_Tiara_Water() Global
+	return GetFrameworkData().RS_Armor_Head_Tiara_Water
+EndFunction
+
+Armor Function GetArmor_Head_Tiara_Earth() Global
+	return GetFrameworkData().RS_Armor_Head_Tiara_Earth
+EndFunction
+
+Armor Function GetArmor_Head_Tiara_Fire() Global
+	return GetFrameworkData().RS_Armor_Head_Tiara_Fire
+EndFunction
+
+Armor Function GetArmor_Head_Tiara_Body() Global
+	return GetFrameworkData().RS_Armor_Head_Tiara_Body
+EndFunction
+
+Armor Function GetArmor_Head_Tiara_Cosmic() Global
+	return GetFrameworkData().RS_Armor_Head_Tiara_Cosmic
+EndFunction
+
+Armor Function GetArmor_Head_Tiara_Chaos() Global
+	return GetFrameworkData().RS_Armor_Head_Tiara_Chaos
+EndFunction
+
+Armor Function GetArmor_Head_Tiara_Nature() Global
+	return GetFrameworkData().RS_Armor_Head_Tiara_Nature
+EndFunction
+
+Armor Function GetArmor_Head_Tiara_Law() Global
+	return GetFrameworkData().RS_Armor_Head_Tiara_Law
+EndFunction
+
+Armor Function GetArmor_Head_Tiara_Death() Global
+	return GetFrameworkData().RS_Armor_Head_Tiara_Death
+EndFunction
+
+;>
+;>
+;< Get Sound
+
+Sound Function GetSound_UI_Runecrafting() Global
+	return GetFrameworkData().RS_Sound_UI_Runecraft
+EndFunction
+
 ;>
 ;< Notes:
 ;The original goal of this script is to provide the necessary functions to other scripts that use a repeated element that appears in each script.
