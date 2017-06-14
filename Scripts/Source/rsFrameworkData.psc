@@ -119,6 +119,7 @@ Sound Property RS_SM_LevelUpSummoning Auto
 Sound Property RS_SM_LevelUpThieving Auto
 Sound Property RS_SM_LevelUpWoodcutting Auto
 
+Sound Property RS_Sound_UI_Runecraft Auto
 ;>
 ;< Spell Properties
 Spell Property RS_sPrayer_Augury Auto
@@ -203,6 +204,19 @@ ActorBase Property RS_Monster_Watchman_re_159 Auto
 ;>
 ;< Weapon Properties
 Weapon Property RS_Item_Weapon_Special_InfernoAdze Auto
+
+Weapon Property RS_Weapon_Staff_Talisman Auto
+Weapon Property RS_Weapon_Staff_Talisman_Air Auto
+Weapon Property RS_Weapon_Staff_Talisman_Mind Auto
+Weapon Property RS_Weapon_Staff_Talisman_Water Auto
+Weapon Property RS_Weapon_Staff_Talisman_Earth Auto
+Weapon Property RS_Weapon_Staff_Talisman_Fire Auto
+Weapon Property RS_Weapon_Staff_Talisman_Body Auto
+Weapon Property RS_Weapon_Staff_Talisman_Cosmic Auto
+Weapon Property RS_Weapon_Staff_Talisman_Chaos Auto
+Weapon Property RS_Weapon_Staff_Talisman_Nature Auto
+Weapon Property RS_Weapon_Staff_Talisman_Law Auto
+Weapon Property RS_Weapon_Staff_Talisman_Death Auto
 ;>
 ;< Config Properties
 Globalvariable Property RS_Check_LampMod Auto; Modifier on lamp xp rates, 1 is normal, 2 is double, etc.
@@ -215,4 +229,33 @@ MiscObject Property RS_Item_RunecraftingPouch_Small Auto
 MiscObject Property RS_Item_RunecraftingPouch_Medium Auto
 MiscObject Property RS_Item_RunecraftingPouch_Large Auto
 MiscObject Property RS_Item_RunecraftingPouch_Giant Auto
+
+MiscObject Property RS_Item_Talisman_Air Auto
+MiscObject Property RS_Item_Talisman_Mind Auto
+MiscObject Property RS_Item_Talisman_Water Auto
+MiscObject Property RS_Item_Talisman_Earth Auto
+MiscObject Property RS_Item_Talisman_Fire Auto
+MiscObject Property RS_Item_Talisman_Body Auto
+MiscObject Property RS_Item_Talisman_Cosmic Auto
+MiscObject Property RS_Item_Talisman_Chaos Auto
+MiscObject Property RS_Item_Talisman_Nature Auto
+MiscObject Property RS_Item_Talisman_Law Auto
+MiscObject Property RS_Item_Talisman_Death Auto
+
+;>
+
+;< Armor Properties
+Armor Property RS_Armor_Head_Tiara Auto
+Armor Property RS_Armor_Head_Tiara_Air Auto
+Armor Property RS_Armor_Head_Tiara_Mind Auto
+Armor Property RS_Armor_Head_Tiara_Water Auto
+Armor Property RS_Armor_Head_Tiara_Earth Auto
+Armor Property RS_Armor_Head_Tiara_Fire Auto
+Armor Property RS_Armor_Head_Tiara_Body Auto
+Armor Property RS_Armor_Head_Tiara_Cosmic Auto
+Armor Property RS_Armor_Head_Tiara_Chaos Auto
+Armor Property RS_Armor_Head_Tiara_Nature Auto
+Armor Property RS_Armor_Head_Tiara_Law Auto
+Armor Property RS_Armor_Head_Tiara_Death Auto
+
 ;>
