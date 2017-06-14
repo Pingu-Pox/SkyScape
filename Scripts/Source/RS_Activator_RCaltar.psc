@@ -1,5 +1,5 @@
 ScriptName RS_Activator_RCaltar Extends ObjectReference
-{Script to put on the actual runecrafting altar}
+{Script to put on the actual runecrafting altar, make sure to use lowercase for runeType}
 
 Message Property RS_Message_Runecrafting_craftRCmenu Auto
 
