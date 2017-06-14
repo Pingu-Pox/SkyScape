@@ -16,6 +16,69 @@ MiscObject Property RS_Item_RunecraftingPouch_Giant Auto
 MiscObject Property RS_Item_Runecrafting_RuneEssence Auto
 MiscObject Property RS_Item_Runecrafting_RuneEssencePure Auto
 
+Message Property RS_Message_General_MakeCount Auto
+
+Sound Property RS_Sound_Runecrafting_DramenEnchant Auto
+
+Weapon Property RS_Weapon_Staff_Dramen0 Auto
+Weapon Property RS_Weapon_Staff_Dramen1 Auto
+Weapon Property RS_Weapon_Staff_Dramen2 Auto
+Weapon Property RS_Weapon_Staff_Dramen3 Auto
+Weapon Property RS_Weapon_Staff_Lunar Auto
+
+
+Event OnHit(ObjectReference akAggressor, Form akSource, Projectile akProjectile, bool abPowerAttack, bool abSneakAttack, bool abBashAttack, bool abHitBlocked)
+	If akAggressor == Game.GetPlayer()
+		Actor player = akAggressor as Actor
+		if runeType == "air"
+			weapon akSourceWeapon = akSource as weapon
+			if akSourceWeapon == RS_Weapon_Staff_Dramen0
+				RS_Sound_Runecrafting_DramenEnchant.Play(self)
+				player.UnequipItem(RS_Weapon_Staff_Dramen0, false, true)
+				player.RemoveItem(RS_Weapon_Staff_Dramen0, 1)
+				player.AddItem(RS_Weapon_Staff_Dramen1, 1)
+				player.EquipItem(RS_Weapon_Staff_Dramen1)
+			else
+				debug.notification("Nothing interesting happens.")
+			endif
+		elseif runeType == "water"
+			weapon akSourceWeapon = akSource as weapon
+			if akSourceWeapon == RS_Weapon_Staff_Dramen1
+				RS_Sound_Runecrafting_DramenEnchant.Play(self)
+				player.UnequipItem(RS_Weapon_Staff_Dramen1, false, true)
+				player.RemoveItem(RS_Weapon_Staff_Dramen1, 1)
+				player.AddItem(RS_Weapon_Staff_Dramen2, 1)
+				player.EquipItem(RS_Weapon_Staff_Dramen2)
+			else
+				debug.notification("Nothing interesting happens.")
+			endif
+		elseif runeType == "earth"
+			weapon akSourceWeapon = akSource as weapon
+			if akSourceWeapon == RS_Weapon_Staff_Dramen2
+				RS_Sound_Runecrafting_DramenEnchant.Play(self)
+				player.UnequipItem(RS_Weapon_Staff_Dramen2, false, true)
+				player.RemoveItem(RS_Weapon_Staff_Dramen2, 1)
+				player.AddItem(RS_Weapon_Staff_Dramen3, 1)
+				player.EquipItem(RS_Weapon_Staff_Dramen3)
+			else
+				debug.notification("Nothing interesting happens.")
+			endif
+		elseif runeType == "fire"
+			weapon akSourceWeapon = akSource as weapon
+			if akSourceWeapon == RS_Weapon_Staff_Dramen3
+				RS_Sound_Runecrafting_DramenEnchant.Play(self)
+				player.UnequipItem(RS_Weapon_Staff_Dramen3, false, true)
+				player.RemoveItem(RS_Weapon_Staff_Dramen3, 1)
+				player.AddItem(RS_Weapon_Staff_Lunar, 1)
+				player.EquipItem(RS_Weapon_Staff_Lunar)
+			else
+				debug.notification("Nothing interesting happens.")
+			endif
+		else
+			debug.messagebox("Runecrafting Error 001 - Could not discern runeType")
+		endif
+	Endif
+EndEvent
 
 Event OnActivate(ObjectReference akActionRef)
 	if (akActionRef != Game.GetPlayer())
@@ -47,8 +110,8 @@ Event OnActivate(ObjectReference akActionRef)
 							giant = true
 						endif
 						
-						int pouchPureCount = rsFrameworkMenu.GetPouchPureCount(small, medium, large, giant); //Ensure to check which pouches are carried
-						int pouchEssCount = rsFrameworkMenu.GetPouchEssCount(small, medium, large, giant); //Ensure to check which pouches are carried
+						int pouchPureCount = rsFrameworkMenu.GetPouchPureCount(small, medium, large, giant)
+						int pouchEssCount = rsFrameworkMenu.GetPouchEssCount(small, medium, large, giant)
 						if (bOnlyPureEssence)
 							int essCountPure = (Game.GetPlayer().GetItemCount(RS_Item_Runecrafting_RuneEssencePure)) + pouchPureCount
 							rsFrameworkMenu.Runecraft(runeType, true, essCountPure)
@@ -70,10 +133,12 @@ Event OnActivate(ObjectReference akActionRef)
 						endif
 					endif
 				elseif craftType == 1;tiara
-					rsFrameworkMenu.CraftRCTiara(runeType)
+					int count = rsFrameworkMenu.rsMakeCount(RS_Message_General_MakeCount)
+					rsFrameworkMenu.rsCraftRCTiara(runeType, count, self)
 					mainLoop = false
 				elseif craftType == 2;staff
-					rsFrameworkMenu.CraftRCStaff(runeType); //Make sure to include dramen staff (air fire water earth) into lunar staff
+					int count = rsFrameworkMenu.rsMakeCount(RS_Message_General_MakeCount)
+					rsFrameworkMenu.rsCraftTalismanStaff(runeType, count, self)
 					mainLoop = false
 				else
 					;exit
