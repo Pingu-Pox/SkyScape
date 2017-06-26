@@ -230,14 +230,554 @@ Function HarvestItemOnce(GlobalVariable skillCounter, ObjectReference objRef, Ac
 	EndIf	
 EndFunction
 
+Function StartRunecrafting(string runeType, string runeType2, bool bOnlyPureEssence, ObjectReference spawnLocation) Global
+	MiscObject pureEss = GetItem_Runecrafting_RuneEssencePure()
+	MiscObject ess = GetItem_Runecrafting_RuneEssence()
+	if (GetGlobalConfig_Runecrafting_UnpackPouch().GetValue()) == 0; Check if player set the config to auto-unpack pouches
+		bool small = false
+		bool medium = false
+		bool large = false
+		bool giant = false
+		if game.getplayer().GetItemCount(GetItem_RCpouch_Small()) == 1
+			small = true
+		endif
+		if game.getplayer().GetItemCount(GetItem_RCpouch_Medium()) == 1
+			medium = true
+		endif
+		if game.getplayer().GetItemCount(GetItem_RCpouch_Large()) == 1
+			large = true
+		endif
+		if game.getplayer().GetItemCount(GetItem_RCpouch_Giant()) == 1
+			giant = true
+		endif
+		
+		int pouchPureCount = GetPouchPureCount(small, medium, large, giant)
+		int pouchEssCount = GetPouchEssCount(small, medium, large, giant)
+		
+		if (bOnlyPureEssence)
+			int essCountPure = (Game.GetPlayer().GetItemCount(pureEss)) + pouchPureCount
+			Runecraft(runeType, essCountPure, spawnLocation, runeType2)
+		else
+			int essCountTotal = (Game.GetPlayer().GetItemCount(pureEss)) + (Game.GetPlayer().GetItemCount(ess)) + pouchPureCount + pouchEssCount
+			Runecraft(runeType, essCountTotal, spawnLocation, runeType2)
+		endif
+	else; Player will unpack pouches manually
+		if (bOnlyPureEssence)
+			int essCountPure = Game.GetPlayer().GetItemCount(pureEss)
+			Runecraft(runeType, essCountPure, spawnLocation, runeType2)
+		else
+			int essCountTotal = (Game.GetPlayer().GetItemCount(pureEss)) + (Game.GetPlayer().GetItemCount(ess))
+			Runecraft(runeType, essCountTotal, spawnLocation, runeType2)
+		endif
+	endif
+EndFunction
+
 ;--ACTION--Runecrafting script, has random events
-Function Runecraft(string runeType, bool pure, int essCountPure) Global
-	;if (((GetGlobalCheck_RandomEvents()).GetValue()) == 1)
-	;	RollRandomEvent("runecrafting", spawnLocation)
-	;endif
-	;The meat and potatoes... the probability formula
-	;pure=true
-	;either=false
+Function Runecraft(string runeType, int essCount, ObjectReference spawnLocation, string runeType2) Global
+	bool bMagicImbue = (Game.GetPlayer().HasMagicEffect(GetEffect_Spell_MagicImbue()))
+	if runeType2 == "dust"
+		int req = 10
+		int rcLVL = GetRunecraftingLVL().GetValue() as int
+		if rcLVL < req
+			debug.notification("You lack the required runecrafting level of " + req)
+		else
+			if runeType == "air"
+				if Game.GetPlayer().GetItemCount(GetItem_Talisman_Earth()) < 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Earth()) < 1 && bMagicImbue == false
+					debug.notification("You require an earth talisman and earth runes to make dust runes at this altar.")
+				elseif Game.GetPlayer().GetItemCount(GetItem_Talisman_Earth()) < 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Earth()) > 1 && bMagicImbue == false
+					debug.notification("You require an earth talisman to make dust runes at this altar.")
+				elseif Game.GetPlayer().GetItemCount(GetItem_Talisman_Earth()) > 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Earth()) < essCount
+					debug.notification("You require more earth runes to make dust runes at this altar.")
+				else
+					float xpPerRune = 8.3
+					Game.GetPlayer().RemoveItem(GetItem_Talisman_Earth(), 1)
+					Game.GetPlayer().RemoveItem(GetItem_Runecrafting_Rune_Earth(), essCount)
+					Game.GetPlayer().RemoveItem(GetItem_Runecrafting_RuneEssencePure(), (Game.GetPlayer().GetItemCount(GetItem_Runecrafting_RuneEssencePure())))
+					rsMakeComboRunes(runeType2, essCount, xpPerRune)
+				endif
+			elseif runeType == "earth"
+				if Game.GetPlayer().GetItemCount(GetItem_Talisman_Air()) < 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Air()) < 1 && bMagicImbue == false
+					debug.notification("You require an air talisman and air runes to make dust runes at this altar.")
+				elseif Game.GetPlayer().GetItemCount(GetItem_Talisman_Air()) < 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Air()) > 1 && bMagicImbue == false
+					debug.notification("You require an air talisman to make dust runes at this altar.")
+				elseif Game.GetPlayer().GetItemCount(GetItem_Talisman_Air()) > 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Air()) < essCount
+					debug.notification("You require more air runes to make dust runes at this altar.")
+				else
+					float xpPerRune = 9.0
+					Game.GetPlayer().RemoveItem(GetItem_Talisman_Air(), 1)
+					Game.GetPlayer().RemoveItem(GetItem_Runecrafting_Rune_Air(), essCount)
+					Game.GetPlayer().RemoveItem(GetItem_Runecrafting_RuneEssencePure(), (Game.GetPlayer().GetItemCount(GetItem_Runecrafting_RuneEssencePure())))
+					rsMakeComboRunes(runeType2, essCount, xpPerRune)
+				endif
+			else
+			
+			endif
+		endif
+	elseif runeType2 == "lava"
+		int req = 23
+		int rcLVL = GetRunecraftingLVL().GetValue() as int
+		if rcLVL < req
+			debug.notification("You lack the required runecrafting level of " + req)
+		else
+			if runeType == "earth"
+				if Game.GetPlayer().GetItemCount(GetItem_Talisman_Fire()) < 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Fire()) < 1 && bMagicImbue == false
+					debug.notification("You require an fire talisman and fire runes to make lava runes at this altar.")
+				elseif Game.GetPlayer().GetItemCount(GetItem_Talisman_Fire()) < 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Fire()) > 1 && bMagicImbue == false
+					debug.notification("You require an fire talisman to make lava runes at this altar.")
+				elseif Game.GetPlayer().GetItemCount(GetItem_Talisman_Fire()) > 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Fire()) < essCount
+					debug.notification("You require more fire runes to make lava runes at this altar.")
+				else
+					float xpPerRune = 10.0
+					Game.GetPlayer().RemoveItem(GetItem_Talisman_Fire(), 1)
+					Game.GetPlayer().RemoveItem(GetItem_Runecrafting_Rune_Fire(), essCount)
+					Game.GetPlayer().RemoveItem(GetItem_Runecrafting_RuneEssencePure(), (Game.GetPlayer().GetItemCount(GetItem_Runecrafting_RuneEssencePure())))
+					rsMakeComboRunes(runeType2, essCount, xpPerRune)
+				endif
+			elseif runeType == "fire"
+				if Game.GetPlayer().GetItemCount(GetItem_Talisman_Earth()) < 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Earth()) < 1 && bMagicImbue == false
+					debug.notification("You require an earth talisman and earth runes to make lava runes at this altar.")
+				elseif Game.GetPlayer().GetItemCount(GetItem_Talisman_Earth()) < 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Earth()) > 1 && bMagicImbue == false
+					debug.notification("You require an earth talisman to make lava runes at this altar.")
+				elseif Game.GetPlayer().GetItemCount(GetItem_Talisman_Earth()) > 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Earth()) < essCount
+					debug.notification("You require more earth runes to make lava runes at this altar.")
+				else
+					float xpPerRune = 10.5
+					Game.GetPlayer().RemoveItem(GetItem_Talisman_Earth(), 1)
+					Game.GetPlayer().RemoveItem(GetItem_Runecrafting_Rune_Earth(), essCount)
+					Game.GetPlayer().RemoveItem(GetItem_Runecrafting_RuneEssencePure(), (Game.GetPlayer().GetItemCount(GetItem_Runecrafting_RuneEssencePure())))
+					rsMakeComboRunes(runeType2, essCount, xpPerRune)
+				endif
+			else
+			
+			endif
+		endif
+	elseif runeType2 == "mist"
+		int req = 6
+		int rcLVL = GetRunecraftingLVL().GetValue() as int
+		if rcLVL < req
+			debug.notification("You lack the required runecrafting level of " + req)
+		else
+			if runeType == "air"
+				if Game.GetPlayer().GetItemCount(GetItem_Talisman_Water()) < 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Water()) < 1 && bMagicImbue == false
+					debug.notification("You require an water talisman and water runes to make mist runes at this altar.")
+				elseif Game.GetPlayer().GetItemCount(GetItem_Talisman_Water()) < 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Water()) > 1 && bMagicImbue == false
+					debug.notification("You require an water talisman to make mist runes at this altar.")
+				elseif Game.GetPlayer().GetItemCount(GetItem_Talisman_Water()) > 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Water()) < essCount
+					debug.notification("You require more water runes to make mist runes at this altar.")
+				else
+					float xpPerRune = 8.0
+					Game.GetPlayer().RemoveItem(GetItem_Talisman_Water(), 1)
+					Game.GetPlayer().RemoveItem(GetItem_Runecrafting_Rune_Water(), essCount)
+					Game.GetPlayer().RemoveItem(GetItem_Runecrafting_RuneEssencePure(), (Game.GetPlayer().GetItemCount(GetItem_Runecrafting_RuneEssencePure())))
+					rsMakeComboRunes(runeType2, essCount, xpPerRune)
+				endif
+			elseif runeType == "water"
+				if Game.GetPlayer().GetItemCount(GetItem_Talisman_Air()) < 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Air()) < 1 && bMagicImbue == false
+					debug.notification("You require an air talisman and air runes to make mist runes at this altar.")
+				elseif Game.GetPlayer().GetItemCount(GetItem_Talisman_Air()) < 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Air()) > 1 && bMagicImbue == false
+					debug.notification("You require an air talisman to make mist runes at this altar.")
+				elseif Game.GetPlayer().GetItemCount(GetItem_Talisman_Air()) > 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Air()) < essCount
+					debug.notification("You require more air runes to make mist runes at this altar.")
+				else
+					float xpPerRune = 8.5
+					Game.GetPlayer().RemoveItem(GetItem_Talisman_Air(), 1)
+					Game.GetPlayer().RemoveItem(GetItem_Runecrafting_Rune_Air(), essCount)
+					Game.GetPlayer().RemoveItem(GetItem_Runecrafting_RuneEssencePure(), (Game.GetPlayer().GetItemCount(GetItem_Runecrafting_RuneEssencePure())))
+					rsMakeComboRunes(runeType2, essCount, xpPerRune)
+				endif
+			else
+			
+			endif
+		endif
+	elseif runeType2 == "mud"
+		int req = 13
+		int rcLVL = GetRunecraftingLVL().GetValue() as int
+		if rcLVL < req
+			debug.notification("You lack the required runecrafting level of " + req)
+		else
+			if runeType == "water"
+				if Game.GetPlayer().GetItemCount(GetItem_Talisman_Earth()) < 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Earth()) < 1 && bMagicImbue == false
+					debug.notification("You require an earth talisman and earth runes to make mud runes at this altar.")
+				elseif Game.GetPlayer().GetItemCount(GetItem_Talisman_Earth()) < 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Earth()) > 1 && bMagicImbue == false
+					debug.notification("You require an earth talisman to make mud runes at this altar.")
+				elseif Game.GetPlayer().GetItemCount(GetItem_Talisman_Earth()) > 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Earth()) < essCount
+					debug.notification("You require more earth runes to make mud runes at this altar.")
+				else
+					float xpPerRune = 9.3
+					Game.GetPlayer().RemoveItem(GetItem_Talisman_Earth(), 1)
+					Game.GetPlayer().RemoveItem(GetItem_Runecrafting_Rune_Earth(), essCount)
+					Game.GetPlayer().RemoveItem(GetItem_Runecrafting_RuneEssencePure(), (Game.GetPlayer().GetItemCount(GetItem_Runecrafting_RuneEssencePure())))
+					rsMakeComboRunes(runeType2, essCount, xpPerRune)
+				endif
+			elseif runeType == "earth"
+				if Game.GetPlayer().GetItemCount(GetItem_Talisman_Water()) < 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Water()) < 1 && bMagicImbue == false
+					debug.notification("You require an water talisman and water runes to make mud runes at this altar.")
+				elseif Game.GetPlayer().GetItemCount(GetItem_Talisman_Water()) < 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Water()) > 1 && bMagicImbue == false
+					debug.notification("You require an water talisman to make mud runes at this altar.")
+				elseif Game.GetPlayer().GetItemCount(GetItem_Talisman_Water()) > 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Water()) < essCount
+					debug.notification("You require more water runes to make mud runes at this altar.")
+				else
+					float xpPerRune = 9.5
+					Game.GetPlayer().RemoveItem(GetItem_Talisman_Water(), 1)
+					Game.GetPlayer().RemoveItem(GetItem_Runecrafting_Rune_Water(), essCount)
+					Game.GetPlayer().RemoveItem(GetItem_Runecrafting_RuneEssencePure(), (Game.GetPlayer().GetItemCount(GetItem_Runecrafting_RuneEssencePure())))
+					rsMakeComboRunes(runeType2, essCount, xpPerRune)
+				endif
+			else
+			
+			endif
+		endif
+	elseif runeType2 == "smoke"
+		int req = 15
+		int rcLVL = GetRunecraftingLVL().GetValue() as int
+		if rcLVL < req
+			debug.notification("You lack the required runecrafting level of " + req)
+		else
+			if runeType == "air"
+				if Game.GetPlayer().GetItemCount(GetItem_Talisman_Fire()) < 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Fire()) < 1 && bMagicImbue == false
+					debug.notification("You require an fire talisman and fire runes to make smoke runes at this altar.")
+				elseif Game.GetPlayer().GetItemCount(GetItem_Talisman_Fire()) < 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Fire()) > 1 && bMagicImbue == false
+					debug.notification("You require an fire talisman to make smoke runes at this altar.")
+				elseif Game.GetPlayer().GetItemCount(GetItem_Talisman_Fire()) > 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Fire()) < essCount
+					debug.notification("You require more fire runes to make smoke runes at this altar.")
+				else
+					float xpPerRune = 8.5
+					Game.GetPlayer().RemoveItem(GetItem_Talisman_Fire(), 1)
+					Game.GetPlayer().RemoveItem(GetItem_Runecrafting_Rune_Fire(), essCount)
+					Game.GetPlayer().RemoveItem(GetItem_Runecrafting_RuneEssencePure(), (Game.GetPlayer().GetItemCount(GetItem_Runecrafting_RuneEssencePure())))
+					rsMakeComboRunes(runeType2, essCount, xpPerRune)
+				endif
+			elseif runeType == "fire"
+				if Game.GetPlayer().GetItemCount(GetItem_Talisman_Air()) < 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Air()) < 1 && bMagicImbue == false
+					debug.notification("You require an air talisman and air runes to make smoke runes at this altar.")
+				elseif Game.GetPlayer().GetItemCount(GetItem_Talisman_Air()) < 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Air()) > 1 && bMagicImbue == false
+					debug.notification("You require an air talisman to make smoke runes at this altar.")
+				elseif Game.GetPlayer().GetItemCount(GetItem_Talisman_Air()) > 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Air()) < essCount
+					debug.notification("You require more air runes to make smoke runes at this altar.")
+				else
+					float xpPerRune = 9.5
+					Game.GetPlayer().RemoveItem(GetItem_Talisman_Air(), 1)
+					Game.GetPlayer().RemoveItem(GetItem_Runecrafting_Rune_Air(), essCount)
+					Game.GetPlayer().RemoveItem(GetItem_Runecrafting_RuneEssencePure(), (Game.GetPlayer().GetItemCount(GetItem_Runecrafting_RuneEssencePure())))
+					rsMakeComboRunes(runeType2, essCount, xpPerRune)
+				endif
+			else
+			
+			endif
+		endif
+	elseif runeType2 == "steam"
+		int req = 19
+		int rcLVL = GetRunecraftingLVL().GetValue() as int
+		if rcLVL < req
+			debug.notification("You lack the required runecrafting level of " + req)
+		else
+			if runeType == "fire"
+				if Game.GetPlayer().GetItemCount(GetItem_Talisman_Water()) < 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Water()) < 1 && bMagicImbue == false
+					debug.notification("You require an water talisman and water runes to make steam runes at this altar.")
+				elseif Game.GetPlayer().GetItemCount(GetItem_Talisman_Water()) < 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Water()) > 1 && bMagicImbue == false
+					debug.notification("You require an water talisman to make steam runes at this altar.")
+				elseif Game.GetPlayer().GetItemCount(GetItem_Talisman_Water()) > 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Water()) < essCount
+					debug.notification("You require more water runes to make steam runes at this altar.")
+				else
+					float xpPerRune = 10.0
+					Game.GetPlayer().RemoveItem(GetItem_Talisman_Water(), 1)
+					Game.GetPlayer().RemoveItem(GetItem_Runecrafting_Rune_Water(), essCount)
+					Game.GetPlayer().RemoveItem(GetItem_Runecrafting_RuneEssencePure(), (Game.GetPlayer().GetItemCount(GetItem_Runecrafting_RuneEssencePure())))
+					rsMakeComboRunes(runeType2, essCount, xpPerRune)
+				endif
+			elseif runeType == "water"
+				if Game.GetPlayer().GetItemCount(GetItem_Talisman_Fire()) < 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Fire()) < 1 && bMagicImbue == false
+					debug.notification("You require an fire talisman and fire runes to make steam runes at this altar.")
+				elseif Game.GetPlayer().GetItemCount(GetItem_Talisman_Fire()) < 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Fire()) > 1 && bMagicImbue == false
+					debug.notification("You require an fire talisman to make steam runes at this altar.")
+				elseif Game.GetPlayer().GetItemCount(GetItem_Talisman_Fire()) > 1 && Game.GetPlayer().GetItemCount(GetItem_Runecrafting_Rune_Fire()) < essCount
+					debug.notification("You require more fire runes to make steam runes at this altar.")
+				else
+					float xpPerRune = 9.3
+					Game.GetPlayer().RemoveItem(GetItem_Talisman_Fire(), 1)
+					Game.GetPlayer().RemoveItem(GetItem_Runecrafting_Rune_Fire(), essCount)
+					Game.GetPlayer().RemoveItem(GetItem_Runecrafting_RuneEssencePure(), (Game.GetPlayer().GetItemCount(GetItem_Runecrafting_RuneEssencePure())))
+					rsMakeComboRunes(runeType2, essCount, xpPerRune)
+				endif
+			else
+			
+			endif
+		endif
+	elseif runeType == "air"
+		int req = 1
+		int rcLVL = GetRunecraftingLVL().GetValue() as int
+		if rcLVL < req
+			debug.notification("You lack the required runecrafting level of " + req)
+		else
+			;either
+			float xpPerRune = 5.0
+			Game.GetPlayer().RemoveItem(GetItem_Runecrafting_RuneEssence(), (Game.GetPlayer().GetItemCount(GetItem_Runecrafting_RuneEssence())))
+			Game.GetPlayer().RemoveItem(GetItem_Runecrafting_RuneEssencePure(), (Game.GetPlayer().GetItemCount(GetItem_Runecrafting_RuneEssencePure())))
+			int multiplier
+			if (rcLVL >= 99)
+				multiplier = 10
+			elseif (rcLVL >= 88)
+				multiplier = 9
+			elseif (rcLVL >= 77)
+				multiplier = 8
+			elseif (rcLVL >= 66)
+				multiplier = 7
+			elseif (rcLVL >= 55)
+				multiplier = 6
+			elseif (rcLVL >= 44)
+				multiplier = 5
+			elseif (rcLVL >= 33)
+				multiplier = 4
+			elseif (rcLVL >= 22)
+				multiplier = 3
+			elseif (rcLVL >= 11)
+				multiplier = 2
+			else
+				multiplier = 1
+			endif
+			Game.GetPlayer().AddItem((GetItem_Runecrafting_Rune_Air()), (essCount*multiplier))
+			rsXPGain("runecrafting", (xpPerRune * essCount))
+		endif
+	elseif runeType == "mind"
+		int req = 2
+		int rcLVL = GetRunecraftingLVL().GetValue() as int
+		if rcLVL < req
+			debug.notification("You lack the required runecrafting level of " + req)
+		else
+			;either
+			float xpPerRune = 5.5
+			Game.GetPlayer().RemoveItem(GetItem_Runecrafting_RuneEssence(), (Game.GetPlayer().GetItemCount(GetItem_Runecrafting_RuneEssence())))
+			Game.GetPlayer().RemoveItem(GetItem_Runecrafting_RuneEssencePure(), (Game.GetPlayer().GetItemCount(GetItem_Runecrafting_RuneEssencePure())))
+			int multiplier
+			if (rcLVL >= 98)
+				multiplier = 8
+			elseif (rcLVL >= 84)
+				multiplier = 7
+			elseif (rcLVL >= 70)
+				multiplier = 6
+			elseif (rcLVL >= 56)
+				multiplier = 5
+			elseif (rcLVL >= 42)
+				multiplier = 4
+			elseif (rcLVL >= 28)
+				multiplier = 3
+			elseif (rcLVL >= 14)
+				multiplier = 2
+			else
+				multiplier = 1
+			endif
+			Game.GetPlayer().AddItem((GetItem_Runecrafting_Rune_Mind()), (essCount*multiplier))
+			rsXPGain("runecrafting", (xpPerRune * essCount))
+		endif
+	elseif runeType == "water"
+		int req = 5
+		int rcLVL = GetRunecraftingLVL().GetValue() as int
+		if rcLVL < req
+			debug.notification("You lack the required runecrafting level of " + req)
+		else
+			;either
+			float xpPerRune = 6.0
+			Game.GetPlayer().RemoveItem(GetItem_Runecrafting_RuneEssence(), (Game.GetPlayer().GetItemCount(GetItem_Runecrafting_RuneEssence())))
+			Game.GetPlayer().RemoveItem(GetItem_Runecrafting_RuneEssencePure(), (Game.GetPlayer().GetItemCount(GetItem_Runecrafting_RuneEssencePure())))
+			int multiplier
+			if (rcLVL >= 95)
+				multiplier = 6
+			elseif (rcLVL >= 76)
+				multiplier = 5
+			elseif (rcLVL >= 57)
+				multiplier = 4
+			elseif (rcLVL >= 38)
+				multiplier = 3
+			elseif (rcLVL >= 19)
+				multiplier = 2
+			else
+				multiplier = 1
+			endif
+			Game.GetPlayer().AddItem((GetItem_Runecrafting_Rune_Water()), (essCount*multiplier))
+			rsXPGain("runecrafting", (xpPerRune * essCount))
+		endif
+	elseif runeType == "earth"
+		int req = 9
+		int rcLVL = GetRunecraftingLVL().GetValue() as int
+		if rcLVL < req
+			debug.notification("You lack the required runecrafting level of " + req)
+		else
+			;either
+			float xpPerRune = 6.5
+			Game.GetPlayer().RemoveItem(GetItem_Runecrafting_RuneEssence(), (Game.GetPlayer().GetItemCount(GetItem_Runecrafting_RuneEssence())))
+			Game.GetPlayer().RemoveItem(GetItem_Runecrafting_RuneEssencePure(), (Game.GetPlayer().GetItemCount(GetItem_Runecrafting_RuneEssencePure())))
+			int multiplier
+			if (rcLVL >= 104)
+				multiplier = 5
+			elseif (rcLVL >= 78)
+				multiplier = 4
+			elseif (rcLVL >= 52)
+				multiplier = 3
+			elseif (rcLVL >= 26)
+				multiplier = 2
+			else
+				multiplier = 1
+			endif
+			Game.GetPlayer().AddItem((GetItem_Runecrafting_Rune_Earth()), (essCount*multiplier))
+			rsXPGain("runecrafting", (xpPerRune * essCount))
+		endif
+	elseif runeType == "fire"
+		int req = 14
+		int rcLVL = GetRunecraftingLVL().GetValue() as int
+		if rcLVL < req
+			debug.notification("You lack the required runecrafting level of " + req)
+		else
+			;either
+			float xpPerRune = 7.0
+			Game.GetPlayer().RemoveItem(GetItem_Runecrafting_RuneEssence(), (Game.GetPlayer().GetItemCount(GetItem_Runecrafting_RuneEssence())))
+			Game.GetPlayer().RemoveItem(GetItem_Runecrafting_RuneEssencePure(), (Game.GetPlayer().GetItemCount(GetItem_Runecrafting_RuneEssencePure())))
+			int multiplier
+			if (rcLVL >= 70)
+				multiplier = 3
+			elseif (rcLVL >= 35)
+				multiplier = 2
+			else
+				multiplier = 1
+			endif
+			Game.GetPlayer().AddItem((GetItem_Runecrafting_Rune_Fire()), (essCount*multiplier))
+			rsXPGain("runecrafting", (xpPerRune * essCount))
+		endif
+	elseif runeType == "body"
+		int req = 20
+		int rcLVL = GetRunecraftingLVL().GetValue() as int
+		if rcLVL < req
+			debug.notification("You lack the required runecrafting level of " + req)
+		else
+			;either
+			float xpPerRune = 7.5
+			Game.GetPlayer().RemoveItem(GetItem_Runecrafting_RuneEssence(), (Game.GetPlayer().GetItemCount(GetItem_Runecrafting_RuneEssence())))
+			Game.GetPlayer().RemoveItem(GetItem_Runecrafting_RuneEssencePure(), (Game.GetPlayer().GetItemCount(GetItem_Runecrafting_RuneEssencePure())))
+			int multiplier
+			if (rcLVL >= 92)
+				multiplier = 3
+			elseif (rcLVL >= 46)
+				multiplier = 2
+			else
+				multiplier = 1
+			endif
+			Game.GetPlayer().AddItem((GetItem_Runecrafting_Rune_Body()), (essCount*multiplier))
+			rsXPGain("runecrafting", (xpPerRune * essCount))
+		endif
+	elseif runeType == "cosmic"
+		int req = 27
+		int rcLVL = GetRunecraftingLVL().GetValue() as int
+		if rcLVL < req
+			debug.notification("You lack the required runecrafting level of " + req)
+		else
+			;pure only
+			float xpPerRune = 8.0
+			Game.GetPlayer().RemoveItem(GetItem_Runecrafting_RuneEssencePure(), (Game.GetPlayer().GetItemCount(GetItem_Runecrafting_RuneEssencePure())))
+			int multiplier
+			if (rcLVL >= 59)
+				multiplier = 2
+			else
+				multiplier = 1
+			endif
+			Game.GetPlayer().AddItem((GetItem_Runecrafting_Rune_Cosmic()), (essCount*multiplier))
+			rsXPGain("runecrafting", (xpPerRune * essCount))
+		endif
+	elseif runeType == "chaos"
+		int req = 35
+		int rcLVL = GetRunecraftingLVL().GetValue() as int
+		if rcLVL < req
+			debug.notification("You lack the required runecrafting level of " + req)
+		else
+			;pure only
+			float xpPerRune = 8.5
+			Game.GetPlayer().RemoveItem(GetItem_Runecrafting_RuneEssencePure(), (Game.GetPlayer().GetItemCount(GetItem_Runecrafting_RuneEssencePure())))
+			int multiplier
+			if (rcLVL >= 74)
+				multiplier = 2
+			else
+				multiplier = 1
+			endif
+			Game.GetPlayer().AddItem((GetItem_Runecrafting_Rune_Chaos()), (essCount*multiplier))
+			rsXPGain("runecrafting", (xpPerRune * essCount))
+		endif
+	elseif runeType == "astral"
+		int req = 40
+		int rcLVL = GetRunecraftingLVL().GetValue() as int
+		if rcLVL < req
+			debug.notification("You lack the required runecrafting level of " + req)
+		else
+			;pure only
+			float xpPerRune = 8.7
+			Game.GetPlayer().RemoveItem(GetItem_Runecrafting_RuneEssencePure(), (Game.GetPlayer().GetItemCount(GetItem_Runecrafting_RuneEssencePure())))
+			int multiplier
+			if (rcLVL >= 82)
+				multiplier = 2
+			else
+				multiplier = 1
+			endif
+			Game.GetPlayer().AddItem((GetItem_Runecrafting_Rune_Astral()), (essCount*multiplier))
+			rsXPGain("runecrafting", (xpPerRune * essCount))
+		endif
+	elseif runeType == "nature"
+		int req = 44
+		int rcLVL = GetRunecraftingLVL().GetValue() as int
+		if rcLVL < req
+			debug.notification("You lack the required runecrafting level of " + req)
+		else
+			;pure only
+			float xpPerRune = 9.0
+			Game.GetPlayer().RemoveItem(GetItem_Runecrafting_RuneEssencePure(), (Game.GetPlayer().GetItemCount(GetItem_Runecrafting_RuneEssencePure())))
+			int multiplier
+			if (rcLVL >= 91)
+				multiplier = 2
+			else
+				multiplier = 1
+			endif
+			Game.GetPlayer().AddItem((GetItem_Runecrafting_Rune_Nature()), (essCount*multiplier))
+			rsXPGain("runecrafting", (xpPerRune * essCount))
+		endif
+	elseif runeType == "law"
+		int req = 54
+		int rcLVL = GetRunecraftingLVL().GetValue() as int
+		if rcLVL < req
+			debug.notification("You lack the required runecrafting level of " + req)
+		else
+			;pure only
+			float xpPerRune = 9.5
+			Game.GetPlayer().RemoveItem(GetItem_Runecrafting_RuneEssencePure(), (Game.GetPlayer().GetItemCount(GetItem_Runecrafting_RuneEssencePure())))
+			int multiplier
+			if (rcLVL >= 95)
+				multiplier = 2
+			else
+				multiplier = 1
+			endif
+			Game.GetPlayer().AddItem((GetItem_Runecrafting_Rune_Law()), (essCount*multiplier))
+			rsXPGain("runecrafting", (xpPerRune * essCount))
+		endif
+	elseif runeType == "death"
+		int req = 65
+		int rcLVL = GetRunecraftingLVL().GetValue() as int
+		if rcLVL < req
+			debug.notification("You lack the required runecrafting level of " + req)
+		else
+			;pure only
+			float xpPerRune = 10.0
+			Game.GetPlayer().RemoveItem(GetItem_Runecrafting_RuneEssencePure(), (Game.GetPlayer().GetItemCount(GetItem_Runecrafting_RuneEssencePure())))
+			int multiplier
+			if (rcLVL >= 99)
+				multiplier = 2
+			else
+				multiplier = 1
+			endif
+			Game.GetPlayer().AddItem((GetItem_Runecrafting_Rune_Death()), (essCount*multiplier))
+			rsXPGain("runecrafting", (xpPerRune * essCount))
+		endif
+	else
+		debug.messagebox("Runecrafting Error 002 - Could not parse runeType2")
+	endif
+	
+	if (((GetGlobalCheck_RandomEvents()).GetValue()) == 1)
+		RollRandomEvent("runecrafting", spawnLocation)
+	endif
 EndFunction
 
 Function rsCraftRCTiara(string runeType, int count, ObjectReference spawnLocation) Global
@@ -384,7 +924,7 @@ Function rsCraftTalismanStaff(string runeType, int count, ObjectReference spawnL
 	
 EndFunction
 
-;Gets amount of pure ess in pouches
+;Gets amount of pure ess in pouches, zeroes out involved pouches afterwards
 int Function GetPouchPureCount(bool small, bool medium, bool large, bool giant) Global
 	RemoveSparePouches();Removes spare pouches
 	int smallCount = 0
@@ -394,21 +934,25 @@ int Function GetPouchPureCount(bool small, bool medium, bool large, bool giant) 
 	
 	if (small == true)
 		smallCount = GetCount_Runecrafting_EssPure_Small().GetValue() as int
+		GetCount_Runecrafting_EssPure_Small().SetValue(0)
 	endif
 	if (medium == true)
 		mediumCount = GetCount_Runecrafting_EssPure_Medium().GetValue() as int
+		GetCount_Runecrafting_EssPure_Medium().SetValue(0)
 	endif
 	if (large == true)
 		largeCount = GetCount_Runecrafting_EssPure_Large().GetValue() as int
+		GetCount_Runecrafting_EssPure_Large().SetValue(0)
 	endif
 	if (giant == true)
 		giantCount = GetCount_Runecrafting_EssPure_Giant().GetValue() as int
+		GetCount_Runecrafting_EssPure_Giant().SetValue(0)
 	endif
 	
 	return (smallCount + mediumCount + largeCount + giantCount)
 EndFunction
 
-;Gets amount of either ess in pouches
+;Gets amount of either ess in pouches, zeroes out involved pouches afterwards
 int Function GetPouchEssCount(bool small, bool medium, bool large, bool giant) Global
 	RemoveSparePouches();Removes spare pouches
 	int smallCount = 0
@@ -418,15 +962,23 @@ int Function GetPouchEssCount(bool small, bool medium, bool large, bool giant) G
 	
 	if (small == true)
 		smallCount = ((GetCount_Runecrafting_Ess_Small().GetValue()) + (GetCount_Runecrafting_EssPure_Small().GetValue())) as int
+		GetCount_Runecrafting_EssPure_Small().SetValue(0)
+		GetCount_Runecrafting_Ess_Small().SetValue(0)
 	endif
 	if (medium == true)
 		mediumCount = ((GetCount_Runecrafting_Ess_Medium().GetValue()) + (GetCount_Runecrafting_EssPure_Medium().GetValue())) as int
+		GetCount_Runecrafting_EssPure_Medium().SetValue(0)
+		GetCount_Runecrafting_Ess_Medium().SetValue(0)
 	endif
 	if (large == true)
 		largeCount = ((GetCount_Runecrafting_Ess_Large().GetValue()) + (GetCount_Runecrafting_EssPure_Large().GetValue())) as int
+		GetCount_Runecrafting_EssPure_Large().SetValue(0)
+		GetCount_Runecrafting_Ess_Large().SetValue(0)
 	endif
 	if (giant == true)
 		giantCount = ((GetCount_Runecrafting_Ess_Giant().GetValue()) + (GetCount_Runecrafting_EssPure_Giant().GetValue())) as int
+		GetCount_Runecrafting_EssPure_Giant().SetValue(0)
+		GetCount_Runecrafting_Ess_Giant().SetValue(0)
 	endif
 	
 	return (smallCount + mediumCount + largeCount + giantCount)
@@ -614,6 +1166,53 @@ EndFunction
 
 ;>
 ;< Child functions - do not use these functions, use the parent above
+
+Function rsMakeComboRunes(string runeType2, int essCount, float xpPerRune) Global
+	bool bWornBindingNecklace = Game.GetPlayer().IsEquipped(GetArmor_Neck_Necklace_Binding())
+	if bWornBindingNecklace == true; Binding Necklace is worn, 100% success rate, degrades slightly
+		GetCount_Charges_BindingNecklace().SetValue((GetCount_Charges_BindingNecklace().GetValue() - 1))
+		if runeType2 == "dust"
+			Game.GetPlayer().AddItem(GetItem_Runecrafting_Rune_Dust(), essCount)
+			rsXPGain("runecrafting", (esscount*xpPerRune))
+		elseif runeType2 == "lava"
+			Game.GetPlayer().AddItem(GetItem_Runecrafting_Rune_Lava(), essCount)
+			rsXPGain("runecrafting", (esscount*xpPerRune))
+		elseif runeType2 == "mist"
+			Game.GetPlayer().AddItem(GetItem_Runecrafting_Rune_Mist(), essCount)
+			rsXPGain("runecrafting", (esscount*xpPerRune))
+		elseif runeType2 == "mud"
+			Game.GetPlayer().AddItem(GetItem_Runecrafting_Rune_Mud(), essCount)
+			rsXPGain("runecrafting", (esscount*xpPerRune))
+		elseif runeType2 == "smoke"
+			Game.GetPlayer().AddItem(GetItem_Runecrafting_Rune_Smoke(), essCount)
+			rsXPGain("runecrafting", (esscount*xpPerRune))
+		elseif runeType2 == "steam"
+			Game.GetPlayer().AddItem(GetItem_Runecrafting_Rune_Steam(), essCount)
+			rsXPGain("runecrafting", (esscount*xpPerRune))
+		endif
+	else; Binding Necklace is not worn, 50% success rate
+		essCount = RollLoss50Percent(essCount)
+		if runeType2 == "dust"
+			Game.GetPlayer().AddItem(GetItem_Runecrafting_Rune_Dust(), essCount)
+			rsXPGain("runecrafting", (esscount*xpPerRune))
+		elseif runeType2 == "lava"
+			Game.GetPlayer().AddItem(GetItem_Runecrafting_Rune_Lava(), essCount)
+			rsXPGain("runecrafting", (esscount*xpPerRune))
+		elseif runeType2 == "mist"
+			Game.GetPlayer().AddItem(GetItem_Runecrafting_Rune_Mist(), essCount)
+			rsXPGain("runecrafting", (esscount*xpPerRune))
+		elseif runeType2 == "mud"
+			Game.GetPlayer().AddItem(GetItem_Runecrafting_Rune_Mud(), essCount)
+			rsXPGain("runecrafting", (esscount*xpPerRune))
+		elseif runeType2 == "smoke"
+			Game.GetPlayer().AddItem(GetItem_Runecrafting_Rune_Smoke(), essCount)
+			rsXPGain("runecrafting", (esscount*xpPerRune))
+		elseif runeType2 == "steam"
+			Game.GetPlayer().AddItem(GetItem_Runecrafting_Rune_Steam(), essCount)
+			rsXPGain("runecrafting", (esscount*xpPerRune))
+		endif
+	endif
+EndFunction
 
 Function rsMakeTalismanStaff(MiscObject talisman, Weapon staff, int count, float gainedXP, int countTalisman, int countStaff) Global
 	bool bWantToLeave = false
@@ -20385,6 +20984,49 @@ EndFunction
 ;>
 ;< Misc. functions - can be used on their own
 
+int Function RollLoss50Percent(int original) Global
+	bool rolling = true
+	int result = 0
+	while(rolling)
+		if (original == 0)
+			rolling = false
+		else
+			int roll = Utility.RandomInt(0,1)
+			if roll == 0;win
+				result = result + 1
+				original = original - 1
+			else;lose
+				original = original - 1
+			endif
+		endif
+	endwhile
+	return result
+EndFunction
+
+;;Check these against the armor-addon screen
+;int Property kSlotMask30 = 0x00000001 AutoReadOnly ; HEAD
+;int Property kSlotMask32 = 0x00000004 AutoReadOnly ; BODY
+;int Property kSlotMask33 = 0x00000008 AutoReadOnly ; Hands
+;int Property kSlotMask34 = 0x00000010 AutoReadOnly ; Forearms
+;int Property kSlotMask37 = 0x00000080 AutoReadOnly ; Feet
+;int Property kSlotMask38 = 0x00000100 AutoReadOnly ; Calves
+;int Property kSlotMask42 = 0x00001000 AutoReadOnly ; Circlet
+;
+;;Get Worn Shield
+;Armor Function GetWornShield(Actor suspect) Global
+;	return suspect.GetWornForm(0x000000200) as Armor
+;EndFunction
+;
+;;Get Worn Ring
+;Armor Function GetWornRing(Actor suspect) Global
+;	return suspect.GetWornForm(0x000000040) as Armor
+;EndFunction
+;
+;;Get Worn Amulet
+;Armor Function GetWornAmulet(Actor suspect) Global
+;	return suspect.GetWornForm(0x000000020) as Armor
+;EndFunction
+
 ;This function needs to get put into the new API, it sorts int arrays into ascending values (i.e. {1,5,17,19,20,25})
 Function SortArray(int[] array) Global
   bool sorting = true
@@ -21335,6 +21977,10 @@ GlobalVariable Function GetGlobalCheck_Dungeoneering_PurchaseRapidRenewal() Glob
 	return GetFrameworkData().RS_Check_Dungeoneering_PurchaseRapidRenewal
 EndFunction
 
+GlobalVariable Function GetGlobalConfig_Runecrafting_UnpackPouch() Global
+	return GetFrameworkData().RS_Config_Runecrafting_UnpackPouch
+EndFunction
+
 ;>
 ;< Get Quest Properties
 
@@ -21535,6 +22181,7 @@ Weapon Function GetWeapon_Staff_Talisman_Death() Global
 EndFunction
 
 ;>
+;>
 ;< Get Count Variables
 ;< Runecrafting Counts
 ;Gets pure essence count from pouch
@@ -21576,6 +22223,10 @@ EndFunction
 GlobalVariable Function GetCount_Runecrafting_Ess_Giant() Global
 	return GetFrameworkData().RS_Count_Runecrafting_Ess_Giant
 EndFunction
+
+GlobalVariable Function GetCount_Charges_BindingNecklace() Global
+	return GetFrameworkData().RS_Count_Charges_BindingNecklace
+EndFunction
 ;>
 ;>
 ;< Get Container Properties
@@ -21587,7 +22238,88 @@ EndFunction
 ;>
 ;< Get Item
 
-;< Runecrafting Pouches
+;< Runecrafting
+
+MiscObject Function GetItem_Runecrafting_Rune_Air() Global
+	return GetFrameworkData().RS_Item_Rune_Air
+EndFunction
+
+MiscObject Function GetItem_Runecrafting_Rune_Mind() Global
+	return GetFrameworkData().RS_Item_Rune_Mind
+EndFunction
+
+MiscObject Function GetItem_Runecrafting_Rune_Water() Global
+	return GetFrameworkData().RS_Item_Rune_Water
+EndFunction
+
+MiscObject Function GetItem_Runecrafting_Rune_Earth() Global
+	return GetFrameworkData().RS_Item_Rune_Earth
+EndFunction
+
+MiscObject Function GetItem_Runecrafting_Rune_Fire() Global
+	return GetFrameworkData().RS_Item_Rune_Fire
+EndFunction
+
+MiscObject Function GetItem_Runecrafting_Rune_Body() Global
+	return GetFrameworkData().RS_Item_Rune_Body
+EndFunction
+
+MiscObject Function GetItem_Runecrafting_Rune_Cosmic() Global
+	return GetFrameworkData().RS_Item_Rune_Cosmic
+EndFunction
+
+MiscObject Function GetItem_Runecrafting_Rune_Chaos() Global
+	return GetFrameworkData().RS_Item_Rune_Chaos
+EndFunction
+
+MiscObject Function GetItem_Runecrafting_Rune_Astral() Global
+	return GetFrameworkData().RS_Item_Rune_Astral
+EndFunction
+
+MiscObject Function GetItem_Runecrafting_Rune_Nature() Global
+	return GetFrameworkData().RS_Item_Rune_Nature
+EndFunction
+
+MiscObject Function GetItem_Runecrafting_Rune_Law() Global
+	return GetFrameworkData().RS_Item_Rune_Law
+EndFunction
+
+MiscObject Function GetItem_Runecrafting_Rune_Death() Global
+	return GetFrameworkData().RS_Item_Rune_Death
+EndFunction
+
+MiscObject Function GetItem_Runecrafting_Rune_Dust() Global
+	return GetFrameworkData().RS_Item_Rune_Dust
+EndFunction
+
+MiscObject Function GetItem_Runecrafting_Rune_Mud() Global
+	return GetFrameworkData().RS_Item_Rune_Mud
+EndFunction
+
+MiscObject Function GetItem_Runecrafting_Rune_Smoke() Global
+	return GetFrameworkData().RS_Item_Rune_Smoke
+EndFunction
+
+MiscObject Function GetItem_Runecrafting_Rune_Mist() Global
+	return GetFrameworkData().RS_Item_Rune_Mist
+EndFunction
+
+MiscObject Function GetItem_Runecrafting_Rune_Lava() Global
+	return GetFrameworkData().RS_Item_Rune_Lava
+EndFunction
+
+MiscObject Function GetItem_Runecrafting_Rune_Steam() Global
+	return GetFrameworkData().RS_Item_Rune_Steam
+EndFunction
+
+MiscObject Function GetItem_Runecrafting_RuneEssence() Global
+	return GetFrameworkData().RS_Item_Runecrafting_RuneEssence
+EndFunction
+
+MiscObject Function GetItem_Runecrafting_RuneEssencePure() Global
+	return GetFrameworkData().RS_Item_Runecrafting_RuneEssencePure
+EndFunction
+
 MiscObject Function GetItem_RCpouch_Small() Global
 	return GetFrameworkData().RS_Item_RunecraftingPouch_Small
 EndFunction
@@ -21606,8 +22338,7 @@ EndFunction
 MiscObject Function GetItem_RCpouch_Giant() Global
 	return GetFrameworkData().RS_Item_RunecraftingPouch_Giant
 EndFunction
-;>
-;< Runecrafting Talismans
+
 MiscObject Function GetItem_Talisman_Air() Global
 	return GetFrameworkData().RS_Item_Talisman_Air
 EndFunction
@@ -21703,6 +22434,9 @@ Armor Function GetArmor_Head_Tiara_Death() Global
 	return GetFrameworkData().RS_Armor_Head_Tiara_Death
 EndFunction
 
+Armor Function GetArmor_Neck_Necklace_Binding() Global
+	return GetFrameworkData().RS_Armor_Neck_Necklace_Binding
+EndFunction
 ;>
 ;>
 ;< Get Sound
@@ -21711,6 +22445,11 @@ Sound Function GetSound_UI_Runecrafting() Global
 	return GetFrameworkData().RS_Sound_UI_Runecraft
 EndFunction
 
+;>
+;< Get Magic Effect
+MagicEffect Function GetEffect_Spell_MagicImbue() Global
+	return GetFrameworkData().RS_MagicEffect_Spell_MagicImbue
+EndFunction
 ;>
 ;< Notes:
 ;The original goal of this script is to provide the necessary functions to other scripts that use a repeated element that appears in each script.
