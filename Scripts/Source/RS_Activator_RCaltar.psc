@@ -1,11 +1,16 @@
 ScriptName RS_Activator_RCaltar Extends ObjectReference
-{Script to put on the actual runecrafting altar, make sure to use lowercase for runeType}
+{Script to put on the actual runecrafting altar}
 
 Message Property RS_Message_Runecrafting_craftRCmenu Auto
+Message Property RS_Message_Runecrafting_DustMudLava Auto
+Message Property RS_Message_Runecrafting_MistDustSmoke Auto
+Message Property RS_Message_Runecrafting_MistMudSteam Auto
+Message Property RS_Message_Runecrafting_SmokeSteamLava Auto
 
 Int Property reqLVL Auto; required level for crafting runes at this altar
 bool Property bOnlyPureEssence = false Auto; TRUE=Requires pure ess to craft, FALSE=Use any rune essence available
 string Property runeType Auto
+string Property runeType2 = "" Auto
 
 Globalvariable Property RS_Config_Runecrafting_UnpackPouch Auto
 
@@ -91,52 +96,77 @@ Event OnActivate(ObjectReference akActionRef)
 			while(mainLoop)
 				int craftType = RS_Message_Runecrafting_craftRCmenu.Show()
 				if craftType == 0;runes
-					;tell which essType you have, act accordingly
-					if (RS_Config_Runecrafting_UnpackPouch.GetValue()) == 1; Check if player set the config to auto-unpack pouches
-						bool small = false
-						bool medium = false
-						bool large = false
-						bool giant = false
-						if game.getplayer().GetItemCount(RS_Item_RunecraftingPouch_Small) == 1
-							small = true
-						endif
-						if game.getplayer().GetItemCount(RS_Item_RunecraftingPouch_Medium) == 1
-							medium = true
-						endif
-						if game.getplayer().GetItemCount(RS_Item_RunecraftingPouch_Large) == 1
-							large = true
-						endif
-						if game.getplayer().GetItemCount(RS_Item_RunecraftingPouch_Giant) == 1
-							giant = true
-						endif
-						
-						int pouchPureCount = rsFrameworkMenu.GetPouchPureCount(small, medium, large, giant)
-						int pouchEssCount = rsFrameworkMenu.GetPouchEssCount(small, medium, large, giant)
-						if (bOnlyPureEssence)
-							int essCountPure = (Game.GetPlayer().GetItemCount(RS_Item_Runecrafting_RuneEssencePure)) + pouchPureCount
-							rsFrameworkMenu.Runecraft(runeType, true, essCountPure)
-							mainLoop = false
+						rsFrameworkMenu.StartRuneCrafting(runeType, runeType2, bOnlyPureEssence, Self)
+						mainLoop = false
+				elseif craftType == 1;Combination Runes
+					if runeType == "air"
+						int mistDustSmoke = RS_Message_Runecrafting_MistDustSmoke.Show()
+						if mistDustSmoke == 0;Mist
+							runeType2 = "mist"
+							rsFrameworkMenu.StartRuneCrafting(runeType, runeType2, bOnlyPureEssence, Self)
+						elseif mistDustSmoke == 1;Dust
+							runeType2 = "dust"
+							rsFrameworkMenu.StartRuneCrafting(runeType, runeType2, bOnlyPureEssence, Self)
+						elseif mistDustSmoke == 2;Smoke
+							runeType2 = "smoke"
+							rsFrameworkMenu.StartRuneCrafting(runeType, runeType2, bOnlyPureEssence, Self)
 						else
-							int essCountTotal = (Game.GetPlayer().GetItemCount(RS_Item_Runecrafting_RuneEssencePure)) + (Game.GetPlayer().GetItemCount(RS_Item_Runecrafting_RuneEssence)) + pouchPureCount + pouchEssCount
-							rsFrameworkMenu.Runecraft(runeType, false, essCountTotal)
-							mainLoop = false
+							;do nothing
 						endif
-					else; Player will unpack pouches manually
-						if (bOnlyPureEssence)
-							int essCountPure = Game.GetPlayer().GetItemCount(RS_Item_Runecrafting_RuneEssencePure)
-							rsFrameworkMenu.Runecraft(runeType, true, essCountPure)
-							mainLoop = false
+						mainLoop = false
+					elseif runeType == "water"
+						int mistMudSteam = RS_Message_Runecrafting_MistMudSteam.Show()
+						if mistMudSteam == 0;Mist
+							runeType2 = "mist"
+							rsFrameworkMenu.StartRuneCrafting(runeType, runeType2, bOnlyPureEssence, Self)
+						elseif mistMudSteam == 1;Mud
+							runeType2 = "mud"
+							rsFrameworkMenu.StartRuneCrafting(runeType, runeType2, bOnlyPureEssence, Self)
+						elseif mistMudSteam == 2;Steam
+							runeType2 = "steam"
+							rsFrameworkMenu.StartRuneCrafting(runeType, runeType2, bOnlyPureEssence, Self)
 						else
-							int essCountTotal = (Game.GetPlayer().GetItemCount(RS_Item_Runecrafting_RuneEssencePure)) + (Game.GetPlayer().GetItemCount(RS_Item_Runecrafting_RuneEssence))
-							rsFrameworkMenu.Runecraft(runeType, false, essCountTotal)
-							mainLoop = false
+							;do nothing
 						endif
+						mainLoop = false
+					elseif runeType == "earth"
+						int DustMudLava = RS_Message_Runecrafting_DustMudLava.Show()
+						if DustMudLava == 0;Dust
+							runeType2 = "dust"
+							rsFrameworkMenu.StartRuneCrafting(runeType, runeType2, bOnlyPureEssence, Self)
+						elseif DustMudLava == 1;Mud
+							runeType2 = "mud"
+							rsFrameworkMenu.StartRuneCrafting(runeType, runeType2, bOnlyPureEssence, Self)
+						elseif DustMudLava == 2;Lava
+							runeType2 = "lava"
+							rsFrameworkMenu.StartRuneCrafting(runeType, runeType2, bOnlyPureEssence, Self)
+						else
+							;do nothing
+						endif
+						mainLoop = false
+					elseif runeType == "fire"
+						int SmokeSteamLava = RS_Message_Runecrafting_SmokeSteamLava.Show()
+						if SmokeSteamLava == 0;Smoke
+							runeType2 = "smoke"
+							rsFrameworkMenu.StartRuneCrafting(runeType, runeType2, bOnlyPureEssence, Self)
+						elseif SmokeSteamLava == 1;Steam
+							runeType2 = "steam"
+							rsFrameworkMenu.StartRuneCrafting(runeType, runeType2, bOnlyPureEssence, Self)
+						elseif SmokeSteamLava == 2;Lava
+							runeType2 = "lava"
+							rsFrameworkMenu.StartRuneCrafting(runeType, runeType2, bOnlyPureEssence, Self)
+						else
+							;do nothing
+						endif
+						mainLoop = false
+					else
+					
 					endif
-				elseif craftType == 1;tiara
+				elseif craftType == 2;tiara
 					int count = rsFrameworkMenu.rsMakeCount(RS_Message_General_MakeCount)
 					rsFrameworkMenu.rsCraftRCTiara(runeType, count, self)
 					mainLoop = false
-				elseif craftType == 2;staff
+				elseif craftType == 3;staff
 					int count = rsFrameworkMenu.rsMakeCount(RS_Message_General_MakeCount)
 					rsFrameworkMenu.rsCraftTalismanStaff(runeType, count, self)
 					mainLoop = false
