@@ -79,12 +79,15 @@ Globalvariable Property RS_Count_Runecrafting_EssPure_Small Auto
 Globalvariable Property RS_Count_Runecrafting_EssPure_Medium Auto
 Globalvariable Property RS_Count_Runecrafting_EssPure_Large Auto
 Globalvariable Property RS_Count_Runecrafting_EssPure_Giant Auto
+
+Globalvariable Property RS_Count_Charges_BindingNecklace Auto
 ;>
 ;< Misc Globalvariable Properties
 Globalvariable Property RS_GV_PrayerEndCheck Auto
 Globalvariable Property RS_Check_Dungeoneering_PurchaseRapidRenewal Auto
 Globalvariable Property RS_GV_RandomEvents Auto
 Globalvariable Property RS_Check_IsItHalloween Auto; 1 = false, 0 = True
+Globalvariable Property RS_Config_Runecrafting_UnpackPouch AUto
 ;>
 ;< Quest Properties
 Quest Property RS_Quest_WhileGuthixSleeps Auto
@@ -242,8 +245,30 @@ MiscObject Property RS_Item_Talisman_Nature Auto
 MiscObject Property RS_Item_Talisman_Law Auto
 MiscObject Property RS_Item_Talisman_Death Auto
 
-;>
+MiscObject Property RS_Item_Runecrafting_RuneEssence Auto
+MiscObject Property RS_Item_Runecrafting_RuneEssencePure Auto
 
+MiscObject Property RS_Item_Rune_Air Auto
+MiscObject Property RS_Item_Rune_Mind Auto
+MiscObject Property RS_Item_Rune_Water Auto
+MiscObject Property RS_Item_Rune_Earth Auto
+MiscObject Property RS_Item_Rune_Fire Auto
+MiscObject Property RS_Item_Rune_Body Auto
+MiscObject Property RS_Item_Rune_Cosmic Auto
+MiscObject Property RS_Item_Rune_Chaos Auto
+MiscObject Property RS_Item_Rune_Astral Auto
+MiscObject Property RS_Item_Rune_Nature Auto
+MiscObject Property RS_Item_Rune_Law Auto
+MiscObject Property RS_Item_Rune_Death Auto
+
+MiscObject Property RS_Item_Rune_Dust Auto
+MiscObject Property RS_Item_Rune_Mud Auto
+MiscObject Property RS_Item_Rune_Smoke Auto
+MiscObject Property RS_Item_Rune_Mist Auto
+MiscObject Property RS_Item_Rune_Lava Auto
+MiscObject Property RS_Item_Rune_Steam Auto
+
+;>
 ;< Armor Properties
 Armor Property RS_Armor_Head_Tiara Auto
 Armor Property RS_Armor_Head_Tiara_Air Auto
@@ -258,4 +283,8 @@ Armor Property RS_Armor_Head_Tiara_Nature Auto
 Armor Property RS_Armor_Head_Tiara_Law Auto
 Armor Property RS_Armor_Head_Tiara_Death Auto
 
+Armor Property RS_Armor_Neck_Necklace_Binding Auto
+;>
+;< Magic Effects
+MagicEffect Property RS_MagicEffect_Spell_MagicImbue Auto
 ;>
