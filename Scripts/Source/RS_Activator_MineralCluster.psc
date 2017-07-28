@@ -67,9 +67,9 @@ Event OnHit(ObjectReference akAggressor, Form akSource, Projectile akProjectile,
 			Float finalGainedXP = CheckForXPBonuses(gainedXP)
 			int addCount = 1
 			if ((rsFrameworkMenu.GetMiningLVL()).GetValue()) < 30
-				rsFrameworkMenu.HarvestItemCluster(RS_GV_Skill_Mcounter, self, RS_Rock_Depleted, 1, oreType, akSourceWeapon, RS_SM_HarvestOre, none,  self, respawnInterval, addCount, true, "mining", finalGainedXP, self)
+				rsFrameworkMenu.HarvestItemCluster(RS_GV_Skill_Mcounter, self, RS_Rock_Depleted, reqLVL, oreType, akSourceWeapon, RS_SM_HarvestOre, none,  self, respawnInterval, addCount, true, "mining", finalGainedXP, self)
 			else
-				rsFrameworkMenu.HarvestItemCluster(RS_GV_Skill_Mcounter, self, RS_Rock_Depleted, 1, oreType2, akSourceWeapon, RS_SM_HarvestOre, none,  self, respawnInterval, addCount, true, "mining", finalGainedXP, self)
+				rsFrameworkMenu.HarvestItemCluster(RS_GV_Skill_Mcounter, self, RS_Rock_Depleted, reqLVL, oreType2, akSourceWeapon, RS_SM_HarvestOre, none,  self, respawnInterval, addCount, true, "mining", finalGainedXP, self)
 			endif
 		endif
 	Endif
