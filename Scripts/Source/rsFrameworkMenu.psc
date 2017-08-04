@@ -774,7 +774,7 @@ Function Runecraft(string runeType, int essCount, ObjectReference spawnLocation,
 	else
 		debug.messagebox("Runecrafting Error 002 - Could not parse runeType2")
 	endif
-	
+
 	if (((GetGlobalCheck_RandomEvents()).GetValue()) == 1)
 		RollRandomEvent("runecrafting", spawnLocation)
 	endif
@@ -21313,6 +21313,9 @@ Function SpellCheck_Prayers() Global
 	EndWhile
 EndFunction
 
+;< Testing Toolbox
+
+;>
 ;>
 ;< Low-Level Framework
 ;< Get Skill Properties
