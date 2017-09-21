@@ -3,6 +3,24 @@ ScriptName RS_Talisman_FindAltar extends ObjectReference
 
 ObjectReference Property altar
 
+;Directional Values
+Float East = 0.0
+Float EastNorthEast = 22.5
+Float NorthEast = 45.0
+Float NorthNorthEast = 65.5
+Float North = 90.0
+Float NorthNorthWest = 112.5
+Float NorthWest = 135.0
+Float WestNorthWest = 157.5
+Float West = 180.0
+Float WestSouthWest = 202.5
+Float SouthWest = 225.0
+Float SouthSouthWest = 247.5
+Float South = 270.0
+Float SouthSouthEast = 292.5
+Float SouthEast = 315.0
+Float EastSouthEast = 337.5
+
 Event OnEquipped(Actor akActor)
 	Actor player = Game.GetPlayer()
 	if !player.IsInInterior()
@@ -91,7 +109,18 @@ Function FindOrientation(int targetX, int targetY)
 			debug.notification("Cannot discern target location in Q1")
 		endif
 	elseif targetX < 0 && targetY > 0;Quadrant 2... W,WNW,NW,NNW,N 
-		
+		if targetX == targetY;
+			;nw
+		elseif targetX > targetY
+			;N,NNW,NW
+			theta = (targetY/targetX * tan^-1) as int;This gives us the angle of inclination
+			theta = (90 - theta) + 90
+		elseif targetX < targetY
+			;NW,WNW,W
+			theta = (targetY/targetX * tan^-1) as int;This gives us the angle of inclination
+		else
+			debug.notification("Cannot discern target location in Q2")
+		endif
 	elseif targetX < 0 && targetY < 0;Quadrant 3... S,SSW,SW,WSW,W
 		
 	elseif targetX > 0 && targetY < 0;Quadrant 4... E,ESE,SE,SSE,S
