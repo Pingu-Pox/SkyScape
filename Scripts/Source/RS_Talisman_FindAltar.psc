@@ -5,45 +5,50 @@ ObjectReference Property altar Auto
 
 Event OnEquipped(Actor akActor)
 	Actor player = Game.GetPlayer()
-	if !player.IsInInterior()
+	if player.IsInInterior()
 		debug.notification("Nothing interesting happens.")
+		;debug.notification("Im in an interior.")
 	else
 		if altar.GetWorldSpace() != player.GetWorldSpace()
 			debug.notification("Nothing interesting happens.")
+			;debug.notification("Im not in the same worldspace.")
 		else
+			;debug.notification("Get locations...")
 			int playerX = player.GetPositionX() as int
-			int playerY = player.GetPositionX() as int
+			int playerY = player.GetPositionY() as int
 		 
 			int altarX = altar.GetPositionX() as int
-			int altarY = altar.GetPositionX() as int
+			int altarY = altar.GetPositionY() as int
 			FindOrientation(altarX,altarY,playerX,playerY)
 		endif
 	endif
 EndEvent
 
-Function FindOrientation(int targetX, int targetY, int playerX, int playerY)
+Function FindOrientation(int altarX, int altarY, int playerX, int playerY)
+	;debug.notification("Im in the function.")
 	;we have real coordinates, lets get them within our context
-	targetX = targetX - playerX;Gets the difference between the target and the player, sets it to the target as we want player to be at (0,0)
-	targetY = targetY - playerY;Gets the difference between the target and the player, sets it to the target as we want player to be at (0,0)
+	altarX = altarX - playerX;Gets the difference between the altar and the player, sets it to the altar as we want player to be at (0,0)
+	altarY = altarY - playerY;Gets the difference between the altar and the player, sets it to the altar as we want player to be at (0,0)
 	
 	;now that that is done
 	playerX = 0; Set player to (0,0)
 	playerY = 0; Set player to (0,0)
 	
 	;predefine theta
-	int theta; Defined later in the script
+	float theta; Defined later in the script
 	
-	;we now have player at (0,0) and target spaced by a distance.
-	
-	;what quadrant is the target in?
-	if targetX == 0 && targetY == 0; Player and target occupy the same space
-	
-	elseif targetX > 0 && targetY > 0;Quadrant 1... N,NNE,NE,ENE,E
-		if targetX == targetY;
-			;NE
-		elseif targetX > targetY
+	;we now have player at (0,0) and altar spaced by a distance.
+	;Debug.Notification("Player location (" + playerX + "," + playerY + ")")
+	;Debug.Notification("Altar location (" + altarX + "," + altarY + ")")
+	;what quadrant is the altar in?
+	if altarX == 0 && altarY == 0; Player and altar occupy the same space
+		Debug.Notification("The talisman hums loudly, I must be right on top of it.")
+	elseif altarX > 0 && altarY > 0;Quadrant 1... N,NNE,NE,ENE,E
+		if altarX == altarY;
+			Debug.Notification("The talisman pulls towards the north-east.");ne
+		elseif altarX > altarY
 			;NE,ENE,E
-			theta = (math.atan(targetY/targetX)) as int;This gives us the angle of inclination
+			theta = math.abs(math.atan(altarY/altarX));This gives us the angle of inclination
 			if theta > 22.5;ne,ene
 				if (45.0 - theta) < (theta - 22.5)
 					Debug.Notification("The talisman pulls towards the north-east.");ne
@@ -61,12 +66,12 @@ Function FindOrientation(int targetX, int targetY, int playerX, int playerY)
 					debug.notification("Couldn't see which was closer (ENE,E)")
 				endif
 			else
-			
+				Debug.Notification("The talisman pulls towards the east-north-east.");ene
 			endif
 			
-		elseif targetX < targetY
+		elseif altarX < altarY
 			;NE,N,NNE
-			theta = (math.atan(targetY/targetX)) as int;This gives us the angle of inclination
+			theta = math.abs(math.atan(altarY/altarX));This gives us the angle of inclination
 			if theta > 67.5
 				if (90.0 - theta) < (theta - 67.5)
 					Debug.Notification("The talisman pulls towards the north.");n
@@ -88,14 +93,14 @@ Function FindOrientation(int targetX, int targetY, int playerX, int playerY)
 			endif
 			
 		else
-			debug.notification("Cannot discern target location in Q1")
+			debug.notification("Cannot discern altar location in Q1")
 		endif
-	elseif targetX < 0 && targetY > 0;Quadrant 2... W,WNW,NW,NNW,N 
-		if targetX == targetY;
-			;NW
-		elseif targetX > targetY
+	elseif altarX < 0 && altarY > 0;Quadrant 2... W,WNW,NW,NNW,N 
+		if altarX == altarY;
+			Debug.Notification("The talisman pulls towards the north-west.");nw
+		elseif altarX > altarY
 			;NW,WNW,W
-			theta = (math.atan(targetY/targetX)) as int;This gives us the angle of inclination
+			theta = math.abs(math.atan(altarY/altarX));This gives us the angle of inclination
 			if theta > 22.5;nw,wnw
 				if (45.0 - theta) < (theta - 22.5)
 					Debug.Notification("The talisman pulls towards the north-west.");nw
@@ -116,9 +121,9 @@ Function FindOrientation(int targetX, int targetY, int playerX, int playerY)
 				Debug.Notification("The talisman pulls towards the west-north-west.")
 			endif
 			
-		elseif targetX < targetY
+		elseif altarX < altarY
 			;NW,N,NNW
-			theta = (math.atan(targetY/targetX)) as int;This gives us the angle of inclination
+			theta = math.abs(math.atan(altarY/altarX));This gives us the angle of inclination
 			if theta > 67.5
 				if (90.0 - theta) < (theta - 67.5)
 					Debug.Notification("The talisman pulls towards the north.");n
@@ -140,14 +145,14 @@ Function FindOrientation(int targetX, int targetY, int playerX, int playerY)
 			endif
 			
 		else
-			debug.notification("Cannot discern target location in Q2")
+			debug.notification("Cannot discern altar location in Q2")
 		endif
-	elseif targetX < 0 && targetY < 0;Quadrant 3... S,SSW,SW,WSW,W
-		if targetX == targetY;
-			;SW
-		elseif targetX > targetY
+	elseif altarX < 0 && altarY < 0;Quadrant 3... S,SSW,SW,WSW,W
+		if altarX == altarY;
+			Debug.Notification("The talisman pulls towards the south-west.");sw
+		elseif altarX > altarY
 			;SW,WSW,W
-			theta = (math.atan(targetY/targetX)) as int;This gives us the angle of inclination
+			theta = math.abs(math.atan(altarY/altarX));This gives us the angle of inclination
 			if theta > 22.5;sw,wsw
 				if (45.0 - theta) < (theta - 22.5)
 					Debug.Notification("The talisman pulls towards the south-west.");sw
@@ -168,9 +173,9 @@ Function FindOrientation(int targetX, int targetY, int playerX, int playerY)
 				Debug.Notification("The talisman pulls towards the west-south-west.")
 			endif
 			
-		elseif targetX < targetY
+		elseif altarX < altarY
 			;SW,S,SSW
-			theta = (math.atan(targetY/targetX)) as int;This gives us the angle of inclination
+			theta = math.abs(math.atan(altarY/altarX));This gives us the angle of inclination
 			if theta > 67.5
 				if (90.0 - theta) < (theta - 67.5)
 					Debug.Notification("The talisman pulls towards the south.");s
@@ -192,14 +197,14 @@ Function FindOrientation(int targetX, int targetY, int playerX, int playerY)
 			endif
 			
 		else
-			debug.notification("Cannot discern target location in Q3")
+			debug.notification("Cannot discern altar location in Q3")
 		endif
-	elseif targetX > 0 && targetY < 0;Quadrant 4... E,ESE,SE,SSE,S
-		if targetX == targetY;
-			;SE
-		elseif targetX > targetY
+	elseif altarX > 0 && altarY < 0;Quadrant 4... E,ESE,SE,SSE,S
+		if altarX == altarY;
+			Debug.Notification("The talisman pulls towards the south-east.");se
+		elseif altarX > altarY
 			;SE,ESE,E
-			theta = (math.atan(targetY/targetX)) as int;This gives us the angle of inclination
+			theta = math.abs(math.atan(altarY/altarX));This gives us the angle of inclination
 			if theta > 22.5;se,ese
 				if (45.0 - theta) < (theta - 22.5)
 					Debug.Notification("The talisman pulls towards the south-east.");se
@@ -220,9 +225,9 @@ Function FindOrientation(int targetX, int targetY, int playerX, int playerY)
 				Debug.Notification("The talisman pulls towards the east-south-east.")
 			endif
 			
-		elseif targetX < targetY
+		elseif altarX < altarY
 			;SE,S,SSE
-			theta = (math.atan(targetY/targetX)) as int;This gives us the angle of inclination
+			theta = math.abs(math.atan(altarY/altarX));This gives us the angle of inclination
 			if theta > 67.5
 				if (90.0 - theta) < (theta - 67.5)
 					Debug.Notification("The talisman pulls towards the south.");s
@@ -244,7 +249,7 @@ Function FindOrientation(int targetX, int targetY, int playerX, int playerY)
 			endif
 			
 		else
-			debug.notification("Cannot discern target location in Q4")
+			debug.notification("Cannot discern altar location in Q4")
 		endif
 	else
 	
