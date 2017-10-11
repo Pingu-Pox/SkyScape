@@ -9,7 +9,8 @@ Event OnEquipped(Actor akActor)
 		RS_SM_BuryBones.Play(player)
 		player.RemoveItem(Self,1)
 		rsFrameworkMenu.rsXPGain("prayer", xp);add AddPrayerSpell() to framework
-		rsFrameworkMenu.RollRandomEvent("prayer", self);add a menuexit statement to RollRandomEvent, add prayer random events
+		rsFrameworkMenu.RollRandomEvent("prayer", playerlocation);get player location , add a menuexit statement to RollRandomEvent, add prayer random events
+	Endif
 EndEvent
 
 ;optimize the shit out of this... put it in the API
