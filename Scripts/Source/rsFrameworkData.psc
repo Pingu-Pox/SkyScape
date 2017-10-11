@@ -87,7 +87,7 @@ Globalvariable Property RS_GV_PrayerEndCheck Auto
 Globalvariable Property RS_Check_Dungeoneering_PurchaseRapidRenewal Auto
 Globalvariable Property RS_GV_RandomEvents Auto
 Globalvariable Property RS_Check_IsItHalloween Auto; 1 = false, 0 = True
-Globalvariable Property RS_Config_Runecrafting_UnpackPouch AUto
+Globalvariable Property RS_Config_Runecrafting_UnpackPouch Auto
 ;>
 ;< Quest Properties
 Quest Property RS_Quest_WhileGuthixSleeps Auto
