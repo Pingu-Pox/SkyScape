@@ -196,7 +196,7 @@ Function HarvestItemLoop(MiscObject newItem, Sound harvestSound, ObjectReference
 EndFunction
 
 ;--ACTION--Item harvesting script, optional xp gain, has random events -- come back to this part and add multi-add item statements
-Function HarvestItemOnce(GlobalVariable skillCounter, ObjectReference objRef, Activator depletedActivator, int reqLVL, MiscObject newItem, Weapon equippedTool, Sound harvestSound, Sound depleteSound,  ObjectReference soundSource, Float respawnInterval, int addCount, bool xpGain = false, string skillName = "", float gainedXP = 0.0, ObjectReference spawnLocation) Global
+Function HarvestItemOnce(GlobalVariable skillCounter, ObjectReference objRef, Activator depletedActivator, int reqLVL, MiscObject newItem, weapon equippedTool, Sound harvestSound, Sound depleteSound,  ObjectReference soundSource, Float respawnInterval, int addCount, bool xpGain = false, string skillName = "", float gainedXP = 0.0, ObjectReference spawnLocation) Global
 	if (((GetGlobalCheck_RandomEvents()).GetValue()) == 1)
 		RollRandomEvent(skillName, spawnLocation)
 	endif
@@ -222,6 +222,40 @@ Function HarvestItemOnce(GlobalVariable skillCounter, ObjectReference objRef, Ac
 			objRef.Disable()
 			harvestedRef.Enable()
 			Game.GetPlayer().AddItem(newItem, addCount)
+			rsXPGain(skillName, gainedXP)
+			Utility.wait(respawnInterval)
+			harvestedRef.Delete()
+			objRef.Enable()
+		EndIf
+	EndIf	
+EndFunction
+
+;--ACTION--Item harvesting script, optional xp gain, has random events -- come back to this part and add multi-add item statements
+Function CanoeStationTree(GlobalVariable skillCounter, ObjectReference objRef, Activator depletedActivator, int reqLVL, Weapon equippedTool, Sound harvestSound, Sound depleteSound,  ObjectReference soundSource, Float respawnInterval, bool xpGain = false, string skillName = "", float gainedXP = 0.0, ObjectReference spawnLocation) Global
+	if (((GetGlobalCheck_RandomEvents()).GetValue()) == 1)
+		RollRandomEvent(skillName, spawnLocation)
+	endif
+	;The meat and potatoes... the probability formula
+	If skillCounter.GetValue() <= 0
+		float mod = GetToolStrength(equippedTool)
+		int LVL = (rsGetLVLGlobalFromString(skillName).GetValue() as int)
+		Int intmathDelay = ((20-(LVL/10)) - Mod + reqLVL) as Int
+		int probability = Utility.RandomInt(0,intMathDelay)
+		skillCounter.SetValue(probability)
+	Else
+		int probability = skillCounter.GetValue() as Int
+		probability = (probability - 1)
+		If (probability > 0)
+			skillCounter.SetValue(probability)
+		ElseIf (probability <= 0)
+			skillCounter.SetValue(0)
+			ObjectReference harvestedRef = objRef.PlaceAtMe(depletedActivator, 1, False, True)
+			if harvestSound != none
+				harvestSound.Play(soundSource)
+			endif
+			depleteSound.Play(soundSource)
+			objRef.Disable()
+			harvestedRef.Enable()
 			rsXPGain(skillName, gainedXP)
 			Utility.wait(respawnInterval)
 			harvestedRef.Delete()
@@ -1076,7 +1110,7 @@ int Function RollMultiSteal(int reqLVL) Global
 EndFunction
 
 ;--ACTION--Cluster-Item harvesting script (like oak trees and LRC mineral deposits), optional xp gain, has random events -- come back to this part and add multi-add item statements  
-Function HarvestItemCluster(GlobalVariable skillCounter, ObjectReference objRef, Activator depletedActivator, int reqLVL, MiscObject newItem, Weapon equippedTool, Sound harvestSound, Sound depleteSound,  ObjectReference soundSource, Float respawnInterval, int addCount, bool xpGain = false, string skillName = "", float gainedXP = 0.0, ObjectReference spawnLocation) Global
+Function HarvestItemCluster(GlobalVariable skillCounter, ObjectReference objRef, Activator depletedActivator, int reqLVL, MiscObject newItem, weapon equippedTool, Sound harvestSound, Sound depleteSound,  ObjectReference soundSource, Float respawnInterval, int addCount, bool xpGain = false, string skillName = "", float gainedXP = 0.0, ObjectReference spawnLocation) Global
 	if (((GetGlobalCheck_RandomEvents()).GetValue()) == 1)
 		RollRandomEvent(skillName, spawnLocation)
 	endif
@@ -1335,57 +1369,57 @@ EndFunction
 ;Pass in a Skill as a String, and get the matching Globalvariable for LVL
 Globalvariable Function rsGetLVLGlobalFromString(string skillName) Global
 	if skillName == "agility"
-		return Game.GetFormFromFile(0x029524, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x029524, "skyscape.esp") as GlobalVariable
 	elseif skillName == "attack"
-		return Game.GetFormFromFile(0x02951A, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x02951A, "skyscape.esp") as GlobalVariable
 	elseif skillName == "constitution"
-		return Game.GetFormFromFile(0x029534, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x029534, "skyscape.esp") as GlobalVariable
 	elseif skillName == "construction"
-		return Game.GetFormFromFile(0x029526, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x029526, "skyscape.esp") as GlobalVariable
 	elseif skillName == "cooking"
-		return Game.GetFormFromFile(0x029528, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x029528, "skyscape.esp") as GlobalVariable
 	elseif skillName == "crafting"
-		return Game.GetFormFromFile(0x02952A, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x02952A, "skyscape.esp") as GlobalVariable
 	elseif skillName == "defence"
-		return Game.GetFormFromFile(0x02951E, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x02951E, "skyscape.esp") as GlobalVariable
 	elseif skillName == "divination"
-		return Game.GetFormFromFile(0x294A8F, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x294A8F, "skyscape.esp") as GlobalVariable
 	elseif skillName == "dungeoneering"
-		return Game.GetFormFromFile(0x02952C, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x02952C, "skyscape.esp") as GlobalVariable
 	elseif skillName == "farming"
-		return Game.GetFormFromFile(0x029530, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x029530, "skyscape.esp") as GlobalVariable
 	elseif skillName == "firemaking"
-		return Game.GetFormFromFile(0x001DAB, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x001DAB, "skyscape.esp") as GlobalVariable
 	elseif skillName == "fishing"
-		return Game.GetFormFromFile(0x004BCE, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x004BCE, "skyscape.esp") as GlobalVariable
 	elseif skillName == "fletching"
-		return Game.GetFormFromFile(0x029532, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x029532, "skyscape.esp") as GlobalVariable
 	elseif skillName == "herblore"
-		return Game.GetFormFromFile(0x026778, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x026778, "skyscape.esp") as GlobalVariable
 	elseif skillName == "hunter"
-		return Game.GetFormFromFile(0x029536, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x029536, "skyscape.esp") as GlobalVariable
 	elseif skillName == "invention"
-		return Game.GetFormFromFile(0x294A90, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x294A90, "skyscape.esp") as GlobalVariable
 	elseif skillName == "magic"
-		return Game.GetFormFromFile(0x029522, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x029522, "skyscape.esp") as GlobalVariable
 	elseif skillName == "mining"
-		return Game.GetFormFromFile(0x00BD72, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x00BD72, "skyscape.esp") as GlobalVariable
 	elseif skillName == "prayer"
-		return Game.GetFormFromFile(0x0261E5, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x0261E5, "skyscape.esp") as GlobalVariable
 	elseif skillName == "ranged"
-		return Game.GetFormFromFile(0x029520, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x029520, "skyscape.esp") as GlobalVariable
 	elseif skillName == "runecrafting"
-		return Game.GetFormFromFile(0x029538, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x029538, "skyscape.esp") as GlobalVariable
 	elseif skillName == "slayer"
-		return Game.GetFormFromFile(0x02953A, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x02953A, "skyscape.esp") as GlobalVariable
 	elseif skillName == "smithing"
-		return Game.GetFormFromFile(0x01B0D1, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x01B0D1, "skyscape.esp") as GlobalVariable
 	elseif skillName == "strength"
-		return Game.GetFormFromFile(0x02951B, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x02951B, "skyscape.esp") as GlobalVariable
 	elseif skillName == "thieving"
-		return Game.GetFormFromFile(0x02953D, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x02953D, "skyscape.esp") as GlobalVariable
 	elseif skillName == "woodcutting"
-		return Game.GetFormFromFile(0x0012C8, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x0012C8, "skyscape.esp") as GlobalVariable
 	else
 		Debug.Trace("rsGetLVLGlobalFromString -- Bad string provided '" + skillName + "'.")
 	endif
@@ -1394,57 +1428,57 @@ EndFunction
 ;Pass in a Skill as a String, and get the matching Globalvariable for XP
 Globalvariable Function rsGetXPGlobalFromString(string skillName) Global
 	if skillName == "agility"
-		return Game.GetFormFromFile(0x029525, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x029525, "skyscape.esp") as GlobalVariable
 	elseif skillName == "attack"
-		return Game.GetFormFromFile(0x02951C, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x02951C, "skyscape.esp") as GlobalVariable
 	elseif skillName == "constitution"
-		return Game.GetFormFromFile(0x029535, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x029535, "skyscape.esp") as GlobalVariable
 	elseif skillName == "construction"
-		return Game.GetFormFromFile(0x029527, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x029527, "skyscape.esp") as GlobalVariable
 	elseif skillName == "cooking"
-		return Game.GetFormFromFile(0x029529, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x029529, "skyscape.esp") as GlobalVariable
 	elseif skillName == "crafting"
-		return Game.GetFormFromFile(0x02952B, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x02952B, "skyscape.esp") as GlobalVariable
 	elseif skillName == "defence"
-		return Game.GetFormFromFile(0x02951F, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x02951F, "skyscape.esp") as GlobalVariable
 	elseif skillName == "divination"
-		return Game.GetFormFromFile(0x294A91, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x294A91, "skyscape.esp") as GlobalVariable
 	elseif skillName == "dungeoneering"
-		return Game.GetFormFromFile(0x02952D, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x02952D, "skyscape.esp") as GlobalVariable
 	elseif skillName == "farming"
-		return Game.GetFormFromFile(0x029531, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x029531, "skyscape.esp") as GlobalVariable
 	elseif skillName == "firemaking"
-		return Game.GetFormFromFile(0x001DAA, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x001DAA, "skyscape.esp") as GlobalVariable
 	elseif skillName == "fishing"
-		return Game.GetFormFromFile(0x004BCF, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x004BCF, "skyscape.esp") as GlobalVariable
 	elseif skillName == "fletching"
-		return Game.GetFormFromFile(0x029533, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x029533, "skyscape.esp") as GlobalVariable
 	elseif skillName == "herblore"
-		return Game.GetFormFromFile(0x026779, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x026779, "skyscape.esp") as GlobalVariable
 	elseif skillName == "hunter"
-		return Game.GetFormFromFile(0x029537, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x029537, "skyscape.esp") as GlobalVariable
 	elseif skillName == "invention"
-		return Game.GetFormFromFile(0x294A92, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x294A92, "skyscape.esp") as GlobalVariable
 	elseif skillName == "magic"
-		return Game.GetFormFromFile(0x029523, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x029523, "skyscape.esp") as GlobalVariable
 	elseif skillName == "mining"
-		return Game.GetFormFromFile(0x00BD73, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x00BD73, "skyscape.esp") as GlobalVariable
 	elseif skillName == "prayer"
-		return Game.GetFormFromFile(0x0261E6, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x0261E6, "skyscape.esp") as GlobalVariable
 	elseif skillName == "ranged"
-		return Game.GetFormFromFile(0x029521, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x029521, "skyscape.esp") as GlobalVariable
 	elseif skillName == "runecrafting"
-		return Game.GetFormFromFile(0x029539, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x029539, "skyscape.esp") as GlobalVariable
 	elseif skillName == "slayer"
-		return Game.GetFormFromFile(0x02953B, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x02953B, "skyscape.esp") as GlobalVariable
 	elseif skillName == "smithing"
-		return Game.GetFormFromFile(0x01B0D2, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x01B0D2, "skyscape.esp") as GlobalVariable
 	elseif skillName == "strength"
-		return Game.GetFormFromFile(0x02951D, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x02951D, "skyscape.esp") as GlobalVariable
 	elseif skillName == "thieving"
-		return Game.GetFormFromFile(0x02953C, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x02953C, "skyscape.esp") as GlobalVariable
 	elseif skillName == "woodcutting"
-		return Game.GetFormFromFile(0x0012C9, "SkyScape.esp") as GlobalVariable
+		return Game.GetFormFromFile(0x0012C9, "skyscape.esp") as GlobalVariable
 	else
 		Debug.Trace("rsGetXPGlobalFromString -- Bad string provided '" + skillName + "'.")
 	endif
@@ -1533,7 +1567,7 @@ EndFunction
 	
 ;This function gets the script attached to the quest RS_FrameworkController, and is where the rsFramework properties are stored
 rsFrameworkData Function GetFrameworkData() Global
-	return (Game.GetFormFromFile(0x294A97, "SkyScape.esp") as Quest) as rsFrameworkData
+	return (Game.GetFormFromFile(0x294A97, "skyscape.esp") as Quest) as rsFrameworkData
 EndFunction
 
 ;Checks current XP, levels up where applicable. Child script... Use parent function rsCheckForLevelUp(Agility)
