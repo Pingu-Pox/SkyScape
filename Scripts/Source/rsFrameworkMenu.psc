@@ -1078,19 +1078,22 @@ bool Function TryToSteal_NPC(int reqLVL, ObjectReference spawnLocation) Global
 	if (((GetGlobalCheck_RandomEvents()).GetValue()) == 1)
 		RollRandomEvent("thieving", spawnLocation)
 	endif
-	;The shitty probability formula
-	if ((GetThievingLVL()).GetValue() - reqLVL) < 20
-		if (Utility.RandomInt(1,4) == 1)
-            return false
-		else
-			return true
-		endif
+	float tLvl = GetThieivingLVL().GetVlaue
+	return isSuccess("thieving", tLvl , reqLvl)
+EndFunction
+
+;FUNCTION--Rolls chance of success scaled to level
+float Function isSuccess(string skillName, float level, int lvlReq)
+	float successMultiplier
+	if lvlReq >= 90
+		successMultiplier = 3.0
 	else
-		if (Utility.RandomInt(1,8) == 1)
-            return false
-		else
-			return true
-		endif
+		successMultiplier = 2.2
+	endif
+	if (Math.floor(Math.ceiling((level * 50.0D - lvlReq * 15.00) / lvlReq / 3.00 * successMultiplier), 75)) >= Utility.randomint(0,99)
+		return true
+	else
+		return false
 	endif
 EndFunction
 
